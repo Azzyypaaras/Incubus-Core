@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "incubus_core",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Incubus Lib",
+  "description": "Bring your own lube.",
   "authors": [
-    "Me!"
+    "Azazelthedemonlord - Author and lead incubus"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
@@ -14,24 +14,21 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/incubus_core/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "azzy.fabric.incubus_core.IncubusCoreCommon"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "incubus_core.mixins.json"
   ],
 
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
     "minecraft": "1.16.x"
-  },
-  "suggests": {
-    "another-mod": "*"
   }
 }

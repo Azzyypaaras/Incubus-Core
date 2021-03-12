@@ -3,7 +3,7 @@
   "id": "incubus_core",
   "version": "${version}",
 
-  "name": "Incubus Lib",
+  "name": "Incubus Core",
   "description": "Bring your own lube.",
   "authors": [
     "Azazelthedemonlord - Author and lead incubus"
@@ -13,7 +13,7 @@
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/incubus_core/icon.png",
 
   "environment": "*",

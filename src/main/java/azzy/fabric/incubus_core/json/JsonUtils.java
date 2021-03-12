@@ -1,14 +1,19 @@
 package azzy.fabric.incubus_core.json;
 
 import azzy.fabric.incubus_core.recipe.IngredientStack;
+import azzy.fabric.incubus_core.recipe.OptionalStack;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import net.fabricmc.loader.lib.gson.MalformedJsonException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.tag.ServerTagManagerHolder;
+import net.minecraft.tag.SetTag;
+import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -18,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class JsonUtils {
 
     private static final JsonParser PARSER = new JsonParser();
@@ -51,5 +57,35 @@ public class JsonUtils {
             }
         }
         return ingredients;
+    }
+
+    public static OptionalStack optionalStackFromJson(JsonObject json) throws MalformedJsonException {
+        int count = json.has("count") ? json.get("count").getAsInt() : 1;
+        if(json.has("item")) {
+            Item item = Registry.ITEM.get(Identifier.tryParse(json.get("item").getAsString()));
+            return item != Items.AIR ? new OptionalStack(new ItemStack(item, count), count) : OptionalStack.EMPTY;
+        }
+        else if(json.has("tag")) {
+            Tag<Item> tag = ServerTagManagerHolder.getTagManager().getItems().getTagOrEmpty(Identifier.tryParse(json.get("tag").getAsString()));
+            return !tag.values().isEmpty() ? new OptionalStack(tag, count) : OptionalStack.EMPTY;
+        }
+        else {
+            throw new MalformedJsonException("OptionalStacks must have an item or tag!");
+        }
+    }
+
+    public static List<OptionalStack> optionalStacksFromJson(JsonArray array, int size) throws MalformedJsonException {
+        List<OptionalStack> stacks = new ArrayList<>(size);
+        int dif = size - array.size();
+        for (int i = 0; i < array.size() && i < size; i++) {
+            JsonObject object = array.get(i).getAsJsonObject();
+            stacks.add(optionalStackFromJson(object));
+        }
+        if(dif > 0) {
+            for (int i = 0; i < dif; i++) {
+                stacks.add(OptionalStack.EMPTY);
+            }
+        }
+        return stacks;
     }
 }

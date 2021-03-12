@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 public final class IngredientStack {
 
     public static final IngredientStack EMPTY = new IngredientStack(Ingredient.EMPTY, 0);
@@ -59,6 +60,7 @@ public final class IngredientStack {
         return ingredients;
     }
 
+    @SuppressWarnings("all")
     public List<ItemStack> getStacks() {
         return Arrays.stream(((MatchingStackAccessor) (Object) ingredient)
                 .getMatchingStacks())

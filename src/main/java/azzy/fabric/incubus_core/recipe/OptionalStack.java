@@ -24,24 +24,24 @@ public class OptionalStack {
     private final Tag<Item> tag;
     @NotNull
     private final ItemStack stack;
-    private final int amount;
+    private final int count;
 
     private List<ItemStack> cachedStacks = null;
 
-    public OptionalStack(@NotNull Tag<Item> tag, int amount) {
+    public OptionalStack(@NotNull Tag<Item> tag, int count) {
         this.tag = tag;
         this.stack = ItemStack.EMPTY;
-        this.amount = amount;
+        this.count = count;
     }
 
-    public OptionalStack(@NotNull ItemStack stack, int amount) {
+    public OptionalStack(@NotNull ItemStack stack, int count) {
         this.stack = stack;
         this.tag = Tag.of(Collections.emptySet());
-        this.amount = amount;
+        this.count = count;
     }
 
-    public OptionalStack(Identifier id, int amount) {
-        this(ServerTagManagerHolder.getTagManager().getItems().getTagOrEmpty(id), amount);
+    public OptionalStack(Identifier id, int count) {
+        this(ServerTagManagerHolder.getTagManager().getItems().getTagOrEmpty(id), count);
     }
 
     public void write(PacketByteBuf buf) {
@@ -50,15 +50,16 @@ public class OptionalStack {
         for (ItemStack cachedStack : cachedStacks) {
             buf.writeItemStack(cachedStack);
         }
+        buf.writeInt(count);
     }
 
     public static OptionalStack fromByteBuf(PacketByteBuf buf) {
-        OptionalStack folly = new OptionalStack(ItemStack.EMPTY, 0);
         List<ItemStack> stacks = new ArrayList<>();
         int size = buf.readInt();
         for (int i = 0; i < size; i++) {
             stacks.add(buf.readItemStack());
         }
+        OptionalStack folly = new OptionalStack(ItemStack.EMPTY, buf.readInt());
         folly.cachedStacks = stacks;
         return folly;
     }
@@ -82,10 +83,14 @@ public class OptionalStack {
                 cachedStacks = Collections.singletonList(stack);
             }
             else {
-                cachedStacks = tag.values().stream().map(item -> new ItemStack(item, amount)).collect(Collectors.toList());
+                cachedStacks = tag.values().stream().map(item -> new ItemStack(item, count)).collect(Collectors.toList());
             }
         }
         return cachedStacks;
+    }
+
+    public int getCount() {
+        return count;
     }
 
     public @Nullable ItemStack getFirstStack() {
@@ -102,6 +107,6 @@ public class OptionalStack {
             return false;
         }
         else
-            return cachedStacks.stream().anyMatch(testStack -> testStack.isItemEqual(stack));
+            return cachedStacks.stream().anyMatch(testStack -> testStack.isItemEqual(stack) && stack.getCount() >= testStack.getCount());
     }
 }

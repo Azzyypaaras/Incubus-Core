@@ -100,6 +100,16 @@ public class OptionalStack {
             return cachedStacks.get(0);
     }
 
+    public boolean itemMatch(ItemStack stack) {
+        if(cachedStacks == null)
+            getStacks();
+        if(cachedStacks.isEmpty()) {
+            return false;
+        }
+        else
+            return cachedStacks.stream().anyMatch(testStack -> testStack.isItemEqual(stack));
+    }
+
     public boolean contains(ItemStack stack) {
         if(cachedStacks == null)
             getStacks();

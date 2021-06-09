@@ -7,9 +7,14 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 
+@SuppressWarnings("unused")
 public class ModelJsonGen {
 
     public static void genItemJson(Metadata metadata, Identifier name) {
+
+        if(!metadata.allowRegen)
+            return;
+
         String item = "{\n" +
                 "  \"parent\": \"item/generated\",\n" +
                 "  \"textures\": {\n" +
@@ -25,6 +30,10 @@ public class ModelJsonGen {
     }
 
     public static void genBlockJson(Metadata metadata, Identifier texId, Identifier name, String path) {
+
+        if(!metadata.allowRegen)
+            return;
+
         String block = "{\n" +
                 "  \"parent\": \"minecraft:block/cube_all\",\n" +
                 "  \"textures\": {\n" +
@@ -45,6 +54,10 @@ public class ModelJsonGen {
     }
 
     public static void genSlabJsons(Metadata metadata, Identifier texId, Identifier name, String path) {
+
+        if(!metadata.allowRegen)
+            return;
+
         String bottom = "{\n" +
                 "  \"parent\": \"minecraft:block/slab\",\n" +
                 "  \"textures\": {\n" +
@@ -77,6 +90,10 @@ public class ModelJsonGen {
     }
 
     public static void genStairJsons(Metadata metadata, Identifier texId, Identifier name, String path) {
+
+        if(!metadata.allowRegen)
+            return;
+
         String normal = "{\n" +
                 "  \"parent\": \"minecraft:block/stairs\",\n" +
                 "  \"textures\": {\n" +
@@ -121,6 +138,10 @@ public class ModelJsonGen {
     }
 
     public static void genWallJsons(Metadata metadata, Identifier texId, Identifier name, String path) {
+
+        if(!metadata.allowRegen)
+            return;
+
         String post = "{\n" +
                 "  \"parent\": \"minecraft:block/template_wall_post\",\n" +
                 "  \"textures\": {\n" +

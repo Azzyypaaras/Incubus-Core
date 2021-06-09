@@ -1,16 +1,39 @@
 package azzy.fabric.incubus_core.datagen;
 
+import azzy.fabric.incubus_core.IncubusCoreCommon;
 import azzy.fabric.incubus_core.datagen.Metadata.DataType;
 import azzy.fabric.incubus_core.datagen.Metadata.ResourceType;
+import net.fabricmc.loader.api.FabricLoader;
+import org.apache.logging.log4j.Marker;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 public class Metadata {
+
     public final String resourcePath;
     public final String dataPath;
 
-    public Metadata(String id) {
+    public final boolean allowRegen;
+
+    public Metadata(String id, String regenVar) {
+        genCheck: {
+            String[] args = FabricLoader.getInstance().getLaunchArguments(false);
+            for (String arg : args) {
+                if(arg.equals(regenVar)) {
+                    allowRegen = true;
+                    break genCheck;
+                }
+            }
+            allowRegen = false;
+        }
+
+        IncubusCoreCommon.LOG.error("Datagen integration detected for " + id + " - arg - " + regenVar + " - state - " + (allowRegen ? "ENABLED" : "DISABLED"));
+
         this.resourcePath = Paths.get(System.getProperty("user.dir")).getParent().toString() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "assets" + File.separator + id;
         this.dataPath = Paths.get(System.getProperty("user.dir")).getParent().toString() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "data" + File.separator + id;
     }

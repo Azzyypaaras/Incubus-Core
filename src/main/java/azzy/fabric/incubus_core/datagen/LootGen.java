@@ -8,9 +8,13 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
 
+@SuppressWarnings("unused")
 public class LootGen {
 
     public static void genSimpleBlockDropTable(Metadata metadata, Block block) {
+
+        if(!metadata.allowRegen)
+            return;
 
         Identifier id = Registry.ITEM.getId(block.asItem());
 

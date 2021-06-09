@@ -1,5 +1,6 @@
 package azzy.fabric.incubus_core;
 
+import azzy.fabric.incubus_core.datagen.Metadata;
 import azzy.fabric.incubus_core.misc.HandPistonItem;
 import azzy.fabric.incubus_core.misc.IncubusToolMaterials;
 import azzy.fabric.incubus_core.misc.IncubusItemGroups;

@@ -6,9 +6,13 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
 
+@SuppressWarnings("unused")
 public class BSJsonGen {
 
     public static void genBlockBS(Metadata metadata, Identifier identifier, String path) {
+
+        if(!metadata.allowRegen)
+            return;
 
         String id = identifier.getNamespace() + ":" + path + identifier.getPath();
 
@@ -27,6 +31,9 @@ public class BSJsonGen {
     }
 
     public static void genSlabBS(Metadata metadata, Identifier identifier, Identifier parentIdentifier, String path) {
+
+        if(!metadata.allowRegen)
+            return;
 
         String id = identifier.getNamespace() + ":" + path + identifier.getPath();
         String parentId = parentIdentifier.getNamespace() + ":" + path + parentIdentifier.getPath();
@@ -52,6 +59,9 @@ public class BSJsonGen {
     }
 
     public static void genWallBS(Metadata metadata, Identifier identifier, String path) {
+
+        if(!metadata.allowRegen)
+            return;
 
         String id = identifier.getNamespace() + ":" + path + identifier.getPath();
 
@@ -153,6 +163,9 @@ public class BSJsonGen {
     }
 
     public static void genStairsBS(Metadata metadata, Identifier identifier, String path) {
+
+        if(!metadata.allowRegen)
+            return;
 
         String id = identifier.getNamespace() + ":" + path + identifier.getPath();
 

@@ -24,6 +24,10 @@ public class RecipeJsonGen {
             "}";
 
     public static void genFurnaceRecipe(Metadata metadata, String name, Item input, Item output, float xp, int time) {
+
+        if(!metadata.allowRegen)
+            return;
+
         genDynamicRecipe(
                 metadata,
                 name,
@@ -34,6 +38,10 @@ public class RecipeJsonGen {
     }
 
     public static void genDynamicRecipe(Metadata metadata, String name, String category, String template, String[] components) {
+
+        if(!metadata.allowRegen)
+            return;
+
         String output = "" + template;
         for (int i = 0; i < components.length; i++) {
             output = output.replace("component_" + i, components[i]);
@@ -46,6 +54,9 @@ public class RecipeJsonGen {
     }
 
     public static void gen2x2Recipe(Metadata metadata, String name, Item in, Item out, int count) {
+
+        if(!metadata.allowRegen)
+            return;
 
         String output = Registry.ITEM.getId(out).toString();
         String input = Registry.ITEM.getId(in).toString();
@@ -75,6 +86,9 @@ public class RecipeJsonGen {
     }
 
     public static void gen3x3Recipe(Metadata metadata, String name, Item in, Item out, int count) {
+
+        if(!metadata.allowRegen)
+            return;
 
         String output = Registry.ITEM.getId(out).toString();
         String input = Registry.ITEM.getId(in).toString();
@@ -106,6 +120,9 @@ public class RecipeJsonGen {
 
     public static void genSlabRecipe(Metadata metadata, String name, Item in, Item out, int count) {
 
+        if(!metadata.allowRegen)
+            return;
+
         String output = Registry.ITEM.getId(out).toString();
         String input = Registry.ITEM.getId(in).toString();
 
@@ -133,6 +150,9 @@ public class RecipeJsonGen {
     }
 
     public static void genStairsRecipe(Metadata metadata, String name, Item in, Item out, int count) {
+
+        if(!metadata.allowRegen)
+            return;
 
         String output = Registry.ITEM.getId(out).toString();
         String input = Registry.ITEM.getId(in).toString();
@@ -163,6 +183,9 @@ public class RecipeJsonGen {
     }
 
     public static void genWallRecipe(Metadata metadata, String name, Item in, Item out, int count) {
+
+        if(!metadata.allowRegen)
+            return;
 
         String output = Registry.ITEM.getId(out).toString();
         String input = Registry.ITEM.getId(in).toString();

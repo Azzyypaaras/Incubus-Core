@@ -1,9 +1,18 @@
-# Fabric Example Mod
+# Incubus Core
 
 ## Setup
+```groovy
+repositories {
+    maven { url "https://jitpack.io" }
+}
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+dependencies {
+    modImplementation include("com.github.Archydra-Studios:Incubus-Core:VERSION")
+}
+```
+
+Check releases for the latest version.
 
 ## License
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+As is generally the case with my mods, all code is available under the MIT license, whereas textures are ARR.

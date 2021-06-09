@@ -8,6 +8,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -22,14 +23,18 @@ public class CrustFeature extends Feature<BiFeatureConfig> {
     }
 
     @Override
-    public boolean generate(StructureWorldAccess world, ChunkGenerator chunkGenerator, Random random, BlockPos center, BiFeatureConfig config) {
-        center = center.down();
+    public boolean generate(FeatureContext<BiFeatureConfig> context) {
+        StructureWorldAccess world = context.getWorld();
 
-        int radius = config.scale.getValue(random);
+        BlockPos center = context.getOrigin().down();
+        BiFeatureConfig config = context.getConfig();
+        Random random = context.getRandom();
+
+        int radius = config.scale.get(random);
 
         centers = generateCircleAndCenters(world, center, radius, random, config);
 
-        radius = config.scale.getValue(random);
+        radius = config.scale.get(random);
 
         Queue<BlockPos> holder = new LinkedList<>();
 
@@ -40,7 +45,7 @@ public class CrustFeature extends Feature<BiFeatureConfig> {
         centers.clear();
         centers.addAll(holder);
 
-        radius = config.scale.getValue(random);
+        radius = config.scale.get(random);
 
         for (BlockPos newCenter : centers) {
             generateCircleAndCenters(world, newCenter, radius, random, config);

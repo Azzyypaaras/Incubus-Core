@@ -15,6 +15,7 @@ import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.SetTag;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.DefaultedRegistry;
 import net.minecraft.util.registry.Registry;
 
 import java.io.InputStream;
@@ -66,7 +67,7 @@ public class JsonUtils {
             return item != Items.AIR ? new OptionalStack(new ItemStack(item, count), count) : OptionalStack.EMPTY;
         }
         else if(json.has("tag")) {
-            Tag<Item> tag = ServerTagManagerHolder.getTagManager().getItems().getTagOrEmpty(Identifier.tryParse(json.get("tag").getAsString()));
+            Tag<Item> tag = ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(DefaultedRegistry.ITEM_KEY).getTagOrEmpty(Identifier.tryParse(json.get("tag").getAsString()));
             return !tag.values().isEmpty() ? new OptionalStack(tag, count) : OptionalStack.EMPTY;
         }
         else {

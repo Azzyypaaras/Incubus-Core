@@ -1,5 +1,6 @@
 package azzy.fabric.incubus_core.mixin;
 
+import azzy.fabric.incubus_core.misc.PlayerChecker;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.LiteralText;
@@ -12,6 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.UUID;
 
+import static azzy.fabric.incubus_core.misc.PlayerChecker.*;
+
 @Mixin(PlayerEntity.class)
 public abstract class NameDisplayMixin {
 
@@ -20,15 +23,15 @@ public abstract class NameDisplayMixin {
     @Inject(method = "getName", at = @At("HEAD"), cancellable = true)
     public void textNameIntercept(CallbackInfoReturnable<Text> cir) {
         GameProfile profile = getGameProfile();
-        if(profile.getId().equals(UUID.fromString("f7957087-549e-4ca3-878e-48f36569dd3e"))) {
+        if(profile.getId().equals(PlayerChecker.WORTHY_PLAYERS.get(AZZY))) {
             cir.setReturnValue(new LiteralText("§bThe last lunarian emperor | " + profile.getName() + "§r"));
             cir.cancel();
         }
-        else if(profile.getId().equals(UUID.fromString("a250dea2-a0ec-4aa4-bfa9-858a44466241"))) {
+        else if(profile.getId().equals(PlayerChecker.WORTHY_PLAYERS.get(PIE))) {
             cir.setReturnValue(new LiteralText("ULTRASHILL | " + profile.getName()));
             cir.cancel();
         }
-        else if(profile.getId().equals(UUID.fromString("0461feb0-c0a6-4020-a612-3d24a4ff3f3b"))) {
+        else if(profile.getId().equals(PlayerChecker.WORTHY_PLAYERS.get(JER))) {
             cir.setReturnValue(new LiteralText("Heir to the cum throne | " + profile.getName()));
             cir.cancel();
         }
@@ -37,15 +40,15 @@ public abstract class NameDisplayMixin {
     @Inject(method = "getEntityName", at = @At("HEAD"), cancellable = true)
     public void stringNameIntercept(CallbackInfoReturnable<String> cir) {
         GameProfile profile = getGameProfile();
-        if(profile.getId().equals(UUID.fromString("f7957087-549e-4ca3-878e-48f36569dd3e"))) {
+        if(profile.getId().equals(PlayerChecker.WORTHY_PLAYERS.get(AZZY))) {
             cir.setReturnValue("§bThe last lunarian emperor | " + profile.getName() + "§r");
             cir.cancel();
         }
-        else if(profile.getId().equals(UUID.fromString("a250dea2-a0ec-4aa4-bfa9-858a44466241"))) {
+        else if(profile.getId().equals(PlayerChecker.WORTHY_PLAYERS.get(PIE))) {
             cir.setReturnValue("ULTRASHILL | " + profile.getName());
             cir.cancel();
         }
-        else if(profile.getId().equals(UUID.fromString("0461feb0-c0a6-4020-a612-3d24a4ff3f3b"))) {
+        else if(profile.getId().equals(PlayerChecker.WORTHY_PLAYERS.get(JER))) {
             cir.setReturnValue("Heir to the cum throne | " + profile.getName());
             cir.cancel();
         }

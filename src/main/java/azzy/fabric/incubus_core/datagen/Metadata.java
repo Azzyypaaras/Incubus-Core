@@ -1,5 +1,7 @@
 package azzy.fabric.incubus_core.datagen;
 
+import azzy.fabric.incubus_core.datagen.Metadata.DataType;
+import azzy.fabric.incubus_core.datagen.Metadata.ResourceType;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;

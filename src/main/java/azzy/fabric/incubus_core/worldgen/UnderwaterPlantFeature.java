@@ -10,6 +10,7 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.util.FeatureContext;
 
 import java.util.Random;
 
@@ -19,7 +20,13 @@ public class UnderwaterPlantFeature extends Feature<BiFeatureConfig> {
         super(codec);
     }
 
-    public boolean generate(StructureWorldAccess structureWorldAccess, ChunkGenerator chunkGenerator, Random random, BlockPos pos, BiFeatureConfig config) {
+    public boolean generate(FeatureContext<BiFeatureConfig> context) {
+        StructureWorldAccess structureWorldAccess = context.getWorld();
+        BiFeatureConfig config = context.getConfig();
+        Random random = context.getRandom();
+        BlockPos pos = context.getOrigin();
+
+
         boolean success = false;
         int i = random.nextInt(8) - random.nextInt(8);
         int j = random.nextInt(8) - random.nextInt(8);

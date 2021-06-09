@@ -1,37 +1,42 @@
 package azzy.fabric.incubus_core.be;
 
+import azzy.fabric.incubus_core.IncubusCoreCommon;
+import azzy.fabric.incubus_core.mixin.BlockEntityMixin;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.PistonBlockEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 
 public class BlockEntityMover {
 
-    public static void tryMoveEntity(World world, BlockPos pos, Direction facing) {
+    public static void tryMoveEntity(ServerWorld world, BlockPos pos, Direction facing) {
         directEntityMove(world, pos, pos.offset(facing));
     }
 
-    public static void directEntityMove(World world, BlockPos pos, BlockPos newPos) {
+    public static void directEntityMove(ServerWorld world, BlockPos pos, BlockPos newPos) {
         if(!world.isClient()) {
             BlockState state = world.getBlockState(pos);
             BlockEntity entity = world.getBlockEntity(pos);
             if(entity != null && !(entity instanceof PistonBlockEntity)) {
-                CompoundTag tag = new CompoundTag();
-                entity.toTag(tag);
+                NbtCompound nbt = new NbtCompound();
+                entity.writeNbt(nbt);
                 world.removeBlockEntity(pos);
                 world.setBlockState(pos, Blocks.AIR.getDefaultState());
                 world.setBlockState(newPos, state);
                 BlockEntity newEntity = entity.getType().get(world, newPos);
                 if(newEntity != null) {
-                    newEntity.fromTag(world.getBlockState(newPos), tag);
-                    world.setBlockEntity(newPos, newEntity);
+                    newEntity.readNbt(nbt);
+                    world.getChunk(newPos).setBlockEntity(newEntity);
                     if(newEntity instanceof BlockEntityClientSerializable)
                         ((BlockEntityClientSerializable) entity).sync();
                     if(newEntity instanceof MovementSensitiveBlockEntity) {

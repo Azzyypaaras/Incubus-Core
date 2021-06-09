@@ -7,6 +7,7 @@ import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.SetTag;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.DefaultedRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,7 +42,7 @@ public class OptionalStack {
     }
 
     public OptionalStack(Identifier id, int count) {
-        this(ServerTagManagerHolder.getTagManager().getItems().getTagOrEmpty(id), count);
+        this(ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(DefaultedRegistry.ITEM_KEY).getTagOrEmpty(id), count);
     }
 
     public void write(PacketByteBuf buf) {

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "incubus_core:item/hand_piston_advanced"
+  }
+}

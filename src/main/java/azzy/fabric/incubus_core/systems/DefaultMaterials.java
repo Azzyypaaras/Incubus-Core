@@ -1,7 +1,6 @@
 package azzy.fabric.incubus_core.systems;
 
 import azzy.fabric.incubus_core.IncubusCoreCommon;
-import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 

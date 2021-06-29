@@ -4,11 +4,11 @@ import net.minecraft.world.biome.Biome;
 
 public class HeatHelper {
 
-    public static double exchangeHeat(HeatMaterial medium, double tempA, double tempB, double exchangeArea) {
-        return medium.transfer * exchangeArea * (tempA - tempB);
+    public static double exchangeHeat(Material medium, double tempA, double tempB, double exchangeArea) {
+        return medium.heatConductivity * exchangeArea * (tempA - tempB);
     }
 
-    public static double playerAmbientHeat(HeatMaterial medium, double playerTemp, Biome biome, boolean night, boolean rain, int height) {
+    public static double playerAmbientHeat(Material medium, double playerTemp, Biome biome, boolean night, boolean rain, int height) {
         return -exchangeHeat(medium, playerTemp, translateBiomeHeat(biome, night, rain, height), 4.5);
     }
 
@@ -38,31 +38,5 @@ public class HeatHelper {
             temp -= biome.getPrecipitation() == Biome.Precipitation.SNOW || biome.getPrecipitation() == Biome.Precipitation.RAIN && height >= 100 ? 10 : 3;
         }
         return temp;
-    }
-
-    public enum HeatMaterial {
-        NULL(0.0),
-        AIR(0.026),
-        BRICK(0.6),
-        STEEL(50.2),
-        WATER(0.6),
-        GENERIC_FLUID(0.35),
-        DIAMOND(335.2),
-        GRANITE(1.73),
-        BEDROCK(400);
-
-        private final double transfer;
-
-        HeatMaterial(double transfer) {
-            this.transfer = transfer / 419.0;
-        }
-
-        public static HeatMaterial nullableValueOf(String name){
-            try {
-                return HeatMaterial.valueOf(name);
-            } catch (Exception ignored){
-                return NULL;
-            }
-        }
     }
 }

@@ -2,7 +2,10 @@ package azzy.fabric.incubus_core.misc;
 
 import azzy.fabric.incubus_core.be.BlockEntityMover;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.PistonBlock;
 import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
@@ -16,6 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class HandPistonItem extends Item {
@@ -34,7 +38,7 @@ public class HandPistonItem extends Item {
         Direction moveDir = context.getSide().getOpposite();
         PistonBehavior behavior = world.getBlockState(pos).getPistonBehavior();
         switch (behavior) {
-            case DESTROY: world.breakBlock(pos, true);
+            case DESTROY: world.breakBlock(pos, true); break;
             case BLOCK: {
                 if(!moveAll)
                     break;
@@ -42,6 +46,12 @@ public class HandPistonItem extends Item {
             case PUSH_ONLY:
             case NORMAL: {
                 if(!world.isClient()) {
+
+                    BlockState state = world.getBlockState(pos);
+
+                    if(!PistonBlock.isMovable(state, world, pos, moveDir, false, moveDir.getOpposite()) || (state.isOf(Blocks.OBSIDIAN) || state.isOf(Blocks.CRYING_OBSIDIAN) || state.isOf(Blocks.RESPAWN_ANCHOR)))
+                        if(!moveAll || state.getHardness(world, pos) < 0f)
+                            break;;
 
                     BlockPos offPos = pos.offset(moveDir);
 
@@ -54,7 +64,6 @@ public class HandPistonItem extends Item {
                         BlockEntityMover.tryMoveEntity((ServerWorld) world, pos, moveDir);
                     }
                     else {
-                        BlockState state = world.getBlockState(pos);
                         world.removeBlock(pos, true);
                         world.setBlockState(offPos, state);
                     }

@@ -27,8 +27,8 @@ public class IncubusCoreCommon implements ModInitializer {
 		if(!FabricLoader.getInstance().isDevelopmentEnvironment())
 			LOG.info(IncubusCoreInit.HOLY_CONST);
 
-		registerItem("hand_piston", new HandPistonItem(new FabricItemSettings().group(IncubusItemGroups.CORE_GROUP), false));
-		registerItem("hand_piston_advanced", new HandPistonItem(new FabricItemSettings().group(IncubusItemGroups.CORE_GROUP).fireproof().rarity(Rarity.RARE), true));
+		registerItem("hand_piston", new HandPistonItem(new FabricItemSettings().group(IncubusItemGroups.CORE_GROUP).maxCount(1), false));
+		registerItem("hand_piston_advanced", new HandPistonItem(new FabricItemSettings().group(IncubusItemGroups.CORE_GROUP).fireproof().rarity(Rarity.RARE).maxCount(1), true));
 	}
 
 	public static Item registerItem(String name, Item item) {

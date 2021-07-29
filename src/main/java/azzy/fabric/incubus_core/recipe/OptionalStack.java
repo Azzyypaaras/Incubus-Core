@@ -27,6 +27,7 @@ public class OptionalStack {
     private final ItemStack stack;
     private final int count;
 
+
     private List<ItemStack> cachedStacks = null;
 
     public OptionalStack(@NotNull Tag<Item> tag, int count) {

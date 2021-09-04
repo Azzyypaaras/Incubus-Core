@@ -6,6 +6,7 @@
   "name": "Incubus Core",
   "description": "Bring your own lube.",
   "authors": [
+    "Immortal Devs - Parent Organization",
     "Azazelthedemonlord - Author and lead incubus"
   ],
   "contact": {
@@ -19,7 +20,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "azzy.fabric.incubus_core.IncubusCoreCommon"
+      "net.id.incubus_core.IncubusCoreCommon"
     ]
   },
   "mixins": [

@@ -10,8 +10,9 @@
     "Azazelthedemonlord - Author and lead incubus"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/devs-immortal/Incubus-Core",
+    "sources": "https://github.com/devs-immortal/Incubus-Core",
+    "issues": "https://github.com/devs-immortal/Incubus-Core/issues"
   },
 
   "license": "MIT",
@@ -20,7 +21,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.id.incubus_core.IncubusCoreCommon"
+      "net.id.incubus_core.IncubusCore"
     ]
   },
   "mixins": [
@@ -31,5 +32,15 @@
     "fabricloader": ">=0.7.4",
     "fabric": "*",
     "minecraft": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/vAa35wQ2ZP"
+      },
+      "badges": [
+        "library"
+      ]
+    }
   }
 }

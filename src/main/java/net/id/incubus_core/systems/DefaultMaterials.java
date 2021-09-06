@@ -1,6 +1,6 @@
 package net.id.incubus_core.systems;
 
-import net.id.incubus_core.IncubusCoreCommon;
+import net.id.incubus_core.IncubusCore;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -19,6 +19,6 @@ public class DefaultMaterials {
     //public static final Material UNOBTANIUM = register("unobtanium", new Material(Double.POSITIVE_INFINITY, 1, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY));
 
     private static Material register(String id, Material material) {
-        return Registry.register(RegistryRegistry.MATERIAL, new Identifier(IncubusCoreCommon.MODID), material);
+        return Registry.register(RegistryRegistry.MATERIAL, new Identifier(IncubusCore.MODID), material);
     }
 }

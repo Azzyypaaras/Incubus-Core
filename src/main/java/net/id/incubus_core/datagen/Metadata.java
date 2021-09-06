@@ -1,6 +1,6 @@
 package net.id.incubus_core.datagen;
 
-import net.id.incubus_core.IncubusCoreCommon;
+import net.id.incubus_core.IncubusCore;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.File;
@@ -26,7 +26,7 @@ public class Metadata {
             allowRegen = false;
         }
 
-        IncubusCoreCommon.LOG.error("Datagen integration detected for " + id + " - arg - " + regenVar + " - state - " + (allowRegen ? "ENABLED" : "DISABLED"));
+        IncubusCore.LOG.error("Datagen integration detected for " + id + " - arg - " + regenVar + " - state - " + (allowRegen ? "ENABLED" : "DISABLED"));
 
         this.resourcePath = Paths.get(System.getProperty("user.dir")).getParent().toString() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "assets" + File.separator + id;
         this.dataPath = Paths.get(System.getProperty("user.dir")).getParent().toString() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "data" + File.separator + id;

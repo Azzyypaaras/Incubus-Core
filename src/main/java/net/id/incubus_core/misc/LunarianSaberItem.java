@@ -36,7 +36,7 @@ public class LunarianSaberItem extends SwordItem {
         World world = target.world;
         Random random = target.getRandom();
 
-        if(!PlayerChecker.isPlayerWorthy(attacker.getUuid())) {
+        if(!WorthinessChecker.isPlayerWorthy(attacker.getUuid())) {
             attacker.damage(DamageSource.GENERIC, 0.1F);
             attacker.setHealth(0.01F);
 

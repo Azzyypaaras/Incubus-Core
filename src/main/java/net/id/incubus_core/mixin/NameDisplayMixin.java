@@ -1,6 +1,6 @@
 package net.id.incubus_core.mixin;
 
-import net.id.incubus_core.misc.PlayerChecker;
+import net.id.incubus_core.misc.WorthinessChecker;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.LiteralText;
@@ -11,7 +11,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static net.id.incubus_core.misc.PlayerChecker.*;
+import java.util.UUID;
+
+import static net.id.incubus_core.misc.WorthinessChecker.*;
 
 @Mixin(PlayerEntity.class)
 public abstract class NameDisplayMixin {
@@ -20,34 +22,20 @@ public abstract class NameDisplayMixin {
 
     @Inject(method = "getName", at = @At("HEAD"), cancellable = true)
     public void textNameIntercept(CallbackInfoReturnable<Text> cir) {
-        GameProfile profile = getGameProfile();
-        if(profile.getId().equals(PlayerChecker.WORTHY_PLAYERS.get(AZZY))) {
-            cir.setReturnValue(new LiteralText("§bLunarian Emperor | " + profile.getName() + "§r"));
-            cir.cancel();
-        }
-        else if(profile.getId().equals(PlayerChecker.WORTHY_PLAYERS.get(PIE))) {
-            cir.setReturnValue(new LiteralText("ULTRASHILL | " + profile.getName()));
-            cir.cancel();
-        }
-        else if(profile.getId().equals(PlayerChecker.WORTHY_PLAYERS.get(JER))) {
-            cir.setReturnValue(new LiteralText("Lord of brain rot | " + profile.getName()));
+        var profile = getGameProfile();
+        var capeType = WorthinessChecker.getCapeType(profile.getId());
+        if(capeType != CapeType.NONE) {
+            cir.setReturnValue(new LiteralText(capeType.prefix + profile.getName()));
             cir.cancel();
         }
     }
 
     @Inject(method = "getEntityName", at = @At("HEAD"), cancellable = true)
     public void stringNameIntercept(CallbackInfoReturnable<String> cir) {
-        GameProfile profile = getGameProfile();
-        if(profile.getId().equals(PlayerChecker.WORTHY_PLAYERS.get(AZZY))) {
-            cir.setReturnValue("§bThe last lunarian emperor | " + profile.getName() + "§r");
-            cir.cancel();
-        }
-        else if(profile.getId().equals(PlayerChecker.WORTHY_PLAYERS.get(PIE))) {
-            cir.setReturnValue("ULTRASHILL | " + profile.getName());
-            cir.cancel();
-        }
-        else if(profile.getId().equals(PlayerChecker.WORTHY_PLAYERS.get(JER))) {
-            cir.setReturnValue("Heir to the cum throne | " + profile.getName());
+        var profile = getGameProfile();
+        var capeType = WorthinessChecker.getCapeType(profile.getId());
+        if(capeType != CapeType.NONE) {
+            cir.setReturnValue(capeType.prefix + profile.getName());
             cir.cancel();
         }
     }

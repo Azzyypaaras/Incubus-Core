@@ -1,6 +1,6 @@
 package net.id.incubus_core.render;
 
-import net.id.incubus_core.IncubusCoreCommon;
+import net.id.incubus_core.IncubusCore;
 import net.minecraft.client.render.*;
 import net.minecraft.util.Identifier;
 
@@ -10,5 +10,5 @@ public class IncubusRenderLayers extends RenderLayer {
         super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction);
     }
 
-    public static final RenderLayer SOFT_BLOOM = RenderLayerConstructor.buildMultiPhase("incubus_core:soft_bloom", VertexFormats.POSITION_COLOR, VertexFormat.DrawMode.QUADS, 256, false, true, MultiPhaseParameters.builder().texture(new Texture(new Identifier(IncubusCoreCommon.MODID, "textures/special/blank.png"), false, false)).shader(RenderPhase.LIGHTNING_SHADER).transparency(TRANSLUCENT_TRANSPARENCY).target(RenderPhase.ITEM_TARGET).lightmap(DISABLE_LIGHTMAP).layering(RenderPhase.VIEW_OFFSET_Z_LAYERING).build(true));
+    public static final RenderLayer SOFT_BLOOM = RenderLayerConstructor.buildMultiPhase("incubus_core:soft_bloom", VertexFormats.POSITION_COLOR, VertexFormat.DrawMode.QUADS, 256, false, true, MultiPhaseParameters.builder().texture(new Texture(new Identifier(IncubusCore.MODID, "textures/special/blank.png"), false, false)).shader(RenderPhase.LIGHTNING_SHADER).transparency(TRANSLUCENT_TRANSPARENCY).target(RenderPhase.ITEM_TARGET).lightmap(DISABLE_LIGHTMAP).layering(RenderPhase.VIEW_OFFSET_Z_LAYERING).build(true));
 }

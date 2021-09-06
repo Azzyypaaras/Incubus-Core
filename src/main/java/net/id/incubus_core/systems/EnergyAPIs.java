@@ -1,6 +1,6 @@
 package net.id.incubus_core.systems;
 
-import net.id.incubus_core.IncubusCoreCommon;
+import net.id.incubus_core.IncubusCore;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("unused")
 public class EnergyAPIs {
     public static final BlockApiLookup<HeatIo, @NotNull Direction> HEAT =
-            BlockApiLookup.get(new Identifier(IncubusCoreCommon.MODID, "heat_system"), HeatIo.class, Direction.class);
+            BlockApiLookup.get(new Identifier(IncubusCore.MODID, "heat_system"), HeatIo.class, Direction.class);
 
     //public static final BlockApiLookup<MechanicalIo, @NotNull Direction> MECHANICAL =
     //        BlockApiLookup.get(new Identifier(IncubusCoreCommon.MODID, "mechanical_system"), MechanicalIo.class, Direction.class);

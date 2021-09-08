@@ -21,13 +21,13 @@ public class TagSuperset<T> {
 
     public TagSuperset(RegistryKey<Registry<T>> registryKey, Identifier ... ids) {
         this.registryKey = registryKey;
-        this.identifiableTags = Collections.unmodifiableList(Arrays.asList(ids));
+        this.identifiableTags = List.of(ids);
     }
 
     @SafeVarargs
     public TagSuperset(RegistryKey<Registry<T>> registryKey, Identifier[] ids, Pair<String, List<?>> ... additionalData) {
         this.registryKey = registryKey;
-        this.identifiableTags = Collections.unmodifiableList(Arrays.asList(ids));
+        this.identifiableTags = List.of(ids);
         for (Pair<String, List<?>> entry : additionalData) {
             String key = entry.getLeft();
             List<?> data = entry.getRight();

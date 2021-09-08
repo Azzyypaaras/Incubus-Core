@@ -75,4 +75,17 @@ public class RenderHelper {
             case DOWN -> matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(90));
         }
     }
+
+    public static float rfh(int hex) {
+        return (hex & 0xFF0000) >> 16;
+
+    }
+
+    public static float gfh(int hex) {
+        return (hex & 0xFF00) >> 8;
+    }
+
+    public static float bfh(int hex) {
+        return (hex & 0xFF);
+    }
 }

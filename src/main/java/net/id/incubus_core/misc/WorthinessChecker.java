@@ -1,6 +1,5 @@
 package net.id.incubus_core.misc;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.IncubusCore;
 import net.minecraft.util.Identifier;
 
@@ -57,17 +56,17 @@ public class WorthinessChecker {
         putPlayer(UUID.fromString("f7957087-549e-4ca3-878e-48f36569dd3e"), CapeType.LUNAR, true); //azzy
         putPlayer(UUID.fromString("a250dea2-a0ec-4aa4-bfa9-858a44466241"), CapeType.V1, true); //pie
         putPlayer(UUID.fromString("0461feb0-c0a6-4020-a612-3d24a4ff3f3b"), CapeType.BRAIN_ROT, true); //jer
-        putPlayer(UUID.fromString("9bab9ead-385d-421e-812f-b8cac440d183"), CapeType.IMMORTAL, true); //24
+        putPlayer(UUID.fromString("32e3b46b-2d54-47c7-886e-8e53889592d6"), CapeType.LEAD, true); //kal
         putPlayer(UUID.fromString("935bdd48-be5a-4537-95e4-e2274b2a9792"), CapeType.LEAD, true); //jack
         putPlayer(UUID.fromString("904bc7cc-c99d-40c8-9297-2efc3e08205c"), CapeType.LEAD, true); //sun
-        putPlayer(UUID.fromString("510d0e83-67ef-49c6-83b4-d83ed34efeee"), CapeType.GUDY, true); //gud
-        putPlayer(UUID.fromString("5c868fb2-7727-4cb8-a7d6-3083fa175063")); //cda
+        putPlayer(UUID.fromString("510d0e83-67ef-49c6-83b4-d83ed34efeee"), CapeType.GUDY, false); //gud
+        putPlayer(UUID.fromString("9bab9ead-385d-421e-812f-b8cac440d183"), CapeType.IMMORTAL, true); //24
+        putPlayer(UUID.fromString("5c868fb2-7727-4cb8-a7d6-3083fa175063"), CapeType.IMMORTAL, false); //cda
         putPlayer(UUID.fromString("5a4c901c-2477-436b-a5b3-3b753fad43a5")); //reo
         putPlayer(UUID.fromString("c31a8cfa-ecd7-4ec2-8976-cb86c8c651e2")); //prof
         putPlayer(UUID.fromString("33776d36-c83c-4695-8299-2ef87deea062")); //plat
         putPlayer(UUID.fromString("004679d7-3163-4e06-a36f-8c6c531d7681")); //solly
         putPlayer(UUID.fromString("0aa0fe56-e9d9-4858-b6a6-a40a26fff680")); //sxf
         putPlayer(UUID.fromString("73c30c75-e6d7-4141-9c14-06019b6888c1")); //ash
-        //putPlayer(UUID.fromString("")); //kal Balls
     }
 }

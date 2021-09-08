@@ -7,6 +7,8 @@ import net.id.incubus_core.misc.LunarianSaberItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.loader.api.FabricLoader;
+import net.id.incubus_core.systems.DefaultMaterials;
+import net.id.incubus_core.systems.HeatHelper;
 import net.id.incubus_core.systems.RegistryRegistry;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;

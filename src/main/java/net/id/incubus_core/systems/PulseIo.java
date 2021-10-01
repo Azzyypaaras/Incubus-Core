@@ -1,5 +1,7 @@
 package net.id.incubus_core.systems;
 
+import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -72,6 +74,13 @@ public interface PulseIo extends MaterialProvider {
      */
     @NotNull default Category getDeviceCategory() {
         return Category.UNKNOWN;
+    }
+
+    /**
+     * Get the io capabilities for the respective face
+     */
+    @NotNull default IoType getIoCapabilities(Direction direction) {
+        return IoType.NONE;
     }
 
     /**
@@ -153,5 +162,19 @@ public interface PulseIo extends MaterialProvider {
         CAPACITOR,
         BATTERY,
         UNKNOWN
+    }
+
+    /**
+     * Indicates what a face of the object is able to do with pulses
+     */
+    enum IoType implements StringIdentifiable {
+        INPUT,
+        OUTPUT,
+        NONE;
+
+        @Override
+        public String asString() {
+            return name().toLowerCase();
+        }
     }
 }

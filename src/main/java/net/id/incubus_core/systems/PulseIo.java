@@ -17,7 +17,9 @@ public interface PulseIo extends MaterialProvider {
     /**
      * Get the total amount of energy stored
      */
-    long getMotive();
+    default long getMotive() {
+        return getFrequency() * getInductance();
+    }
 
     /**
      * Get the frequency component of the stored energy
@@ -52,14 +54,14 @@ public interface PulseIo extends MaterialProvider {
      * Get the minimum level of Inductance needed to cause this object to fail.
      */
     default long getFailureInductance() {
-        return Long.MAX_VALUE;
+        return getMaterial(null).maxInductance();
     }
 
     /**
      * Get the minimum frequency needed to cause this object to fail.
      */
     default long getFailureFrequency() {
-        return Long.MAX_VALUE;
+        return getMaterial(null).maxFrequency();
     }
 
     /**
@@ -134,6 +136,11 @@ public interface PulseIo extends MaterialProvider {
     default long extractMotive(long maxAmount, Simulation simulation) {
         return 0;
     }
+
+    /**
+     * What do you want me to explain here? Half the bloody methods are already just copy pasted!
+     */
+    void setPolarity(Polarity polarity);
 
     /**
      * Return false if this object does not support insertion at all, meaning that insertion will always return the passed amount,

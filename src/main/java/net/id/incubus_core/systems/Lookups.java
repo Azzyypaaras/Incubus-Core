@@ -22,9 +22,6 @@ public class Lookups {
     public static final BlockApiLookup<PressureIo, @NotNull Direction> PRESSURE =
             BlockApiLookup.get(IncubusCore.id("pressure_system_b"), PressureIo.class, Direction.class);
 
-    public static final BlockApiLookup<PulseIo, @NotNull Direction> PULSE =
-            BlockApiLookup.get(IncubusCore.id("pulse_system_b"), PulseIo.class, Direction.class);
-
     public static final BlockApiLookup<MaterialProvider, @Nullable Void> MATERIAL =
             BlockApiLookup.get(IncubusCore.id("material_lookup_b"), MaterialProvider.class, Void.class);
 
@@ -34,9 +31,6 @@ public class Lookups {
 
     public static final ItemApiLookup<PressureIo, @Nullable Void> ITEM_PRESSURE =
             ItemApiLookup.get(IncubusCore.id("pressure_system_i"), PressureIo.class, Void.class);
-
-    public static final ItemApiLookup<PulseIo, @Nullable Void> ITEM_PULSE =
-            ItemApiLookup.get(IncubusCore.id("pulse_system_i"), PulseIo.class, Void.class);
 
     public static final ItemApiLookup<MaterialProvider, @Nullable Void> ITEM_MATERIAL =
             ItemApiLookup.get(IncubusCore.id("material_lookup_i"), MaterialProvider.class, Void.class);

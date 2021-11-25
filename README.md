@@ -7,7 +7,7 @@ repositories {
 }
 
 dependencies {
-    modImplementation include("com.github.Archydra-Studios:Incubus-Core:VERSION")
+    modImplementation include("com.github.devs-immortal:Incubus-Core:VERSION")
 }
 ```
 
@@ -15,4 +15,4 @@ Check releases for the latest version.
 
 ## License
 
-As is generally the case with my mods, all code is available under the MIT license, whereas textures are ARR.
+As is generally the case with our mods, all code is available under the MIT license, whereas textures are ARR.

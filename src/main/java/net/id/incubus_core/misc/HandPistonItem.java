@@ -28,8 +28,9 @@ public class HandPistonItem extends Item {
     public ActionResult useOnBlock(ItemUsageContext context) {
         BlockPos pos = context.getBlockPos();
         World world = context.getWorld();
-        Direction moveDir = context.getSide().getOpposite();
+        Direction moveDir = Direction.getEntityFacingOrder(context.getPlayer())[0];
         PistonBehavior behavior = world.getBlockState(pos).getPistonBehavior();
+        // use PistonHandler
         switch (behavior) {
             case DESTROY: world.breakBlock(pos, true); break;
             case BLOCK: {

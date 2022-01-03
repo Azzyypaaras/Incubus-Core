@@ -6,6 +6,8 @@ import net.minecraft.util.Identifier;
 
 import java.util.*;
 
+import static net.id.incubus_core.IncubusCore.locate;
+
 public class WorthinessChecker {
     public static boolean bypassWorthiness;
 
@@ -38,13 +40,13 @@ public class WorthinessChecker {
     }
 
     public enum CapeType {
-        IMMORTAL(IncubusCore.id("textures/capes/immortal.png"), true),
-        LUNAR(IncubusCore.id("textures/capes/lunarian.png"), "High incubus | ", true),
-        BRAIN_ROT(IncubusCore.id("textures/capes/brain_rot.png"), "Lord of brain rot | ", true),
-        V1(IncubusCore.id("textures/capes/v1.png"), "ULTRASHILL | ", true),
-        GUDY(IncubusCore.id("textures/capes/gudy.png"), true),
-        CHROMED(IncubusCore.id("textures/capes/chromed.png"), true),
-        LEAD(IncubusCore.id("textures/capes/leads.png"), true),
+        IMMORTAL(locate("textures/capes/immortal.png"), true),
+        LUNAR(locate("textures/capes/lunarian.png"), "High incubus | ", true),
+        BRAIN_ROT(locate("textures/capes/brain_rot.png"), "Lord of brain rot | ", true),
+        V1(locate("textures/capes/v1.png"), "ULTRASHILL | ", true),
+        GUDY(locate("textures/capes/gudy.png"), true),
+        CHROMED(locate("textures/capes/chromed.png"), true),
+        LEAD(locate("textures/capes/leads.png"), true),
         NONE(null, false);
 
         public final Identifier capePath;

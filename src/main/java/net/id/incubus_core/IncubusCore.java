@@ -42,10 +42,10 @@ public class IncubusCore implements ModInitializer {
 	}
 
 	public static Item registerItem(String name, Item item) {
-		return Registry.register(Registry.ITEM, new Identifier(MODID, name), item);
+		return Registry.register(Registry.ITEM, locate(name), item);
 	}
 
-	public static Identifier id(String path) {
+	public static Identifier locate(String path) {
 		return new Identifier(MODID, path);
 	}
 }

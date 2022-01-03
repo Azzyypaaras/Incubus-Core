@@ -23,6 +23,6 @@ public class DefaultMaterials {
     //public static final Material UNOBTANIUM = register("unobtanium", new Material(Double.POSITIVE_INFINITY, 1, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY));
 
     private static Material register(String id, Material material) {
-        return Registry.register(RegistryRegistry.MATERIAL, IncubusCore.id(id), material);
+        return Registry.register(RegistryRegistry.MATERIAL, IncubusCore.locate(id), material);
     }
 }

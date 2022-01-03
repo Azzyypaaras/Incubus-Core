@@ -2,7 +2,6 @@ package net.id.incubus_core.mixin.client;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.id.incubus_core.IncubusCore;
 import net.id.incubus_core.misc.WorthinessChecker;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -26,10 +25,6 @@ public class CapeMixin {
         var cape = WorthinessChecker.getCapeType(((Entity) (Object) (this)).getUuid());
         if(cape.render) {
             cir.setReturnValue(cape.capePath);
-            cir.cancel();
-        }
-        else if(IncubusCore.bypassWorthiness) {
-            cir.setReturnValue(new Identifier("incubus_core", "textures/capes/immortal.png"));
             cir.cancel();
         }
     }

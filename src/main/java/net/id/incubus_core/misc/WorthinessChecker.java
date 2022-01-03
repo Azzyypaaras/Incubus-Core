@@ -1,20 +1,22 @@
 package net.id.incubus_core.misc;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.IncubusCore;
 import net.minecraft.util.Identifier;
 
 import java.util.*;
 
 public class WorthinessChecker {
+    public static boolean bypassWorthiness;
 
     private static final HashMap<UUID, Entry> PLAYER_MAP = new HashMap<>();
 
     public static boolean isPlayerWorthy(UUID uuid) {
-        return Optional.ofNullable(PLAYER_MAP.get(uuid)).map(entry -> entry.worthy).orElse(IncubusCore.bypassWorthiness);
+        return Optional.ofNullable(PLAYER_MAP.get(uuid)).map(entry -> entry.worthy).orElse(bypassWorthiness);
     }
 
     public static CapeType getCapeType(UUID uuid) {
-        return Optional.ofNullable(PLAYER_MAP.get(uuid)).map(entry -> entry.capeType).orElse(CapeType.NONE);
+        return Optional.ofNullable(PLAYER_MAP.get(uuid)).map(entry -> entry.capeType).orElse(bypassWorthiness ? CapeType.IMMORTAL : CapeType.NONE);
     }
 
     private static void putPlayer(UUID id) {
@@ -26,6 +28,14 @@ public class WorthinessChecker {
     }
 
     public record Entry(UUID playerId, CapeType capeType, boolean worthy) {}
+
+    public static void init(){
+        String[] args = FabricLoader.getInstance().getLaunchArguments(false);
+        bypassWorthiness = Arrays.asList(args).contains("WORTHY");
+        if (bypassWorthiness) {
+            IncubusCore.LOG.info("Bypassed worthiness check.");
+        }
+    }
 
     public enum CapeType {
         IMMORTAL(IncubusCore.id("textures/capes/immortal.png"), true),

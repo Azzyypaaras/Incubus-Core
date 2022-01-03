@@ -1,5 +1,6 @@
 package net.id.incubus_core;
 
+import net.id.incubus_core.misc.WorthinessChecker;
 import net.id.incubus_core.misc.item.DebugFlameItem;
 import net.id.incubus_core.misc.item.HandPistonItem;
 import net.id.incubus_core.misc.IncubusToolMaterials;
@@ -23,9 +24,6 @@ public class IncubusCore implements ModInitializer {
 
 	public static final String MODID = "incubus_core";
 	public static final Logger LOG = LogManager.getLogger(MODID);
-	public static final Item LUNARIAN_SABER = registerItem("lunarian_saber", new LunarianSaberItem(IncubusToolMaterials.LUNARIAN, 1, 0F, new FabricItemSettings()));
-
-	public static boolean bypassWorthiness;
 
 	@Override
 	public void onInitialize() {
@@ -33,19 +31,11 @@ public class IncubusCore implements ModInitializer {
 		if(!FabricLoader.getInstance().isDevelopmentEnvironment() && tempRandom.nextInt(100) == 0)
 			LOG.info(IncubusCoreInit.HOLY_CONST);
 
-		genCheck: {
-			String[] args = FabricLoader.getInstance().getLaunchArguments(false);
-			for (String arg : args) {
-				if(arg.equals("WORTHY")) {
-					bypassWorthiness = true;
-					break genCheck;
-				}
-			}
-			bypassWorthiness = false;
-		}
+		WorthinessChecker.init();
 
 		RegistryRegistry.init();
 
+		registerItem("lunarian_saber", new LunarianSaberItem(IncubusToolMaterials.LUNARIAN, 1, 0F, new FabricItemSettings()));
 		registerItem("hand_piston", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).maxCount(1), false));
 		registerItem("hand_piston_advanced", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).fireproof().rarity(Rarity.RARE).maxCount(1), true));
 		registerItem("debug_flame", new DebugFlameItem(new FabricItemSettings().fireproof().rarity(Rarity.EPIC).maxCount(1).equipmentSlot(stack -> EquipmentSlot.HEAD)));

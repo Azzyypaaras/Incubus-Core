@@ -1,5 +1,6 @@
-package net.id.incubus_core.misc;
+package net.id.incubus_core.misc.item;
 
+import net.id.incubus_core.misc.WorthinessChecker;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;

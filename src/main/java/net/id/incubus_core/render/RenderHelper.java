@@ -23,41 +23,42 @@ public class RenderHelper {
         MatrixStack.Entry matrix = matrices.peek();
         VertexConsumer consumer = vertexConsumers.getBuffer(IncubusRenderLayers.SOFT_BLOOM);
 
+
         //north
-        consumer.vertex(matrix.getModel(), 0, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 0, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 1, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 1, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
 
         //east
-        consumer.vertex(matrix.getModel(), 1, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 1, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 1, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 1, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
 
         //south
-        consumer.vertex(matrix.getModel(), 1, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 1, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 0, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 0, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
 
         //west
-        consumer.vertex(matrix.getModel(), 0, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 0, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 0, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 0, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
 
         //down
-        consumer.vertex(matrix.getModel(), 0, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 1, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 1, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 0, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
 
         //up
-        consumer.vertex(matrix.getModel(), 0, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 1, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 1, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
-        consumer.vertex(matrix.getModel(), 0, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
     }
 
     public static void directionalMatrixOffset(MatrixStack matrices, Direction direction, float offset) {

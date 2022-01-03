@@ -36,7 +36,7 @@ public class HeatHelper {
 
     public static double translateBiomeHeat(BlockPos pos, Biome biome, boolean night, boolean rain) {
 
-        double baseTemp = biome.getTemperature(pos);
+        double baseTemp = biome.getTemperature();
 
         double temp = switch (biome.getCategory()) {
             case NETHER -> baseTemp + 1;

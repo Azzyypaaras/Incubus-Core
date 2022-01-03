@@ -33,6 +33,10 @@ dependencies {
 	modRuntime "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 }
 
+loom {
+	accessWidenerPath = file("src/main/resources/incubus_core.accesswidener")
+}
+
 processResources {
 	inputs.property "version", project.version
 

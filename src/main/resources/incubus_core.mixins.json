@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "net.id.incubus_core.mixin",
-  "compatibilityLevel": "JAVA_16",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BlockEntityMixin",
     "IngredientMixin",
@@ -10,7 +10,8 @@
     "ServerTickMixin"
   ],
   "client": [
-    "CapeMixin"
+    "client.CapeMixin",
+    "client.InterpFixMixin"
   ],
   "injectors": {
     "defaultRequire": 1

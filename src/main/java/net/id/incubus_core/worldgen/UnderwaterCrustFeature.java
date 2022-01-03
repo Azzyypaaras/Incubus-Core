@@ -1,6 +1,7 @@
 package net.id.incubus_core.worldgen;
 
 import com.mojang.serialization.Codec;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
@@ -8,6 +9,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.world.tick.OrderedTick;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -93,7 +95,7 @@ public class UnderwaterCrustFeature extends Feature<BiFeatureConfig> {
             BlockState state = random.nextFloat() <= config.chance ? config.secondaryState : config.primaryState;
 
             world.setBlockState(pos, state, 2);
-            world.getBlockTickScheduler().schedule(pos, state.getBlock(), 0);
+            world.getBlockTickScheduler().scheduleTick(OrderedTick.create(state.getBlock(), pos));
         });
         return centers;
     }

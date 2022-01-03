@@ -1,12 +1,14 @@
 package net.id.incubus_core;
 
-import net.id.incubus_core.misc.HandPistonItem;
+import net.id.incubus_core.misc.item.DebugFlameItem;
+import net.id.incubus_core.misc.item.HandPistonItem;
 import net.id.incubus_core.misc.IncubusToolMaterials;
-import net.id.incubus_core.misc.LunarianSaberItem;
+import net.id.incubus_core.misc.item.LunarianSaberItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.systems.RegistryRegistry;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -46,6 +48,7 @@ public class IncubusCore implements ModInitializer {
 
 		registerItem("hand_piston", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).maxCount(1), false));
 		registerItem("hand_piston_advanced", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).fireproof().rarity(Rarity.RARE).maxCount(1), true));
+		registerItem("debug_flame", new DebugFlameItem(new FabricItemSettings().fireproof().rarity(Rarity.EPIC).maxCount(1).equipmentSlot(stack -> EquipmentSlot.HEAD)));
 	}
 
 	public static Item registerItem(String name, Item item) {

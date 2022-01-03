@@ -19,6 +19,7 @@
   "icon": "assets/incubus_core/icon.png",
 
   "environment": "*",
+  "accessWidener": "incubus_core.accesswidener",
   "entrypoints": {
     "main": [
       "net.id.incubus_core.IncubusCore"

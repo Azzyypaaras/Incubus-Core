@@ -1,0 +1,15 @@
+accessWidener	v1	named
+
+#The translucent interpolation fix saga
+
+accessible  class   net/minecraft/client/texture/Sprite$Interpolation
+accessible  class   net/minecraft/client/texture/Sprite$Animation
+accessible  class   net/minecraft/client/texture/Sprite$AnimationFrame
+
+accessible  field   net/minecraft/client/texture/Sprite$Animation frameIndex I
+accessible  field   net/minecraft/client/texture/Sprite$Animation frameTicks I
+accessible  field   net/minecraft/client/texture/Sprite$Animation frames Ljava/util/List;
+accessible  field   net/minecraft/client/texture/Sprite$AnimationFrame time I
+accessible  field   net/minecraft/client/texture/Sprite$AnimationFrame index I
+
+accessible method net/minecraft/client/texture/Sprite upload (II[Lnet/minecraft/client/texture/NativeImage;)V

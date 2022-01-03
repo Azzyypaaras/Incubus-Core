@@ -1,4 +1,4 @@
-package net.id.incubus_core.misc;
+package net.id.incubus_core.misc.item;
 
 import net.id.incubus_core.be.BlockEntityMover;
 import net.minecraft.block.BlockState;

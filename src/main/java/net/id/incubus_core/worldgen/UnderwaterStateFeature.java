@@ -8,6 +8,7 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.SingleStateFeatureConfig;
 import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.world.tick.OrderedTick;
 
 import java.util.Random;
 
@@ -29,7 +30,7 @@ public class UnderwaterStateFeature extends Feature<SingleStateFeatureConfig> {
 
         if(!world.isWater(pos.down())) {
             world.setBlockState(pos.down(), config.state, 2);
-            world.getBlockTickScheduler().schedule(pos.down(), config.state.getBlock(), 0, TickPriority.EXTREMELY_HIGH);
+            world.getBlockTickScheduler().scheduleTick(OrderedTick.create(config.state.getBlock(), pos));
             return true;
         }
 

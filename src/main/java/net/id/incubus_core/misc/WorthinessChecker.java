@@ -1,20 +1,24 @@
 package net.id.incubus_core.misc;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.IncubusCore;
 import net.minecraft.util.Identifier;
 
 import java.util.*;
 
+import static net.id.incubus_core.IncubusCore.locate;
+
 public class WorthinessChecker {
+    public static boolean bypassWorthiness;
 
     private static final HashMap<UUID, Entry> PLAYER_MAP = new HashMap<>();
 
     public static boolean isPlayerWorthy(UUID uuid) {
-        return Optional.ofNullable(PLAYER_MAP.get(uuid)).map(entry -> entry.worthy).orElse(IncubusCore.bypassWorthiness);
+        return Optional.ofNullable(PLAYER_MAP.get(uuid)).map(entry -> entry.worthy).orElse(bypassWorthiness);
     }
 
     public static CapeType getCapeType(UUID uuid) {
-        return Optional.ofNullable(PLAYER_MAP.get(uuid)).map(entry -> entry.capeType).orElse(CapeType.NONE);
+        return Optional.ofNullable(PLAYER_MAP.get(uuid)).map(entry -> entry.capeType).orElse(bypassWorthiness ? CapeType.IMMORTAL : CapeType.NONE);
     }
 
     private static void putPlayer(UUID id) {
@@ -27,14 +31,22 @@ public class WorthinessChecker {
 
     public record Entry(UUID playerId, CapeType capeType, boolean worthy) {}
 
+    public static void init(){
+        String[] args = FabricLoader.getInstance().getLaunchArguments(false);
+        bypassWorthiness = Arrays.asList(args).contains("WORTHY");
+        if (bypassWorthiness) {
+            IncubusCore.LOG.info("Bypassed worthiness check.");
+        }
+    }
+
     public enum CapeType {
-        IMMORTAL(IncubusCore.id("textures/capes/immortal.png"), true),
-        LUNAR(IncubusCore.id("textures/capes/lunarian.png"), "High incubus | ", true),
-        BRAIN_ROT(IncubusCore.id("textures/capes/brain_rot.png"), "Lord of brain rot | ", true),
-        V1(IncubusCore.id("textures/capes/v1.png"), "ULTRASHILL | ", true),
-        GUDY(IncubusCore.id("textures/capes/gudy.png"), true),
-        CHROMED(IncubusCore.id("textures/capes/chromed.png"), true),
-        LEAD(IncubusCore.id("textures/capes/leads.png"), true),
+        IMMORTAL(locate("textures/capes/immortal.png"), true),
+        LUNAR(locate("textures/capes/lunarian.png"), "High incubus | ", true),
+        BRAIN_ROT(locate("textures/capes/brain_rot.png"), "Lord of brain rot | ", true),
+        V1(locate("textures/capes/v1.png"), "ULTRASHILL | ", true),
+        GUDY(locate("textures/capes/gudy.png"), true),
+        CHROMED(locate("textures/capes/chromed.png"), true),
+        LEAD(locate("textures/capes/leads.png"), true),
         NONE(null, false);
 
         public final Identifier capePath;

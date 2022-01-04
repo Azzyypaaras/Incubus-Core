@@ -62,11 +62,10 @@ public class WorthinessChecker {
         putPlayer(UUID.fromString("510d0e83-67ef-49c6-83b4-d83ed34efeee"), CapeType.GUDY, false); //gud
         putPlayer(UUID.fromString("9bab9ead-385d-421e-812f-b8cac440d183"), CapeType.IMMORTAL, true); //24
         putPlayer(UUID.fromString("5c868fb2-7727-4cb8-a7d6-3083fa175063"), CapeType.IMMORTAL, false); //cda
+        putPlayer(UUID.fromString("5010ad09-0229-4d70-8a2c-bc254821dcb3"), CapeType.IMMORTAL, true); // daf
         putPlayer(UUID.fromString("5a4c901c-2477-436b-a5b3-3b753fad43a5")); //reo
         putPlayer(UUID.fromString("c31a8cfa-ecd7-4ec2-8976-cb86c8c651e2")); //prof
-        putPlayer(UUID.fromString("33776d36-c83c-4695-8299-2ef87deea062")); //plat
         putPlayer(UUID.fromString("004679d7-3163-4e06-a36f-8c6c531d7681")); //solly
-        putPlayer(UUID.fromString("0aa0fe56-e9d9-4858-b6a6-a40a26fff680")); //sxf
         putPlayer(UUID.fromString("73c30c75-e6d7-4141-9c14-06019b6888c1")); //ash
     }
 }

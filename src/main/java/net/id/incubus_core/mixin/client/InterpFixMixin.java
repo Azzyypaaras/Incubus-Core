@@ -2,10 +2,10 @@ package net.id.incubus_core.mixin.client;
 
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.Sprite;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Sprite.Interpolation.class)
 public abstract class InterpFixMixin {
@@ -16,9 +16,13 @@ public abstract class InterpFixMixin {
 
     @Shadow @Final private NativeImage[] images;
 
-    @Final
-    @Shadow
-    Sprite field_21757;
+    @Unique
+    Sprite parent$this;
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    public void assignParent(Sprite parent, Sprite.Info info, int maxLevel, CallbackInfo ci) {
+        this.parent$this = parent;
+    }
 
     /**
      * @author Azzy
@@ -32,8 +36,8 @@ public abstract class InterpFixMixin {
         int j = ((Sprite.AnimationFrame)animation.frames.get((animation.frameIndex + 1) % animation.frames.size())).index;
         if (i != j) {
             for(int k = 0; k < this.images.length; ++k) {
-                int l = field_21757.getWidth() >> k;
-                int m = field_21757.getHeight() >> k;
+                int l = parent$this.getWidth() >> k;
+                int m = parent$this.getHeight() >> k;
 
                 for(int n = 0; n < m; ++n) {
                     for(int o = 0; o < l; ++o) {
@@ -48,7 +52,7 @@ public abstract class InterpFixMixin {
                 }
             }
 
-            field_21757.upload(0, 0, this.images);
+            parent$this.upload(0, 0, this.images);
         }
 
     }

@@ -19,7 +19,6 @@ public class IncubusRenderLayers extends RenderLayer {
     );
 
     public static final RenderLayer SOFT_BLOOM = RenderLayerConstructor.buildMultiPhase("incubus_core:soft_bloom", VertexFormats.POSITION_COLOR, VertexFormat.DrawMode.QUADS, 256, false, true, MultiPhaseParameters.builder().texture(new Texture(locate("textures/special/blank.png"), false, false)).shader(RenderPhase.LIGHTNING_SHADER).transparency(TRANSLUCENT_TRANSPARENCY).target(RenderPhase.ITEM_TARGET).lightmap(DISABLE_LIGHTMAP).layering(RenderPhase.VIEW_OFFSET_Z_LAYERING).build(true));
-    public static final RenderLayer BLOOM_LAYER = RenderLayerConstructor.buildMultiPhase(IncubusCore.MODID + ":bloom_solid", );
 
     public IncubusRenderLayers(String name, VertexFormat vertexFormat, VertexFormat.DrawMode drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {
         super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction);

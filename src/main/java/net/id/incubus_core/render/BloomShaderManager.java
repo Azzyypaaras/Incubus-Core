@@ -8,7 +8,6 @@ import net.id.incubus_core.IncubusCore;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.ShaderEffect;
-import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
@@ -68,6 +67,14 @@ public class BloomShaderManager implements IdentifiableResourceReloadListener {
 
     public Framebuffer getFramebuffer() {
         return framebuffer;
+    }
+
+    public void render(MinecraftClient client, float tickDelta) {
+        if (effect != null) {
+            framebuffer.copyDepthFrom(client.getFramebuffer());
+            effect.render(tickDelta);
+            framebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
+        }
     }
 
     public static void init() {

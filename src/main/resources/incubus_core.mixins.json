@@ -11,7 +11,8 @@
   ],
   "client": [
     "client.CapeMixin",
-    "client.InterpFixMixin"
+    "client.InterpFixMixin",
+    "client.GameRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

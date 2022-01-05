@@ -1,6 +1,7 @@
 package net.id.incubus_core.render;
 
 import com.google.gson.JsonSyntaxException;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.id.incubus_core.IncubusCore;
@@ -36,25 +37,27 @@ public class BloomShaderManager implements IdentifiableResourceReloadListener {
     @Override
     public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager, Profiler prepareProfiler, Profiler applyProfiler, Executor prepareExecutor, Executor applyExecutor) {
         return synchronizer.whenPrepared(Unit.INSTANCE).thenRunAsync(() -> {
-            if (effect != null) {
-                effect.close();
-            }
-            var client = MinecraftClient.getInstance();
-            var id = new Identifier(IncubusCore.MODID, "shaders/post/bloom.json");
-            try {
-                effect = new ShaderEffect(client.getTextureManager(), client.getResourceManager(), client.getFramebuffer(), id);
-                effect.setupDimensions(client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight());
-                framebuffer = effect.getSecondaryTarget("light_sources");
-            }
-            catch (IOException iOException) {
-                LOGGER.warn("Failed to load shader: " + id, iOException);
-                effect = null;
-                framebuffer = null;
-            }
-            catch (JsonSyntaxException iOException) {
-                LOGGER.warn("Failed to parse shader: " + id, iOException);
-                effect = null;
-                framebuffer = null;
+            if(RenderSystem.isOnRenderThread()) {
+                if (effect != null) {
+                    effect.close();
+                }
+                var client = MinecraftClient.getInstance();
+                var id = new Identifier(IncubusCore.MODID, "shaders/post/bloom.json");
+                try {
+                    effect = new ShaderEffect(client.getTextureManager(), client.getResourceManager(), client.getFramebuffer(), id);
+                    effect.setupDimensions(client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight());
+                    framebuffer = effect.getSecondaryTarget("light_sources");
+                }
+                catch (IOException iOException) {
+                    LOGGER.warn("Failed to load shader: " + id, iOException);
+                    effect = null;
+                    framebuffer = null;
+                }
+                catch (JsonSyntaxException iOException) {
+                    LOGGER.warn("Failed to parse shader: " + id, iOException);
+                    effect = null;
+                    framebuffer = null;
+                }
             }
         }, applyExecutor);
     }

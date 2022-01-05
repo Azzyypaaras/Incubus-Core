@@ -15,6 +15,7 @@ import net.id.incubus_core.render.RenderTestBlockEntity;
 import net.id.incubus_core.systems.RegistryRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
@@ -47,6 +48,7 @@ public class IncubusCore implements ModInitializer {
 		registerItem("hand_piston_advanced", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).fireproof().rarity(Rarity.RARE).maxCount(1), true));
 		registerItem("debug_flame", new DebugFlameItem(new FabricItemSettings().fireproof().rarity(Rarity.EPIC).maxCount(1).equipmentSlot(stack -> EquipmentSlot.HEAD)));
 		registerItem("render_test", new BlockItem(RENDER_TEST_BLOCK, new FabricItemSettings()));
+		registerBE("render_test", RENDER_TEST_BLOCK_ENTITY_TYPE);
 	}
 
 	public static final Block RENDER_TEST_BLOCK = registerBlock("render_test", new RenderTestBlock(FabricBlockSettings.copyOf(Blocks.AMETHYST_BLOCK).lightLevel(5)));
@@ -59,6 +61,10 @@ public class IncubusCore implements ModInitializer {
 
 	public static Block registerBlock(String name, Block item) {
 		return Registry.register(Registry.BLOCK, locate(name), item);
+	}
+
+	public static BlockEntityType registerBE(String name, BlockEntityType item) {
+		return Registry.register(Registry.BLOCK_ENTITY_TYPE, locate(name), item);
 	}
 
 	public static Identifier locate(String path) {

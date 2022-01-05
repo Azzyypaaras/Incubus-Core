@@ -21,7 +21,49 @@ public class RenderHelper {
 
     public static void drawEmissiveCube(VertexConsumerProvider vertexConsumers, MatrixStack matrices, Vec3f color, float trans) {
         MatrixStack.Entry matrix = matrices.peek();
-        VertexConsumer consumer = vertexConsumers.getBuffer(IncubusRenderLayers.SOFT_BLOOM);
+        VertexConsumer consumer = vertexConsumers.getBuffer(IncubusRenderLayers.SOFT_BLOOM_BASE);
+
+
+        //north
+        consumer.vertex(matrix.getPositionMatrix(), 0, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+
+        //east
+        consumer.vertex(matrix.getPositionMatrix(), 1, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+
+        //south
+        consumer.vertex(matrix.getPositionMatrix(), 1, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+
+        //west
+        consumer.vertex(matrix.getPositionMatrix(), 0, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+
+        //down
+        consumer.vertex(matrix.getPositionMatrix(), 0, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 0, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+
+        //up
+        consumer.vertex(matrix.getPositionMatrix(), 0, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 1, 1).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 1, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+        consumer.vertex(matrix.getPositionMatrix(), 0, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
+    }
+
+    public static void drawBloomCube(VertexConsumerProvider vertexConsumers, MatrixStack matrices, Vec3f color, float trans) {
+        MatrixStack.Entry matrix = matrices.peek();
+        VertexConsumer consumer = vertexConsumers.getBuffer(IncubusRenderLayers.SOFT_BLOOM_OVERLAY);
 
 
         //north

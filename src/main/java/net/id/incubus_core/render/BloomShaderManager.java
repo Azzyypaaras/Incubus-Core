@@ -2,12 +2,14 @@ package net.id.incubus_core.render;
 
 import com.google.gson.JsonSyntaxException;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.id.incubus_core.IncubusCore;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 import org.apache.logging.log4j.LogManager;
@@ -64,10 +66,10 @@ public class BloomShaderManager implements IdentifiableResourceReloadListener {
         return framebuffer;
     }
 
-    private static void init() {
+    public static void init() {
         synchronized (INSTANCE) {
             if (!initialized) {
-                ((ReloadableResourceManager) MinecraftClient.getInstance().getResourceManager()).registerReloader(INSTANCE);
+                ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(INSTANCE);
                 initialized = true;
             }
         }

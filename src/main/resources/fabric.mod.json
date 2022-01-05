@@ -23,6 +23,9 @@
   "entrypoints": {
     "main": [
       "net.id.incubus_core.IncubusCore"
+    ],
+    "client": [
+      "net.id.incubus_core.IncubusCoreClient"
     ]
   },
   "mixins": [

@@ -15,14 +15,7 @@ public class GameRendererMixin {
         ShaderEffect effect = BloomShaderManager.INSTANCE.getEffect();
         if (effect != null) {
             effect.render(tickDelta);
-        }
-    }
-
-    @Inject(method = "onResized", at = @At("TAIL"))
-    private void onResized(int width, int height, CallbackInfo ci) {
-        ShaderEffect effect = BloomShaderManager.INSTANCE.getEffect();
-        if (effect != null) {
-            effect.setupDimensions(width, height);
+            BloomShaderManager.INSTANCE.getFramebuffer().clear(false);
         }
     }
 }

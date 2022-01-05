@@ -11,6 +11,7 @@ import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Unit;
 import net.minecraft.util.profiler.Profiler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +35,7 @@ public class BloomShaderManager implements IdentifiableResourceReloadListener {
 
     @Override
     public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager, Profiler prepareProfiler, Profiler applyProfiler, Executor prepareExecutor, Executor applyExecutor) {
-        return CompletableFuture.runAsync(() -> {
+        return synchronizer.whenPrepared(Unit.INSTANCE).thenRunAsync(() -> {
             if (effect != null) {
                 effect.close();
             }
@@ -55,7 +56,7 @@ public class BloomShaderManager implements IdentifiableResourceReloadListener {
                 effect = null;
                 framebuffer = null;
             }
-        });
+        }, applyExecutor);
     }
 
     public ShaderEffect getEffect() {

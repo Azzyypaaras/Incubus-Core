@@ -9,7 +9,7 @@ import java.util.*;
 import static net.id.incubus_core.IncubusCore.locate;
 
 public class WorthinessChecker {
-    public static boolean bypassWorthiness;
+    private static boolean bypassWorthiness;
 
     private static final HashMap<UUID, Entry> PLAYER_MAP = new HashMap<>();
 

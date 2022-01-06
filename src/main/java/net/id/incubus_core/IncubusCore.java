@@ -40,7 +40,6 @@ public class IncubusCore implements ModInitializer {
 			LOG.info(IncubusCoreInit.HOLY_CONST);
 
 		WorthinessChecker.init();
-
 		RegistryRegistry.init();
 
 		registerItem("lunarian_saber", new LunarianSaberItem(IncubusToolMaterials.LUNARIAN, 1, 0F, new FabricItemSettings()));

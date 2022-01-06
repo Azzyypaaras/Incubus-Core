@@ -2,9 +2,7 @@ package net.id.incubus_core.util;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
+import net.id.incubus_core.IncubusCore;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -17,10 +15,16 @@ public final class RegistryQueue<T> {
     private static final boolean CLIENT = FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
     private final Registry<T> registry;
     private final List<Entry<? extends T>> entries;
+    private final String namespace;
+
+    public RegistryQueue(Registry<T> registry, String modID, int initialCapacity) {
+        this.registry = registry;
+        this.namespace = modID;
+        entries = new ArrayList<>(initialCapacity);
+    }
 
     public RegistryQueue(Registry<T> registry, int initialCapacity) {
-        this.registry = registry;
-        entries = new ArrayList<>(initialCapacity);
+        this(registry, null, initialCapacity);
     }
 
     public static <S> Action<S> onClient(Action<S> action) {
@@ -31,6 +35,17 @@ public final class RegistryQueue<T> {
     public final <V extends T> V add(Identifier id, V value, BiConsumer<Identifier, ? super V>... additionalActions) {
         this.entries.add(new Entry<>(id, value, additionalActions));
         return value;
+    }
+
+    @SafeVarargs
+    public final <V extends T> V add(String id, V value, BiConsumer<Identifier, ? super V>... additionalActions) {
+        if (id.contains(":")) {
+            return this.add(new Identifier(id), value, additionalActions);
+        }
+        if (namespace == null) {
+            throw new NullPointerException("Identifier " + id + " registered to " + value.getClass().getName() + " registry queue without a namespace.");
+        }
+        return this.add(new Identifier(namespace, id), value, additionalActions);
     }
 
     public void register() {

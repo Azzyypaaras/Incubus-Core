@@ -3,5 +3,6 @@
   "item.incubus_core.lunarian_saber": "§b§nLunarian Saber",
   "item.incubus_core.hand_piston": "Portable Piston",
   "item.incubus_core.hand_piston_advanced": "Refined Portable Piston",
-  "item.incubus_core.debug_flame": "§k§oBig Succubus Cock"
+  "item.incubus_core.debug_flame": "§k§oBig Succubus Cock",
+  "effect.incubus_core.zonked": "Zonked State"
 }

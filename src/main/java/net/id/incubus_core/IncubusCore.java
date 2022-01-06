@@ -10,6 +10,7 @@ import net.id.incubus_core.misc.item.LunarianSaberItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.loader.api.FabricLoader;
+import net.id.incubus_core.potion.ZonkedEffect;
 import net.id.incubus_core.render.RenderTestBlock;
 import net.id.incubus_core.render.RenderTestBlockEntity;
 import net.id.incubus_core.systems.RegistryRegistry;
@@ -18,6 +19,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -55,6 +57,8 @@ public class IncubusCore implements ModInitializer {
 
 	public static final BlockEntityType<RenderTestBlockEntity> RENDER_TEST_BLOCK_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(RenderTestBlockEntity::new, RENDER_TEST_BLOCK).build();
 
+	public static final StatusEffect ZONKED = registerEffect("zonked", new ZonkedEffect());
+
 	public static Item registerItem(String name, Item item) {
 		return Registry.register(Registry.ITEM, locate(name), item);
 	}
@@ -65,6 +69,10 @@ public class IncubusCore implements ModInitializer {
 
 	public static BlockEntityType registerBE(String name, BlockEntityType item) {
 		return Registry.register(Registry.BLOCK_ENTITY_TYPE, locate(name), item);
+	}
+
+	public static StatusEffect registerEffect(String name, StatusEffect item) {
+		return Registry.register(Registry.STATUS_EFFECT, locate(name), item);
 	}
 
 	public static Identifier locate(String path) {

@@ -1,10 +1,13 @@
 package net.id.incubus_core.mixin.client;
 
+import net.id.incubus_core.IncubusCore;
 import net.id.incubus_core.render.BloomShaderManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,5 +22,11 @@ public class GameRendererMixin {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;drawEntityOutlinesFramebuffer()V"))
     private void renderBloomEffect(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
         BloomShaderManager.INSTANCE.render(client, tickDelta);
+    }
+
+    @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V"))
+    private void renderBloomEffect(float tickDelta, long limitTime, MatrixStack matrices, CallbackInfo ci) {
+        if(client.getCameraEntity() instanceof LivingEntity entity && entity.hasStatusEffect(IncubusCore.ZONKED))
+            BloomShaderManager.INSTANCE.render(client, tickDelta);
     }
 }

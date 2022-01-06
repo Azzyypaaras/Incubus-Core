@@ -14,7 +14,11 @@ import static net.id.incubus_core.IncubusCore.locate;
 public class IncubusRenderLayers extends RenderLayer {
     public static final Target BLOOM_TARGET = new Target(
             "bloom_target",
-            () -> BloomShaderManager.INSTANCE.getFramebuffer().beginWrite(false),
+            () -> {
+                var frameBuffer = BloomShaderManager.INSTANCE.getFramebuffer();
+                frameBuffer.copyDepthFrom(MinecraftClient.getInstance().getFramebuffer());
+                frameBuffer.beginWrite(false);
+            },
             () -> MinecraftClient.getInstance().getFramebuffer().beginWrite(false)
     );
 

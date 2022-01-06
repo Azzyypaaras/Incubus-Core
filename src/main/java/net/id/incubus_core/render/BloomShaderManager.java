@@ -71,7 +71,7 @@ public class BloomShaderManager implements IdentifiableResourceReloadListener {
 
     public void render(MinecraftClient client, float tickDelta) {
         if (effect != null) {
-            framebuffer.copyDepthFrom(client.getFramebuffer());
+            //framebuffer.copyDepthFrom(client.getFramebuffer());
             effect.render(tickDelta);
             framebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
         }

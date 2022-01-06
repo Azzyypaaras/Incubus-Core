@@ -3,8 +3,16 @@ plugins {
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+JavaLanguageVersion targetVersion = JavaLanguageVersion.of(17)
+
+allprojects {
+    // Allow more then 100 errors to be displayed.
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xmaxerrs" << "${project.max_errors}"
+        }
+    }
+}
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -43,6 +51,12 @@ processResources {
 	filesMatching("fabric.mod.json") {
 		expand "version": project.version
 	}
+}
+
+java {
+    toolchain {
+        languageVersion = targetVersion
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {

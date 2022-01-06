@@ -2,6 +2,7 @@ package net.id.incubus_core;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.id.incubus_core.render.BloomShaderManager;
 import net.id.incubus_core.render.RenderTestBlockEntityRenderer;
 

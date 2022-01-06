@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(Sprite.Interpolation.class)
+@Mixin(targets = "net.minecraft.client.texture.Sprite$Interpolation")
 public abstract class InterpFixMixin {
 
     @Shadow protected abstract int getPixelColor(Sprite.Animation animation, int frameIndex, int layer, int x, int y);
@@ -29,11 +29,12 @@ public abstract class InterpFixMixin {
      * @reason My nuts itch, also translucent interp is borked.
      */
     @Overwrite
-    public void apply(Sprite.Animation animation) {
-        Sprite.AnimationFrame animationFrame = (Sprite.AnimationFrame)animation.frames.get(animation.frameIndex);
-        double d = 1.0D - (double)animation.frameTicks / (double)animationFrame.time;
-        int i = animationFrame.index;
-        int j = ((Sprite.AnimationFrame)animation.frames.get((animation.frameIndex + 1) % animation.frames.size())).index;
+    public void apply(Sprite.Animation inputAnimation) {
+        var animation = (Sprite.Animation & Sprite$AnimationAccessor) inputAnimation;
+        var animationFrame = (Sprite.AnimationFrame & Sprite$AnimationFrameAccessor) animation.getFrames().get(animation.getFrameIndex());
+        double d = 1.0D - (double)animation.getFrameTicks() / (double)animationFrame.getTime();
+        int i = animationFrame.getIndex();
+        int j = ((Sprite.AnimationFrame & Sprite$AnimationFrameAccessor) animation.getFrames().get((animation.getFrameIndex() + 1) % animation.getFrames().size())).getIndex();
         if (i != j) {
             for(int k = 0; k < this.images.length; ++k) {
                 int l = parent$this.getWidth() >> k;

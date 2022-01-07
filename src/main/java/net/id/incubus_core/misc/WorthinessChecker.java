@@ -42,7 +42,6 @@ public class WorthinessChecker {
     public enum CapeType {
         IMMORTAL(locate("textures/capes/immortal.png"), true),
         LUNAR(locate("textures/capes/lunarian.png"), "High incubus | ", true),
-        BRAIN_ROT(locate("textures/capes/brain_rot.png"), "Lord of brain rot | ", true),
         V1(locate("textures/capes/v1.png"), "ULTRASHILL | ", true),
         GUDY(locate("textures/capes/gudy.png"), true),
         CHROMED(locate("textures/capes/chromed.png"), true),
@@ -67,7 +66,6 @@ public class WorthinessChecker {
     static {
         putPlayer(UUID.fromString("f7957087-549e-4ca3-878e-48f36569dd3e"), CapeType.LUNAR, true); //azzy
         putPlayer(UUID.fromString("a250dea2-a0ec-4aa4-bfa9-858a44466241"), CapeType.V1, true); //pie
-        putPlayer(UUID.fromString("0461feb0-c0a6-4020-a612-3d24a4ff3f3b"), CapeType.BRAIN_ROT, true); //jer
         putPlayer(UUID.fromString("32e3b46b-2d54-47c7-886e-8e53889592d6"), CapeType.LEAD, true); //kal
         putPlayer(UUID.fromString("935bdd48-be5a-4537-95e4-e2274b2a9792"), CapeType.LEAD, true); //jack
         putPlayer(UUID.fromString("904bc7cc-c99d-40c8-9297-2efc3e08205c"), CapeType.LEAD, true); //sun

@@ -52,7 +52,7 @@ public class IncubusCore implements ModInitializer {
 		registerBE("render_test", RENDER_TEST_BLOCK_ENTITY_TYPE);
 	}
 
-	public static final Block RENDER_TEST_BLOCK = registerBlock("render_test", new RenderTestBlock(FabricBlockSettings.copyOf(Blocks.AMETHYST_BLOCK).lightLevel(5)));
+	public static final Block RENDER_TEST_BLOCK = registerBlock("render_test", new RenderTestBlock(FabricBlockSettings.copyOf(Blocks.AMETHYST_BLOCK).nonOpaque().luminance(5).blockVision((state, world, pos) -> false).allowsSpawning((state, world, pos, type) -> false).suffocates((state, world, pos) -> false).solidBlock((state, world, pos) -> false)));
 
 	public static final BlockEntityType<RenderTestBlockEntity> RENDER_TEST_BLOCK_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(RenderTestBlockEntity::new, RENDER_TEST_BLOCK).build();
 

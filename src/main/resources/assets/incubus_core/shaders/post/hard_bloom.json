@@ -1,0 +1,35 @@
+{
+  "targets": [
+    "light_sources",
+    "main"
+  ],
+  "passes": [
+    {
+      "name": "incubus_core:hard_bloom",
+      "intarget": "minecraft:main",
+      "outtarget": "main",
+      "auxtargets": [
+        {
+          "name": "LightSourceSampler",
+          "id": "light_sources"
+        }
+      ]
+    },
+    {
+      "name": "blit",
+      "intarget": "main",
+      "outtarget": "minecraft:main",
+      "uniforms": [
+        {
+          "name": "ColorModulate",
+          "values": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -17,7 +17,7 @@ public class RenderTestBlockEntityRenderer implements BlockEntityRenderer<Render
         float b = (float) Math.sin((entity.getWorld().getTime() + tickDelta) / 20+ Math.PI) / 2 + 0.5F;
 
         RenderHelper.drawEmissiveCube(vertexConsumers, matrices, new Vec3f(r, g, b), 0.5f);
-        RenderHelper.drawBloomCube(vertexConsumers, matrices, new Vec3f(r, g, b), 0.5f);
+        RenderHelper.drawBloomCube(vertexConsumers, matrices, new Vec3f(r, g, b), 0.35f, !entity.getCachedState().get(RenderTestBlock.SOFT));
         matrices.pop();
     }
 

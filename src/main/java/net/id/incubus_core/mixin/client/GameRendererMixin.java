@@ -21,8 +21,7 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;drawEntityOutlinesFramebuffer()V"))
     private void renderBloomEffect(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
-        SoftBloomShaderManager.INSTANCE.render(client, tickDelta);
-        HardBloomShaderManager.INSTANCE.render(client, tickDelta);
+
     }
 
     @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V"))

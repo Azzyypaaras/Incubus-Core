@@ -20,7 +20,6 @@ public class WorldRendererMixin {
 
     @Inject(method = "render", at = @At("TAIL"))
     private void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f positionMatrix, CallbackInfo ci) {
-        var client = MinecraftClient.getInstance();
         SoftBloomShaderManager.INSTANCE.render(tickDelta);
         HardBloomShaderManager.INSTANCE.render(tickDelta);
     }

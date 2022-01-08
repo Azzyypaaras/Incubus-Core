@@ -15,9 +15,11 @@ void main() {
 
     float intensity = texture(LightSourceSampler, texCoord).a / 2;
     float radius = floor(RADIUS + intensity * 10);
-    for (float x = -radius; x <= radius; x += 1) {
-        for (float y = -radius; y <= radius; y += 1) {
-            blur += texture(LightSourceSampler, texCoord + vec2(x, y) * oneTexel).rgb;
+    for (float y = -radius; y <= radius; y += 1) {
+        for (float x = -radius; x <= radius; x += 1) {
+            if (x * x + y * y <= radius * radius) {
+                blur += texture(LightSourceSampler, texCoord + vec2(x, y) * oneTexel).rgb;
+            }
         }
     }
     float samples = radius * 2 + 1;

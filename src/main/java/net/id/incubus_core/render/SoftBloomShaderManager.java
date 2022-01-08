@@ -66,7 +66,7 @@ public class SoftBloomShaderManager implements IdentifiableResourceReloadListene
         return framebuffer;
     }
 
-    public void render(MinecraftClient client, float tickDelta) {
+    public void render(float tickDelta) {
         if (effect != null) {
             effect.render(tickDelta);
             framebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);

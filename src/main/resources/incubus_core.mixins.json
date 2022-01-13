@@ -15,6 +15,7 @@
     "client.InterpFixMixin",
     "client.Sprite$AnimationAccessor",
     "client.Sprite$AnimationFrameAccessor",
+    "client.SpriteAccessor",
     "client.WorldRendererMixin"
   ],
   "injectors": {

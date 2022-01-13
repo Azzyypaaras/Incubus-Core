@@ -53,7 +53,7 @@ public abstract class InterpFixMixin {
                 }
             }
 
-            parent$this.upload(0, 0, this.images);
+            ((SpriteAccessor) parent$this).callUpload(0, 0, this.images);
         }
 
     }

@@ -4,5 +4,3 @@ accessWidener	v1	named
 
 accessible  class   net/minecraft/client/texture/Sprite$Animation
 accessible  class   net/minecraft/client/texture/Sprite$AnimationFrame
-
-accessible method net/minecraft/client/texture/Sprite upload (II[Lnet/minecraft/client/texture/NativeImage;)V

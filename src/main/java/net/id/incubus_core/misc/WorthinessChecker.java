@@ -43,6 +43,7 @@ public class WorthinessChecker {
         IMMORTAL(locate("textures/capes/immortal.png"), true),
         LUNAR(locate("textures/capes/lunarian.png"), "High incubus | ", true),
         V1(locate("textures/capes/v1.png"), "ULTRASHILL | ", true),
+        UNDERGROUND_ASTRONOMY(locate("textures/capes/underground_astronomy.png"), true),
         GUDY(locate("textures/capes/gudy.png"), true),
         CHROMED(locate("textures/capes/chromed.png"), true),
         LEAD(locate("textures/capes/leads.png"), true),
@@ -72,7 +73,7 @@ public class WorthinessChecker {
         putPlayer(UUID.fromString("510d0e83-67ef-49c6-83b4-d83ed34efeee"), CapeType.GUDY, false); //gud
         putPlayer(UUID.fromString("9bab9ead-385d-421e-812f-b8cac440d183"), CapeType.IMMORTAL, true); //24
         putPlayer(UUID.fromString("5c868fb2-7727-4cb8-a7d6-3083fa175063"), CapeType.IMMORTAL, false); //cda
-        putPlayer(UUID.fromString("5010ad09-0229-4d70-8a2c-bc254821dcb3"), CapeType.IMMORTAL, true); // daf
+        putPlayer(UUID.fromString("5010ad09-0229-4d70-8a2c-bc254821dcb3"), CapeType.UNDERGROUND_ASTRONOMY, true); // daf
         putPlayer(UUID.fromString("5a4c901c-2477-436b-a5b3-3b753fad43a5")); //reo
         putPlayer(UUID.fromString("c31a8cfa-ecd7-4ec2-8976-cb86c8c651e2")); //prof
         putPlayer(UUID.fromString("004679d7-3163-4e06-a36f-8c6c531d7681")); //solly

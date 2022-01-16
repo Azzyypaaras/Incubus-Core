@@ -4,5 +4,6 @@
   "item.incubus_core.hand_piston": "Portable Piston",
   "item.incubus_core.hand_piston_advanced": "Refined Portable Piston",
   "item.incubus_core.debug_flame": "§k§oBig Succubus Cock",
+  "block.incubus_core.render_test": "Render Test",
   "effect.incubus_core.zonked": "Zonked State"
 }

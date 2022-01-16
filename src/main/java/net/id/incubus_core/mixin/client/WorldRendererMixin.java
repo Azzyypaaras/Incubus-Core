@@ -18,12 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(WorldRenderer.class)
 public class WorldRendererMixin {
 
-    @Inject(method = "render", at = @At("TAIL"))
-    private void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f positionMatrix, CallbackInfo ci) {
-        SoftBloomShaderManager.INSTANCE.render(tickDelta);
-        HardBloomShaderManager.INSTANCE.render(tickDelta);
-    }
-
     @Inject(method = "onResized", at = @At("TAIL"))
     private void onResized(int width, int height, CallbackInfo ci) {
         ShaderEffect hard = HardBloomShaderManager.INSTANCE.getEffect();

@@ -14,7 +14,6 @@ allprojects {
     }
 }
 
-//Test
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version

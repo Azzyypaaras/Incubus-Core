@@ -24,17 +24,17 @@ public abstract class InterpFixMixin {
         this.parent$this = parent;
     }
 
+    // replace this with an inject or redirect so we don't need to accesswiden Sprite.Animation and Sprite.AnimationFrame
     /**
      * @author Azzy
      * @reason My nuts itch, also translucent interp is borked.
      */
     @Overwrite
-    public void apply(Sprite.Animation inputAnimation) {
-        var animation = (Sprite.Animation & Sprite$AnimationAccessor) inputAnimation;
-        var animationFrame = (Sprite.AnimationFrame & Sprite$AnimationFrameAccessor) animation.getFrames().get(animation.getFrameIndex());
-        double d = 1.0D - (double)animation.getFrameTicks() / (double)animationFrame.getTime();
-        int i = animationFrame.getIndex();
-        int j = ((Sprite.AnimationFrame & Sprite$AnimationFrameAccessor) animation.getFrames().get((animation.getFrameIndex() + 1) % animation.getFrames().size())).getIndex();
+    public void apply(Sprite.Animation animation) {
+        var animationFrame = ((Sprite$AnimationAccessor) animation).getFrames().get(((Sprite$AnimationAccessor) animation).getFrameIndex());
+        double d = 1.0D - (double)((Sprite$AnimationAccessor) animation).getFrameTicks() / (double)((Sprite$AnimationFrameAccessor) animationFrame).getTime();
+        int i = ((Sprite$AnimationFrameAccessor) animationFrame).getIndex();
+        int j = ((Sprite$AnimationFrameAccessor) ((Sprite$AnimationAccessor) animation).getFrames().get((((Sprite$AnimationAccessor) animation).getFrameIndex() + 1) % ((Sprite$AnimationAccessor) animation).getFrames().size())).getIndex();
         if (i != j) {
             for(int k = 0; k < this.images.length; ++k) {
                 int l = parent$this.getWidth() >> k;

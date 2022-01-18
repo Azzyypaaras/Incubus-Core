@@ -25,9 +25,16 @@ jobs:
         with:
           path: gradle.properties
           property: mod_version
+      - name: Check if tag exists
+        uses: mukunku/tag-exists-action@v1.0.0
+        id: checkTag
+        with: 
+          tag: ${{ steps.version.outputs.value }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create tag
         uses: actions/github-script@v5
-        if: success() && github.ref == 'refs/heads/master'
+        if: success() && github.ref == 'refs/heads/master' && !${{ steps.version.outputs.value }}
         with:
           script: |
             github.rest.git.createRef({

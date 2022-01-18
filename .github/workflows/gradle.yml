@@ -19,6 +19,23 @@ jobs:
         with:
           name: artifacts
           path: ./build/libs/
+      - name: Get release version
+        uses: christian-draeger/read-properties@1.0.1
+        id: version
+        with:
+          path: gradle.properties
+          property: mod_version
+      - name: Create tag
+        uses: actions/github-script@v5
+        if: success() && github.ref == 'refs/heads/master'
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ steps.version.outputs.value }}',
+              sha: context.sha
+            })
       - name: Build Success
         uses: rjstone/discord-webhook-notify@v1
         if: success()

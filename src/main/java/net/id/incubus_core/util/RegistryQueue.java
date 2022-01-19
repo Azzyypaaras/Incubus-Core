@@ -2,29 +2,27 @@ package net.id.incubus_core.util;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.id.incubus_core.IncubusCore;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.function.BiConsumer;
 
 @SuppressWarnings("unused")
 public final class RegistryQueue<T> {
     private static final boolean CLIENT = FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
     private final Registry<T> registry;
-    private final List<Entry<? extends T>> entries;
-    private final String namespace;
+    // We only need to append to the end of the list and iterate, so a LinkedList is best.
+    private final LinkedList<Entry<? extends T>> entries;
 
-    public RegistryQueue(Registry<T> registry, String modID, int initialCapacity) {
+    public RegistryQueue(Registry<T> registry) {
         this.registry = registry;
-        this.namespace = modID;
-        entries = new ArrayList<>(initialCapacity);
+        entries = new LinkedList<>();
     }
 
+    @Deprecated(forRemoval = true, since = "1.7.INDEV3")
     public RegistryQueue(Registry<T> registry, int initialCapacity) {
-        this(registry, null, initialCapacity);
+        this(registry);
     }
 
     public static <S> Action<S> onClient(Action<S> action) {
@@ -35,17 +33,6 @@ public final class RegistryQueue<T> {
     public final <V extends T> V add(Identifier id, V value, BiConsumer<Identifier, ? super V>... additionalActions) {
         this.entries.add(new Entry<>(id, value, additionalActions));
         return value;
-    }
-
-    @SafeVarargs
-    public final <V extends T> V add(String id, V value, BiConsumer<Identifier, ? super V>... additionalActions) {
-        if (id.contains(":")) {
-            return this.add(new Identifier(id), value, additionalActions);
-        }
-        if (namespace == null) {
-            throw new NullPointerException("Identifier " + id + " registered to " + value.getClass().getName() + " registry queue without a namespace.");
-        }
-        return this.add(new Identifier(namespace, id), value, additionalActions);
     }
 
     public void register() {

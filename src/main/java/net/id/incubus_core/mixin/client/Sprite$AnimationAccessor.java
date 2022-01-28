@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.List;
 
-@Mixin(targets = "net.minecraft.client.texture.Sprite$Animation")
+@Mixin(Sprite.Animation.class)
 public interface Sprite$AnimationAccessor {
     @Accessor
     int getFrameIndex();

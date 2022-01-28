@@ -2,7 +2,7 @@ package net.id.incubus_core.mixin.world.gen;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.PrimitiveCodec;
-import dev.hephaestus.seedy.SeedSupplier;
+import net.id.incubus_core.util.SeedSupplier;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.gen.GeneratorOptions;

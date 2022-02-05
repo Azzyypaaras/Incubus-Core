@@ -2,6 +2,7 @@ package net.id.incubus_core;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.id.incubus_core.dev.DevInit;
 import net.id.incubus_core.misc.WorthinessChecker;
 import net.id.incubus_core.misc.item.DebugFlameItem;
 import net.id.incubus_core.misc.item.HandPistonItem;
@@ -50,6 +51,10 @@ public class IncubusCore implements ModInitializer {
 		registerItem("debug_flame", new DebugFlameItem(new FabricItemSettings().fireproof().rarity(Rarity.EPIC).maxCount(1).equipmentSlot(stack -> EquipmentSlot.HEAD)));
 		registerItem("render_test", new BlockItem(RENDER_TEST_BLOCK, new FabricItemSettings()));
 		registerBE("render_test", RENDER_TEST_BLOCK_ENTITY_TYPE);
+		
+		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
+			DevInit.commonInit();
+		}
 	}
 
 	public static final Block RENDER_TEST_BLOCK = registerBlock("render_test", new RenderTestBlock(FabricBlockSettings.copyOf(Blocks.AMETHYST_BLOCK).nonOpaque().luminance(5).blockVision((state, world, pos) -> false).allowsSpawning((state, world, pos, type) -> false).suffocates((state, world, pos) -> false).solidBlock((state, world, pos) -> false)));

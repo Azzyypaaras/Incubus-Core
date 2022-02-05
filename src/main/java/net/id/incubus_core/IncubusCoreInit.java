@@ -1,7 +1,7 @@
 package net.id.incubus_core;
 
 public class IncubusCoreInit {
-
+    // I'm not even going to check git blame for this because we all know who did this.
     public static final String HOLY_CONST = "hhddmmmmNNNNNNmmmdddhhhhhhhhhhhhhhhhhhhhhhhhhhhhhdMMmyo-::-:::::::////++++++++/////::----------------------------------------::::::::://///////++syddd\n" +
             "MMMMMNNNmmmmmmNNNNMMMMNNddhhhhhhhhhhhhhhhhhhhhhhhdMMNhy+oyhdmmNNNNNNmmmmmmmmmmmmmNNNNNNNmmdhyyso+/:-------------------------::::::::::////////////+osh\n" +
             "mdhhhyyyyyyyyyyyyyyhhdmNNddhhhyhyhhhhhhyhhhyhhhmNMMMMNmmddhhhyyyyyyyyyyyyyyyyyyyyyyyyyyhhhhhddmmmmNmmdhso+:-----------------:::::::::///////////////+o\n" +

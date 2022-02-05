@@ -4,8 +4,9 @@
   "package": "net.id.incubus_core.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "entity.BlockEntityMixin",
     "IngredientMixin",
+    "entity.BlockEntityMixin",
+    "entity.EntityDamageSourceMixin",
     "entity.NameDisplayMixin",
     "world.ServerTickMixin",
     "world.biome.source.MultiNoiseBiomeSourceMixin",

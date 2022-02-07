@@ -1,7 +1,7 @@
 package net.id.incubus_core.mixin.entity;
 
-import net.id.incubus_core.misc.WorthinessChecker;
 import com.mojang.authlib.GameProfile;
+import net.id.incubus_core.misc.WorthinessChecker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -11,9 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.UUID;
-
-import static net.id.incubus_core.misc.WorthinessChecker.*;
+import static net.id.incubus_core.misc.WorthinessChecker.CapeType;
 
 @Mixin(PlayerEntity.class)
 public abstract class NameDisplayMixin {

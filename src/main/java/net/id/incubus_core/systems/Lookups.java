@@ -1,8 +1,7 @@
 package net.id.incubus_core.systems;
 
-import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
-import net.id.incubus_core.IncubusCore;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiLookup;
+import net.fabricmc.fabric.api.lookup.v1.item.ItemApiLookup;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Hand;

@@ -1,10 +1,9 @@
 package net.id.incubus_core.render;
 
 import com.google.common.base.Preconditions;
-import net.id.incubus_core.IncubusCore;
+import net.id.incubus_core.dev.DevInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -16,7 +15,7 @@ public class RenderTestBlockEntity extends BlockEntity {
     private boolean shouldClientRemesh = true;
 
     public RenderTestBlockEntity(BlockPos pos, BlockState state) {
-        super(IncubusCore.RENDER_TEST_BLOCK_ENTITY_TYPE, pos, state);
+        super(DevInit.RENDER_TEST_BLOCK_ENTITY_TYPE, pos, state);
     }
 
     @Override

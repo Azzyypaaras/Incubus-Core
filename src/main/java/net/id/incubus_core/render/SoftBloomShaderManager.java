@@ -3,7 +3,6 @@ package net.id.incubus_core.render;
 import com.google.gson.JsonSyntaxException;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.id.incubus_core.IncubusCore;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.ShaderEffect;
@@ -21,7 +20,7 @@ import java.util.concurrent.Executor;
 
 public class SoftBloomShaderManager implements IdentifiableResourceReloadListener {
     public static final SoftBloomShaderManager INSTANCE = new SoftBloomShaderManager();
-    private static final Identifier ID = IncubusCore.locate("soft_bloom_shader_reloader");
+    private static final Identifier ID = new Identifier("soft_bloom_shader_reloader");
     private static final Logger LOGGER = LogManager.getLogger();
     private static boolean initialized;
     private ShaderEffect effect;
@@ -39,7 +38,7 @@ public class SoftBloomShaderManager implements IdentifiableResourceReloadListene
                 effect.close();
             }
             var client = MinecraftClient.getInstance();
-            var id = IncubusCore.locate("shaders/post/soft_bloom.json");
+            var id = new Identifier("shaders/post/soft_bloom.json");
             try {
                 effect = new ShaderEffect(client.getTextureManager(), client.getResourceManager(), client.getFramebuffer(), id);
                 effect.setupDimensions(client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight());

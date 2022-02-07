@@ -5,7 +5,7 @@
   ],
   "passes": [
     {
-      "name": "incubus_core:hard_bloom",
+      "name": "hard_bloom",
       "intarget": "minecraft:main",
       "outtarget": "main",
       "auxtargets": [

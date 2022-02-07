@@ -5,7 +5,7 @@
     "dstrgb": "1"
   },
   "vertex": "sobel",
-  "fragment": "incubus_core:soft_bloom",
+  "fragment": "soft_bloom",
   "attributes": [
     "Position"
   ],

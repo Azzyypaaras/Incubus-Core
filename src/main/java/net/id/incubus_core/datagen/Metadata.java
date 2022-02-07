@@ -1,7 +1,7 @@
 package net.id.incubus_core.datagen;
 
-import net.id.incubus_core.IncubusCore;
 import net.fabricmc.loader.api.FabricLoader;
+import net.id.incubus_core.IncubusCore;
 
 import java.io.File;
 import java.io.IOException;

@@ -9,8 +9,6 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class TagSuperset<T> {

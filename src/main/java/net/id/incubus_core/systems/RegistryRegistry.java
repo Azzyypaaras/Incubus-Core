@@ -1,7 +1,7 @@
 package net.id.incubus_core.systems;
 
-import net.id.incubus_core.IncubusCore;
 import com.mojang.serialization.Lifecycle;
+import net.id.incubus_core.IncubusCore;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.Registry;

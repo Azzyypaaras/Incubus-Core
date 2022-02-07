@@ -1,7 +1,6 @@
 package net.id.incubus_core.worldgen;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;

@@ -4,7 +4,10 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.IncubusCore;
 import net.minecraft.util.Identifier;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.UUID;
 
 import static net.id.incubus_core.IncubusCore.locate;
 

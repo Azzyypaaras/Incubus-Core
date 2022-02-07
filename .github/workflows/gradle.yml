@@ -34,7 +34,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create tag
         uses: actions/github-script@v5
-        if: success() && github.ref == 'refs/heads/master' && !${{ steps.version.outputs.value }}
+        if: success() && github.ref == 'refs/heads/master' && !steps.checkTag.outputs.exists
         with:
           script: |
             github.rest.git.createRef({

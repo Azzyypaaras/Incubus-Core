@@ -11,21 +11,19 @@ import net.id.incubus_core.misc.IncubusToolMaterials;
 import net.id.incubus_core.misc.item.DebugFlameItem;
 import net.id.incubus_core.misc.item.HandPistonItem;
 import net.id.incubus_core.misc.item.LunarianSaberItem;
-import net.id.incubus_core.potion.ZonkedEffect;
 import net.id.incubus_core.render.RenderTestBlock;
 import net.id.incubus_core.render.RenderTestBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Rarity;
-import net.minecraft.util.registry.Registry;
 
+import static net.id.incubus_core.IncubusCore.*;
 import static net.minecraft.item.Items.DIAMOND;
 
 /**
@@ -46,8 +44,6 @@ public final class DevInit {
 
     public static final BlockEntityType<RenderTestBlockEntity> RENDER_TEST_BLOCK_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(RenderTestBlockEntity::new, RENDER_TEST_BLOCK).build();
 
-    public static final StatusEffect ZONKED = registerEffect("zonked", new ZonkedEffect());
-    
     public static void commonInit() {
         registerItem("lunarian_saber", new LunarianSaberItem(IncubusToolMaterials.LUNARIAN, 1, 0F, new FabricItemSettings()));
         registerItem("hand_piston", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).maxCount(1), false));
@@ -56,21 +52,5 @@ public final class DevInit {
         registerItem("render_test", new BlockItem(RENDER_TEST_BLOCK, new FabricItemSettings()));
         registerBE("render_test", RENDER_TEST_BLOCK_ENTITY_TYPE);
         registerItem("entity_death_message_item", ENTITY_DEATH_MESSAGE_ITEM);
-    }
-
-    public static Item registerItem(String name, Item item) {
-        return Registry.register(Registry.ITEM, IncubusCore.locate(name), item);
-    }
-
-    public static Block registerBlock(String name, Block item) {
-        return Registry.register(Registry.BLOCK, IncubusCore.locate(name), item);
-    }
-
-    public static BlockEntityType<?> registerBE(String name, BlockEntityType<?> item) {
-        return Registry.register(Registry.BLOCK_ENTITY_TYPE, IncubusCore.locate(name), item);
-    }
-
-    public static StatusEffect registerEffect(String name, StatusEffect item) {
-        return Registry.register(Registry.STATUS_EFFECT, IncubusCore.locate(name), item);
     }
 }

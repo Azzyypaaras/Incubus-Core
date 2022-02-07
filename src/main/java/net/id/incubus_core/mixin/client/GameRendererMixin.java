@@ -1,6 +1,6 @@
 package net.id.incubus_core.mixin.client;
 
-import net.id.incubus_core.dev.DevInit;
+import net.id.incubus_core.IncubusCore;
 import net.id.incubus_core.render.HardBloomShaderManager;
 import net.id.incubus_core.render.SoftBloomShaderManager;
 import net.minecraft.client.MinecraftClient;
@@ -26,7 +26,7 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;swap(Ljava/lang/String;)V"))
     private void renderZonk(float tickDelta, long limitTime, MatrixStack matrices, CallbackInfo ci) {
-        if(client.getCameraEntity() instanceof LivingEntity entity && entity.hasStatusEffect(DevInit.ZONKED))
+        if(client.getCameraEntity() instanceof LivingEntity entity && entity.hasStatusEffect(IncubusCore.ZONKED))
             HardBloomShaderManager.INSTANCE.render(tickDelta);
     }
 }

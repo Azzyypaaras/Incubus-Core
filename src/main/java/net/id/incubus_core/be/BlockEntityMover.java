@@ -1,6 +1,5 @@
 package net.id.incubus_core.be;
 
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
@@ -23,8 +22,7 @@ public class BlockEntityMover {
             BlockState state = world.getBlockState(pos);
             BlockEntity entity = world.getBlockEntity(pos);
             if(entity != null && !(entity instanceof PistonBlockEntity)) {
-                NbtCompound nbt = new NbtCompound();
-                entity.writeNbt(nbt);
+                NbtCompound nbt = entity.createNbt();
                 world.removeBlockEntity(pos);
                 world.setBlockState(pos, Blocks.AIR.getDefaultState());
                 world.setBlockState(newPos, state);
@@ -32,8 +30,8 @@ public class BlockEntityMover {
                 if(newEntity != null) {
                     newEntity.readNbt(nbt);
                     world.getChunk(newPos).setBlockEntity(newEntity);
-                    if(newEntity instanceof BlockEntityClientSerializable)
-                        ((BlockEntityClientSerializable) entity).sync();
+                    //if(newEntity instanceof BlockEntityClientSerializable)
+                    //    ((BlockEntityClientSerializable) entity).sync();
                     if(newEntity instanceof MovementSensitiveBlockEntity) {
                         MovementSensitiveBlockEntity sensitiveEntity = (MovementSensitiveBlockEntity) entity;
                         Arrays.stream(sensitiveEntity.getObservers()).forEach(observer -> observer.notifyObserver(newEntity, newPos));

@@ -1,12 +1,12 @@
 package net.id.incubus_core.json;
 
+import net.fabricmc.loader.impl.lib.gson.MalformedJsonException;
 import net.id.incubus_core.recipe.IngredientStack;
 import net.id.incubus_core.recipe.OptionalStack;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
-import net.fabricmc.loader.lib.gson.MalformedJsonException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;

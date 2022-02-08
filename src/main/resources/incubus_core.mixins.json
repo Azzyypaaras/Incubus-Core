@@ -4,10 +4,13 @@
   "package": "net.id.incubus_core.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "BlockEntityMixin",
+    "entity.BlockEntityMixin",
     "IngredientMixin",
-    "NameDisplayMixin",
-    "ServerTickMixin"
+    "entity.NameDisplayMixin",
+    "world.ServerTickMixin",
+    "world.biome.source.MultiNoiseBiomeSourceMixin",
+    "world.gen.GeneratorOptionsMixin",
+    "world.gen.chunk.NoiseChunkGeneratorMixin"
   ],
   "client": [
     "CapeMixin"

@@ -1,4 +1,4 @@
-package net.id.incubus_core.mixin;
+package net.id.incubus_core.mixin.entity;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;

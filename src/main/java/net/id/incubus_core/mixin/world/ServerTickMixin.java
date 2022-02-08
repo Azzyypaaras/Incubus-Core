@@ -1,4 +1,4 @@
-package net.id.incubus_core.mixin;
+package net.id.incubus_core.mixin.world;
 
 import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;

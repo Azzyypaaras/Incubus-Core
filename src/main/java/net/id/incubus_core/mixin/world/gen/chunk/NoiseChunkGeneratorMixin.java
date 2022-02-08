@@ -2,7 +2,7 @@ package net.id.incubus_core.mixin.world.gen.chunk;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.PrimitiveCodec;
-import dev.hephaestus.seedy.SeedSupplier;
+import net.id.incubus_core.util.SeedSupplier;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.NoiseChunkGenerator;

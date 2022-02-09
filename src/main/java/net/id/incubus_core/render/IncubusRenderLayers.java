@@ -12,9 +12,11 @@ public class IncubusRenderLayers extends RenderLayer {
     public static final Target SOFT_BLOOM_TARGET = new Target(
             "soft_bloom_target",
             () -> {
-                var frameBuffer = SoftBloomShaderManager.INSTANCE.getFramebuffer();
-                frameBuffer.copyDepthFrom(MinecraftClient.getInstance().getFramebuffer());
-                frameBuffer.beginWrite(false);
+                var framebuffer = SoftBloomShaderManager.INSTANCE.getFramebuffer();
+                if (framebuffer != null) {
+                    framebuffer.copyDepthFrom(MinecraftClient.getInstance().getFramebuffer());
+                    framebuffer.beginWrite(false);
+                }
             },
             () -> MinecraftClient.getInstance().getFramebuffer().beginWrite(false)
     );

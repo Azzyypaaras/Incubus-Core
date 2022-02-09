@@ -1,7 +1,5 @@
 #version 150
 
-#define RADIUS 10
-
 in vec2 texCoord;
 in vec2 oneTexel;
 
@@ -10,20 +8,20 @@ uniform sampler2D LightSourceSampler;
 
 out vec4 fragColor;
 
-void main() {
-    vec3 blur = vec3(0);
+const float pi = 3.141592654;
+const float tau = pi * 2;
 
-    float intensity = texture(LightSourceSampler, texCoord).a / 2;
-    float radius = floor(RADIUS + intensity * 10);
-    for (float y = -radius; y <= radius; y += 1) {
-        for (float x = -radius; x <= radius; x += 1) {
-            if (x * x + y * y <= radius * radius) {
-                blur += texture(LightSourceSampler, texCoord + vec2(x, y) * oneTexel).rgb;
-            }
+const float radius = 10.0;
+
+void main() {
+    vec4 blur = texture(LightSourceSampler, texCoord);
+
+    for (float d = 0.0; d < tau; d += tau / 16) {
+        for (float i = 0.33; i <= 1.0; i += 0.33) {
+            blur += texture(LightSourceSampler, texCoord + vec2(cos(d), sin(d)) * oneTexel * radius * i);
         }
     }
-    float samples = radius * 2 + 1;
-    blur /= samples * 4;
 
-    fragColor = vec4(texture(DiffuseSampler, texCoord).rgb + blur, 1);
+    blur /= 33;
+    fragColor = vec4((texture(DiffuseSampler, texCoord) + blur).rgb, 1);
 }

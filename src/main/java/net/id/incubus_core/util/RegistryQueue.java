@@ -54,7 +54,8 @@ public final class RegistryQueue<T> {
      * the other constructor.
      */
     public RegistryQueue(Registry<T> registry) {
-        this(registry, 16); // 16 is the default initial capacity for maps.
+        this.registry = registry;
+        entries = new LinkedHashMap<>(16);
     }
 
     /**

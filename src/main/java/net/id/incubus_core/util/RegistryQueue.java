@@ -40,7 +40,6 @@ import java.util.function.BiConsumer;
  * }</pre>
  * ~ Jack
  * @param <T> What type this RegistryQueue registers
- * @author Solly Watkins
  */
 @SuppressWarnings("unused")
 public final class RegistryQueue<T> {

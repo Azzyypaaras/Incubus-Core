@@ -11,7 +11,7 @@ out vec4 fragColor;
 const float pi = 3.141592654;
 const float tau = pi * 2;
 
-const float radius = 10.0;
+const float radius = 20.0;
 
 void main() {
     vec4 blur = texture(LightSourceSampler, texCoord);
@@ -22,6 +22,6 @@ void main() {
         }
     }
 
-    blur /= 33;
+    blur /= 18;
     fragColor = vec4((texture(DiffuseSampler, texCoord) + blur).rgb, 1);
 }

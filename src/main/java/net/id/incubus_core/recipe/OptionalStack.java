@@ -5,9 +5,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.SetTag;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.DefaultedRegistry;
+import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +22,7 @@ public class OptionalStack {
     public static final OptionalStack EMPTY = new OptionalStack(SetTag.empty(), 0);
 
     @NotNull
-    private final Tag<Item> tag;
+    private final TagKey<Item> tag;
     @NotNull
     private final ItemStack stack;
     private final int count;
@@ -30,7 +30,7 @@ public class OptionalStack {
 
     private List<ItemStack> cachedStacks = null;
 
-    public OptionalStack(@NotNull Tag<Item> tag, int count) {
+    public OptionalStack(@NotNull TagKey<Item> tag, int count) {
         this.tag = tag;
         this.stack = ItemStack.EMPTY;
         this.count = count;
@@ -38,12 +38,12 @@ public class OptionalStack {
 
     public OptionalStack(@NotNull ItemStack stack, int count) {
         this.stack = stack;
-        this.tag = Tag.of(Collections.emptySet());
+        this.tag = null;// fixme
         this.count = count;
     }
 
     public OptionalStack(Identifier id, int count) {
-        this(ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(DefaultedRegistry.ITEM_KEY).getTagOrEmpty(id), count);
+        this(TagKey.of(Registry.ITEM_KEY, id), count);
     }
 
     public void write(PacketByteBuf buf) {
@@ -83,8 +83,7 @@ public class OptionalStack {
         if(cachedStacks == null) {
             if(tag.values().isEmpty()) {
                 cachedStacks = Collections.singletonList(stack);
-            }
-            else {
+            } else {
                 cachedStacks = tag.values().stream().map(item -> new ItemStack(item, count)).collect(Collectors.toList());
             }
         }

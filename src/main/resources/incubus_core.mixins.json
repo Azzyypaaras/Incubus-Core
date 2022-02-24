@@ -9,7 +9,6 @@
     "entity.EntityDamageSourceMixin",
     "entity.NameDisplayMixin",
     "world.ServerTickMixin",
-    "world.biome.source.MultiNoiseBiomeSourceMixin",
     "world.gen.GeneratorOptionsMixin",
     "world.gen.chunk.NoiseChunkGeneratorMixin"
   ],

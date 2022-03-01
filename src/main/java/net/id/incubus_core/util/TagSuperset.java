@@ -3,12 +3,9 @@ package net.id.incubus_core.util;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 //import net.minecraft.tag.ServerTagManagerHolder;
-import net.minecraft.tag.Tag;
-import net.minecraft.tag.TagManagerLoader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 
 import java.util.List;
 
@@ -16,16 +13,16 @@ public class TagSuperset<T> {
 
     private final List<Identifier> identifiableTags;
     private final Object2ObjectMap<String, List<?>> additionalDataMap = new Object2ObjectOpenHashMap<>();
-    private final RegistryKey<Registry<T>> registryKey;
+    private final Registry<T> registry;
 
-    public TagSuperset(RegistryKey<Registry<T>> registryKey, Identifier ... ids) {
-        this.registryKey = registryKey;
+    public TagSuperset(Registry<T> registry, Identifier ... ids) {
+        this.registry = registry;
         this.identifiableTags = List.of(ids);
     }
 
     @SafeVarargs
-    public TagSuperset(RegistryKey<Registry<T>> registryKey, Identifier[] ids, Pair<String, List<?>> ... additionalData) {
-        this.registryKey = registryKey;
+    public TagSuperset(Registry<T> registry, Identifier[] ids, Pair<String, List<?>> ... additionalData) {
+        this.registry = registry;
         this.identifiableTags = List.of(ids);
         for (Pair<String, List<?>> entry : additionalData) {
             String key = entry.getLeft();
@@ -39,11 +36,9 @@ public class TagSuperset<T> {
         }
     }
 
-    public boolean contains(T item) {
-        // noinspection StatementWithEmptyBody
+    public boolean contains(Identifier item) {
         for (Identifier tagId : identifiableTags) {
-            Tag<T> tag = ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(registryKey).getTagOrEmpty(tagId);
-            if(tag.contains(item))
+            if(RegistryHelper.isObjectInTag(registry, tagId, registry.get(item)))
                 return true;
         }
         return false;

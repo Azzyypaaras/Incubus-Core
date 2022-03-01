@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 //import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagManagerLoader;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.registry.Registry;
@@ -41,10 +42,9 @@ public class TagSuperset<T> {
     public boolean contains(T item) {
         // noinspection StatementWithEmptyBody
         for (Identifier tagId : identifiableTags) {
-            // FIXME 1.18.2
-//            Tag<T> tag = ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(registryKey).getTagOrEmpty(tagId);
-//            if(tag.contains(item))
-//                return true;
+            Tag<T> tag = ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(registryKey).getTagOrEmpty(tagId);
+            if(tag.contains(item))
+                return true;
         }
         return false;
     }

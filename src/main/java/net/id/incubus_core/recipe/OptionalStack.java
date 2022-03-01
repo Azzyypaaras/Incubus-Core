@@ -1,10 +1,8 @@
 package net.id.incubus_core.recipe;
-/* FIXME 1.18.2
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.tag.ServerTagManagerHolder;
-import net.minecraft.tag.SetTag;
+import net.minecraft.tag.Tag;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -19,10 +17,10 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public class OptionalStack {
 
-    public static final OptionalStack EMPTY = new OptionalStack(SetTag.empty(), 0);
+    public static final OptionalStack EMPTY = new OptionalStack(Tag.empty(), 0);
 
     @NotNull
-    private final TagKey<Item> tag;
+    private final Tag<Item> tag;
     @NotNull
     private final ItemStack stack;
     private final int count;
@@ -30,7 +28,7 @@ public class OptionalStack {
 
     private List<ItemStack> cachedStacks = null;
 
-    public OptionalStack(@NotNull TagKey<Item> tag, int count) {
+    public OptionalStack(@NotNull Tag<Item> tag, int count) {
         this.tag = tag;
         this.stack = ItemStack.EMPTY;
         this.count = count;
@@ -42,9 +40,9 @@ public class OptionalStack {
         this.count = count;
     }
 
-    public OptionalStack(Identifier id, int count) {
-        this(TagKey.of(Registry.ITEM_KEY, id), count);
-    }
+    //public OptionalStack(Identifier id, int count) {
+    //    this(, count);
+    //}
 
     public void write(PacketByteBuf buf) {
         getStacks();
@@ -121,4 +119,3 @@ public class OptionalStack {
             return cachedStacks.stream().anyMatch(testStack -> testStack.isItemEqual(stack) && stack.getCount() >= testStack.getCount());
     }
 }
-*/

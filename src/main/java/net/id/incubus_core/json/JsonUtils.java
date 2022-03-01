@@ -6,12 +6,12 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.MalformedJsonException;
 import net.id.incubus_core.recipe.IngredientStack;
-import net.id.incubus_core.recipe.OptionalStack;
+//import net.id.incubus_core.recipe.OptionalStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.tag.ServerTagManagerHolder;
+//import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.DefaultedRegistry;
@@ -58,7 +58,7 @@ public class JsonUtils {
         }
         return ingredients;
     }
-
+    /* FIXME 1.18.2
     public static OptionalStack optionalStackFromJson(JsonObject json) throws MalformedJsonException {
         int count = json.has("count") ? json.get("count").getAsInt() : 1;
         if(json.has("item")) {
@@ -88,4 +88,5 @@ public class JsonUtils {
         }
         return stacks;
     }
+    */
 }

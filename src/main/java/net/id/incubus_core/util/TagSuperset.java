@@ -2,7 +2,7 @@ package net.id.incubus_core.util;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.tag.ServerTagManagerHolder;
+//import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
@@ -39,10 +39,12 @@ public class TagSuperset<T> {
     }
 
     public boolean contains(T item) {
+        // noinspection StatementWithEmptyBody
         for (Identifier tagId : identifiableTags) {
-            Tag<T> tag = ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(registryKey).getTagOrEmpty(tagId);
-            if(tag.contains(item))
-                return true;
+            // FIXME 1.18.2
+//            Tag<T> tag = ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(registryKey).getTagOrEmpty(tagId);
+//            if(tag.contains(item))
+//                return true;
         }
         return false;
     }

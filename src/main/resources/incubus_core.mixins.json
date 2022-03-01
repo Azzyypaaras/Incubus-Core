@@ -8,6 +8,7 @@
     "entity.BlockEntityMixin",
     "entity.EntityDamageSourceMixin",
     "entity.NameDisplayMixin",
+    "world.BiomeAccessor",
     "world.ServerTickMixin",
     "world.gen.GeneratorOptionsMixin",
     "world.gen.chunk.NoiseChunkGeneratorMixin"

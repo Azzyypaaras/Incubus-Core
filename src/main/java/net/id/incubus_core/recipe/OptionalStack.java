@@ -1,5 +1,5 @@
 package net.id.incubus_core.recipe;
-
+/* FIXME 1.18.2
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -38,7 +38,7 @@ public class OptionalStack {
 
     public OptionalStack(@NotNull ItemStack stack, int count) {
         this.stack = stack;
-        this.tag = null;// fixme
+        this.tag = null;
         this.count = count;
     }
 
@@ -121,3 +121,4 @@ public class OptionalStack {
             return cachedStacks.stream().anyMatch(testStack -> testStack.isItemEqual(stack) && stack.getCount() >= testStack.getCount());
     }
 }
+*/

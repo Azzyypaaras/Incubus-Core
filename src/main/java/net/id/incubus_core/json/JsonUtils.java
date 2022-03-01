@@ -14,12 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 //import net.minecraft.tag.ServerTagManagerHolder;
-import net.minecraft.tag.Tag;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.DefaultedRegistry;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -71,7 +68,7 @@ public class JsonUtils {
         }
         else if(json.has("tag")) {
             var tagId = Identifier.tryParse(json.get("tag").getAsString());
-            var tag = RegistryHelper.searchForTagKey(Registry.ITEM, tagId).orElse(TagKey.of(Registry.ITEM.getKey(), tagId));
+            var tag = TagKey.of(Registry.ITEM.getKey(), tagId);
             return !RegistryHelper.isTagEmpty(tag) ? new OptionalStack(tag, count) : OptionalStack.EMPTY;
         }
         else {

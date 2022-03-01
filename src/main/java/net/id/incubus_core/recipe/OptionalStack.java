@@ -4,9 +4,7 @@ import net.id.incubus_core.util.RegistryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.tag.Tag;
 import net.minecraft.tag.TagKey;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import org.jetbrains.annotations.NotNull;
@@ -46,10 +44,6 @@ public class OptionalStack {
         this.count = count;
     }
 
-    //public OptionalStack(Identifier id, int count) {
-    //    this(, count);
-    //}
-
     public void write(PacketByteBuf buf) {
         getStacks();
         buf.writeInt(cachedStacks.size());
@@ -88,7 +82,8 @@ public class OptionalStack {
             if((tag.map(RegistryHelper::isTagEmpty).orElse(true))) {
                 cachedStacks = Collections.singletonList(stack);
             } else {
-                cachedStacks = RegistryHelper.getEntries(tag.get()).stream().map(RegistryEntry::value).map(item -> new ItemStack(item, count)).collect(Collectors.toList());
+                var entries = RegistryHelper.getEntries(tag.get());
+                entries.ifPresent(registryEntries -> cachedStacks = registryEntries.stream().map(RegistryEntry::value).map(item -> new ItemStack(item, count)).collect(Collectors.toList()));
             }
         }
         return cachedStacks;

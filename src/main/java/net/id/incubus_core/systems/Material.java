@@ -4,6 +4,7 @@ import net.id.incubus_core.util.TagSuperset;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.DefaultedRegistry;
+import net.minecraft.util.registry.Registry;
 
 
 public record Material(double maxTemperature, double heatConductivity, double electricalConductivity, double resistance, long maxRads, long maxNm, double maxPressure, long maxFrequency, long maxInductance, TagSuperset<Item> components) {
@@ -26,6 +27,6 @@ public record Material(double maxTemperature, double heatConductivity, double el
      * @param components Identifiers pointing to item tags that this material is associated with.
      */
     public Material(double maxTemperature, double heatConductivity, double electricalConductivity, double resistance, long maxRads, long maxNm, double maxPressure, long maxFrequency, long maxInductance, Identifier ... components) {
-        this(maxTemperature, heatConductivity / 2000, electricalConductivity, resistance, maxRads, maxNm, maxPressure, maxFrequency, maxInductance, new TagSuperset<>(DefaultedRegistry.ITEM_KEY, components));
+        this(maxTemperature, heatConductivity / 2000, electricalConductivity, resistance, maxRads, maxNm, maxPressure, maxFrequency, maxInductance, new TagSuperset<>(Registry.ITEM, components));
     }
 }

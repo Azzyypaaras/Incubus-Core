@@ -1,5 +1,6 @@
 package net.id.incubus_core.systems;
 
+import net.id.incubus_core.mixin.world.BiomeAccessor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -24,7 +25,7 @@ public class HeatHelper {
             var exchangeDir = io.getPreferredDirection().orElse(validExchangeDirs.get(0));
 
             if(validExchangeDirs.contains(exchangeDir)) {
-                double transfer = exchangeHeat(DefaultMaterials.AIR, io.getTemperature(), translateBiomeHeat(pos, world.getBiome(pos), world.isNight(), world.isRaining()), io.getExchangeArea(exchangeDir));
+                double transfer = exchangeHeat(DefaultMaterials.AIR, io.getTemperature(), translateBiomeHeat(pos, world.getBiome(pos).value(), world.isNight(), world.isRaining()), io.getExchangeArea(exchangeDir));
                 if(simulation == Simulation.ACT) {
                     io.cool(transfer);
                 }
@@ -37,8 +38,9 @@ public class HeatHelper {
     public static double translateBiomeHeat(BlockPos pos, Biome biome, boolean night, boolean rain) {
 
         double baseTemp = biome.getTemperature();
+        Biome.Category category = ((BiomeAccessor) (Object) biome).getCategory();
 
-        double temp = switch (biome.getCategory()) {
+        double temp = switch (category) {
             case NETHER -> baseTemp + 1;
             case THEEND -> baseTemp - 1.5;
             case DESERT -> baseTemp - 0.25;
@@ -49,10 +51,10 @@ public class HeatHelper {
         temp *= 26.25;
 
         if(night) {
-            if(biome.getCategory() == Biome.Category.DESERT || biome.getCategory() == Biome.Category.MESA) {
+            if(category == Biome.Category.DESERT || category == Biome.Category.MESA) {
                 temp -= temp * 0.75;
             } else if(biome.getPrecipitation() == Biome.Precipitation.SNOW) {
-                if(biome.getCategory() == Biome.Category.ICY && temp < 0)
+                if(category == Biome.Category.ICY && temp < 0)
                     temp += temp * 1.25;
                 else
                     temp -= 20;

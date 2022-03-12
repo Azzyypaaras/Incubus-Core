@@ -7,14 +7,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import net.id.incubus_core.util.RegistryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.tag.ServerTagManagerHolder;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.DefaultedRegistry;
 import net.minecraft.util.registry.Registry;
 
 import java.io.InputStream;
@@ -66,8 +65,9 @@ public class JsonUtils {
             return item != Items.AIR ? new OptionalStack(new ItemStack(item, count), count) : OptionalStack.EMPTY;
         }
         else if(json.has("tag")) {
-            Tag<Item> tag = ServerTagManagerHolder.getTagManager().getOrCreateTagGroup(DefaultedRegistry.ITEM_KEY).getTagOrEmpty(Identifier.tryParse(json.get("tag").getAsString()));
-            return !tag.values().isEmpty() ? new OptionalStack(tag, count) : OptionalStack.EMPTY;
+            var tagId = Identifier.tryParse(json.get("tag").getAsString());
+            var tag = TagKey.of(Registry.ITEM.getKey(), tagId);
+            return !RegistryHelper.isTagEmpty(tag) ? new OptionalStack(tag, count) : OptionalStack.EMPTY;
         }
         else {
             throw new MalformedJsonException("OptionalStacks must have an item or tag!");
@@ -88,4 +88,5 @@ public class JsonUtils {
         }
         return stacks;
     }
+
 }

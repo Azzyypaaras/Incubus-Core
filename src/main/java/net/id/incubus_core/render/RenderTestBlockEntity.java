@@ -1,6 +1,7 @@
 package net.id.incubus_core.render;
 
 import com.google.common.base.Preconditions;
+import net.id.incubus_core.IncubusCore;
 import net.id.incubus_core.dev.DevInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -15,7 +16,7 @@ public class RenderTestBlockEntity extends BlockEntity {
     private boolean shouldClientRemesh = true;
 
     public RenderTestBlockEntity(BlockPos pos, BlockState state) {
-        super(DevInit.RENDER_TEST_BLOCK_ENTITY_TYPE, pos, state);
+        super(IncubusCore.RENDER_TEST_BLOCK_ENTITY_TYPE, pos, state);
     }
 
     @Override

@@ -17,9 +17,7 @@ public class IncubusCoreClient implements ClientModInitializer {
         HardBloomShaderManager.init();
         SoftBloomShaderManager.init();
 
-        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            BlockEntityRendererRegistry.register(DevInit.RENDER_TEST_BLOCK_ENTITY_TYPE, context -> new RenderTestBlockEntityRenderer());
-            BlockRenderLayerMap.INSTANCE.putBlock(DevInit.RENDER_TEST_BLOCK, RenderLayer.getTranslucent());
-        }
+        BlockEntityRendererRegistry.register(IncubusCore.RENDER_TEST_BLOCK_ENTITY_TYPE, context -> new RenderTestBlockEntityRenderer());
+        BlockRenderLayerMap.INSTANCE.putBlock(IncubusCore.RENDER_TEST_BLOCK, RenderLayer.getTranslucent());
     }
 }

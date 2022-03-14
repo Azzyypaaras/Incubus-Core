@@ -8,6 +8,7 @@
     "entity.BlockEntityMixin",
     "entity.EntityDamageSourceMixin",
     "entity.NameDisplayMixin",
+    "recipe.RecipeManagerMixin",
     "world.BiomeAccessor",
     "world.ServerTickMixin",
     "world.gen.GeneratorOptionsMixin",

@@ -1,0 +1,94 @@
+{
+  "condition$Injects": {
+
+    /*
+    loadedMods - a list of mod ids that must be loaded for the recipe to be parsed.
+    and demands all mods within it be present to parse,
+    or demands one of the mods within it be present.
+    If both lists are present in loadedMods, parsing will require all mods within and + one of the mods in or.
+    */
+
+    "loadedMods": [
+      {
+        "type": "and",
+        "values": [
+          "paradise_lost",
+          "spectrum",
+          "primeval"
+        ]
+      },
+      {
+        "type": "or",
+        "values": [
+          "territorial",
+          "strawberry"
+        ]
+      }
+    ],
+
+    /*
+    loadedTags - a list of tags requiring various conditions for the recipe to be parsed.
+    Tag conditional format
+    tagKey: the tag's id (required)
+    registry: the registry the tag belongs to (required)
+    minSize: the minimum amount of elements required in the list
+    requiredContents: tag entries required for loading
+    */
+
+    "loadedTags": [
+      {
+        "tagKey": "c:starch",
+        "registry": "item",
+        "minSize": 1
+      },
+      {
+        "tagKey": "minecraft:stone_tool_materials",
+        "registry": "item",
+        "requiredContents": [
+          "minecraft:cobblestone",
+          "minecraft:blackstone"
+        ]
+      }
+    ],
+
+    /*
+    externalConditions - a list of checks delegated to registered injectedConditionals.
+    most of the structure of these depends on the injector parsing them.
+    the exception to this are id and missing, both obligatory fields.
+    id: the identifier of the injectedConditional, duh.
+    missing: what should the parser do if the injectedConditional cannot be found, can be either false, true, or crash
+    false and true return their respective values, crash... crashes.
+
+    everything else is, as aforementioned, handled by the injectedConditional's respective parsing, and is not covered here.
+    */
+
+    "externalConditions": [
+      {
+        "id": "pulse_flux:difficulty",
+        "missing": "false",
+        "mode": "expert"
+      }
+    ],
+
+    /*
+    delegates - links to another conditionInject, using it for parsing and effectively tacking on its conditions unto this one.
+    easy way to make one list of conditions and reference it from a bunch of places, these can be chained as a cherry on top.
+    id - the identifier of the referenced json
+    inverted - whether the delegate's results should be inverted, eg: if the delegate's checks fail, this would interpret it as success.
+    */
+
+    "delegates": [
+      {
+        "id": "incubus_core:delegateSchema",
+        "inverted": "true"
+      }
+    ]
+  }
+
+
+
+  /*
+      rest of the recipe
+             ...
+  */
+}

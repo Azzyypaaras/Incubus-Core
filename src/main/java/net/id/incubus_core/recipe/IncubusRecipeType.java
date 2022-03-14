@@ -5,7 +5,7 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 
 @SuppressWarnings("unused")
-public class IncubusRecipeType<T extends Recipe<?>> implements RecipeType<T> {
+public abstract class IncubusRecipeType<T extends Recipe<?>> implements RecipeType<T> {
 
     private final Identifier id;
 

@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
+import net.id.incubus_core.condition.IncubusCondition;
 import net.id.incubus_core.dev.DevInit;
 import net.id.incubus_core.misc.IncubusToolMaterials;
 import net.id.incubus_core.misc.WorthinessChecker;
@@ -53,6 +54,7 @@ public class IncubusCore implements ModInitializer {
 
 		WorthinessChecker.init();
 		RegistryRegistry.init();
+		IncubusCondition.init();
 
 		registerItem("lunarian_saber", new LunarianSaberItem(IncubusToolMaterials.LUNARIAN, 1, 0F, new FabricItemSettings()));
 		registerItem("hand_piston", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).maxCount(1), false));

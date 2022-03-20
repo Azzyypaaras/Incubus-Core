@@ -67,20 +67,18 @@ public final class Devel {
         StringBuilder mod_ids = new StringBuilder();
         for (var devel : DEVELS) {
             mod_ids.append(", ").append(devel.mod_id);
-            // Save on shutdown
-            Runtime.getRuntime().addShutdownHook(new Thread(devel::save));
         }
-        String list_of_mods = mod_ids.substring(2);
+        String list_of_mods = mod_ids.substring(2); // chop off the first comma
         IncubusCore.LOG.info("Devels loaded for: {}.", list_of_mods);
+        // Save on shutdown
+        Runtime.getRuntime().addShutdownHook(new Thread(Devel::save));
     }
 
     @Environment(EnvType.CLIENT)
     static void clientInit(){
         // We don't need to do all the fancy stuff for this method, since
         // it should already be covered by the common init.
-        for (var devel : DEVELS) {
-            Runtime.getRuntime().addShutdownHook(new Thread(devel::clientSave));
-        }
+        Runtime.getRuntime().addShutdownHook(new Thread(Devel::clientSave));
     }
 
     /**
@@ -90,30 +88,34 @@ public final class Devel {
         return isDevel;
     }
 
-    private void save(){
-        IncubusCore.LOG.info("Saving devel log for {}.", mod_id);
-        var logFile = directory.resolve(Path.of(mod_id + "_todo_server.txt"));
+    private static void save(){
+        for (var devel : DEVELS) {
+            IncubusCore.LOG.info("Saving devel log for {}.", devel.mod_id);
+            var logFile = directory.resolve(Path.of(devel.mod_id + "_todo_server.txt"));
 
-        try(var writer = new UncheckedWriter(Files.newBufferedWriter(logFile, StandardCharsets.UTF_8))){
-            dumpStrings(writer, "Bad features", BAD_FEATURES);
-        }catch(UncheckedIOException | IOException e){
-            IncubusCore.LOG.error("Failed to write \"{}\" devel log for mod \"{}\".", logFile.toString(), mod_id);
-            e.printStackTrace();
+            try (var writer = new UncheckedWriter(Files.newBufferedWriter(logFile, StandardCharsets.UTF_8))) {
+                devel.dumpStrings(writer, "Bad features", BAD_FEATURES);
+            } catch (UncheckedIOException | IOException e) {
+                IncubusCore.LOG.error("Failed to write \"{}\" devel log for mod \"{}\".", logFile.toString(), devel.mod_id);
+                e.printStackTrace();
+            }
         }
     }
 
     @Environment(EnvType.CLIENT)
-    private void clientSave(){
-        IncubusCore.LOG.info("Saving client devel log for {}.", mod_id);
-        var logFile = directory.resolve(Path.of(mod_id + "_todo_client.txt"));
+    private static void clientSave(){
+        for (var devel : DEVELS) {
+            IncubusCore.LOG.info("Saving client devel log for {}.", devel.mod_id);
+            var logFile = directory.resolve(Path.of(devel.mod_id + "_todo_client.txt"));
 
-        try(var writer = new UncheckedWriter(Files.newBufferedWriter(logFile, StandardCharsets.UTF_8))){
-            dumpIds(writer, "Missing textures", MISSING_TEXTURES);
-            dumpIds(writer, "Textures with broken metadata", BAD_TEXTURES);
-            dumpStrings(writer, "Missing language keys", MISSING_LANGUAGE_KEYS);
-        }catch(UncheckedIOException | IOException e){
-            IncubusCore.LOG.error("Failed to write \"{}\" client devel log for mod \"{}\".", logFile.toString(), mod_id);
-            e.printStackTrace();
+            try (var writer = new UncheckedWriter(Files.newBufferedWriter(logFile, StandardCharsets.UTF_8))) {
+                devel.dumpIds(writer, "Missing textures", MISSING_TEXTURES);
+                devel.dumpIds(writer, "Textures with broken metadata", BAD_TEXTURES);
+                devel.dumpStrings(writer, "Missing language keys", MISSING_LANGUAGE_KEYS);
+            } catch (UncheckedIOException | IOException e) {
+                IncubusCore.LOG.error("Failed to write \"{}\" client devel log for mod \"{}\".", logFile.toString(), devel.mod_id);
+                e.printStackTrace();
+            }
         }
     }
 

@@ -7,6 +7,8 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.condition.IncubusCondition;
 import net.id.incubus_core.dev.DevInit;
+import net.id.incubus_core.devel.Devel;
+import net.id.incubus_core.devel.IncubusDevel;
 import net.id.incubus_core.misc.IncubusToolMaterials;
 import net.id.incubus_core.misc.WorthinessChecker;
 import net.id.incubus_core.misc.item.DebugFlameItem;
@@ -63,9 +65,12 @@ public class IncubusCore implements ModInitializer {
 		registerItem("sacred_disc_1", new IncubusMusicDiscItem(0, DUPED_SHOVELS, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.EPIC)));
 		registerItem("render_test", new BlockItem(RENDER_TEST_BLOCK, new FabricItemSettings()));
 		registerBE("render_test", RENDER_TEST_BLOCK_ENTITY_TYPE);
-		
+
+		Devel.createDevelFor(MODID);
+
 		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			DevInit.commonInit();
+			IncubusDevel.init();
 		}
 	}
 

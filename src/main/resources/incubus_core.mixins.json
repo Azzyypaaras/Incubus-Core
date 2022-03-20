@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "IngredientMixin",
+    "devel.server.ChunkRegionMixin",
     "entity.BlockEntityMixin",
     "entity.EntityDamageSourceMixin",
     "entity.NameDisplayMixin",
@@ -21,7 +22,9 @@
     "client.Sprite$AnimationAccessor",
     "client.Sprite$AnimationFrameAccessor",
     "client.SpriteAccessor",
-    "client.WorldRendererMixin"
+    "client.WorldRendererMixin",
+    "devel.client.SpriteAtlasTextureMixin",
+    "devel.client.TranslationStorageMixin"
   ],
   "injectors": {
     "defaultRequire": 1

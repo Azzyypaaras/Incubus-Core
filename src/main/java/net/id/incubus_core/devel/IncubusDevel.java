@@ -82,6 +82,7 @@ public final class IncubusDevel {
     public static final class Config{
         public static final boolean PRINT_SETBLOCK_STACK_TRACE = getBoolean("setblockStackTrace", false);
         public static final boolean MINECRAFT_DEVEL = getBoolean("minecraftDevel", false);
+        public static final String DIRECTORY = getKey("directory", String::toString, "./devel");
 
         private static boolean getBoolean(String key, boolean defaultValue){
             return getKey(key, Boolean::parseBoolean, defaultValue);

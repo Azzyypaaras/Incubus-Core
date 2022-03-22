@@ -66,8 +66,6 @@ public class IncubusCore implements ModInitializer {
 		registerItem("render_test", new BlockItem(RENDER_TEST_BLOCK, new FabricItemSettings()));
 		registerBE("render_test", RENDER_TEST_BLOCK_ENTITY_TYPE);
 
-		Devel.createDevelFor(MODID);
-
 		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			DevInit.commonInit();
 			IncubusDevel.init();

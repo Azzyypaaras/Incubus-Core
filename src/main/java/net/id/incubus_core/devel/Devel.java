@@ -17,38 +17,21 @@ import java.util.Set;
 
 /**
  * A class that provides some useful tools for developers.
+ * <br>~ Jack
  * @author gudenau
  */
+@SuppressWarnings("unused")
 public final class Devel {
-    private static final Set<Devel> DEVELS = new HashSet<>();
+    private static final String[] MOD_IDS = IncubusDevel.Config.MODS;
     private static final boolean isDevel = FabricLoader.getInstance().isDevelopmentEnvironment();
-    private static Path directory = Path.of(IncubusDevel.Config.DIRECTORY);
+    private static Path directory = IncubusDevel.Config.DIRECTORY;
 
     static final Set<String> BAD_FEATURES = new HashSet<>();
-    @Environment(EnvType.CLIENT)
-    static final Set<Identifier> MISSING_TEXTURES = new HashSet<>();
-    @Environment(EnvType.CLIENT)
-    static final Set<Identifier> BAD_TEXTURES = new HashSet<>();
-    @Environment(EnvType.CLIENT)
-    static final Set<String> MISSING_LANGUAGE_KEYS = new HashSet<>();
 
-    private final String mod_id;
-
-    /**
-     * Creates a Devel tool for the given mod ID.
-     */
-    @SuppressWarnings("UnusedReturnValue")
-    public static Devel createDevelFor(String mod_id) {
-        return new Devel(mod_id);
-    }
-
-    Devel(String mod_id) {
-        this.mod_id = mod_id;
-        DEVELS.add(this);
-    }
+    private Devel() {}
 
     static void init() {
-        if (DEVELS.size() == 0) {
+        if (MOD_IDS.length == 0) {
             IncubusCore.LOG.info("No devels loaded");
             return;
         }
@@ -63,22 +46,9 @@ public final class Devel {
                 e.printStackTrace();
             }
         }
-        // This whole string builder thing is just to make the logs look nice.
-        StringBuilder mod_ids = new StringBuilder();
-        for (var devel : DEVELS) {
-            mod_ids.append(", ").append(devel.mod_id);
-        }
-        String list_of_mods = mod_ids.substring(2); // chop off the first comma
-        IncubusCore.LOG.info("Devels loaded for: {}.", list_of_mods);
+        IncubusCore.LOG.info("Devels loaded for: {}.", String.join(", ", MOD_IDS));
         // Save on shutdown
         Runtime.getRuntime().addShutdownHook(new Thread(Devel::save));
-    }
-
-    @Environment(EnvType.CLIENT)
-    static void clientInit(){
-        // We don't need to do all the fancy stuff for this method, since
-        // it should already be covered by the common init.
-        Runtime.getRuntime().addShutdownHook(new Thread(Devel::clientSave));
     }
 
     /**
@@ -89,38 +59,21 @@ public final class Devel {
     }
 
     private static void save(){
-        for (var devel : DEVELS) {
-            IncubusCore.LOG.info("Saving devel log for {}.", devel.mod_id);
-            var logFile = directory.resolve(Path.of(devel.mod_id + "_todo_server.txt"));
+        for (var mod_id : MOD_IDS) {
+            IncubusCore.LOG.info("Saving devel log for {}.", mod_id);
+            var logFile = directory.resolve(Path.of(mod_id + "_todo_server.txt"));
 
             try (var writer = new UncheckedWriter(Files.newBufferedWriter(logFile, StandardCharsets.UTF_8))) {
-                devel.dumpStrings(writer, "Bad features", BAD_FEATURES);
+                dumpStrings(mod_id, writer, "Bad features", BAD_FEATURES);
             } catch (UncheckedIOException | IOException e) {
-                IncubusCore.LOG.error("Failed to write \"{}\" devel log for mod \"{}\".", logFile.toString(), devel.mod_id);
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    private static void clientSave(){
-        for (var devel : DEVELS) {
-            IncubusCore.LOG.info("Saving client devel log for {}.", devel.mod_id);
-            var logFile = directory.resolve(Path.of(devel.mod_id + "_todo_client.txt"));
-
-            try (var writer = new UncheckedWriter(Files.newBufferedWriter(logFile, StandardCharsets.UTF_8))) {
-                devel.dumpIds(writer, "Missing textures", MISSING_TEXTURES);
-                devel.dumpIds(writer, "Textures with broken metadata", BAD_TEXTURES);
-                devel.dumpStrings(writer, "Missing language keys", MISSING_LANGUAGE_KEYS);
-            } catch (UncheckedIOException | IOException e) {
-                IncubusCore.LOG.error("Failed to write \"{}\" client devel log for mod \"{}\".", logFile.toString(), devel.mod_id);
+                IncubusCore.LOG.error("Failed to write \"{}\" devel log for mod \"{}\".", logFile.toString(), mod_id);
                 e.printStackTrace();
             }
         }
     }
 
     @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
-    private void dumpIds(UncheckedWriter writer, String message, Collection<Identifier> ids){
+    private static void dumpIds(String mod_id, UncheckedWriter writer, String message, Collection<Identifier> ids){
         synchronized(ids){
             if(!ids.isEmpty()){
                 writer.write(message + ":\n");
@@ -133,7 +86,7 @@ public final class Devel {
     }
 
     @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
-    private void dumpStrings(UncheckedWriter writer, String message, Collection<String> strings){
+    private static void dumpStrings(String mod_id, UncheckedWriter writer, String message, Collection<String> strings){
         synchronized(strings){
             if(!strings.isEmpty()){
                 writer.write(message + ":\n");
@@ -141,6 +94,35 @@ public final class Devel {
                         .filter(s -> s.contains(mod_id))
                         .sorted(String::compareTo)
                         .forEachOrdered((id)->writer.write("    " + id + '\n'));
+            }
+        }
+    }
+
+    @Environment(EnvType.CLIENT)
+    static final class ClientDevel {
+        static final Set<Identifier> MISSING_TEXTURES = new HashSet<>();
+        static final Set<Identifier> BAD_TEXTURES = new HashSet<>();
+        static final Set<String> MISSING_LANGUAGE_KEYS = new HashSet<>();
+
+        static void clientInit(){
+            // We don't need to do all the fancy stuff for this method, since
+            // it should already be covered by the common init.
+            Runtime.getRuntime().addShutdownHook(new Thread(ClientDevel::clientSave));
+        }
+
+        private static void clientSave(){
+            for (var mod_id : MOD_IDS) {
+                IncubusCore.LOG.info("Saving client devel log for {}.", mod_id);
+                var logFile = directory.resolve(Path.of(mod_id + "_todo_client.txt"));
+
+                try (var writer = new UncheckedWriter(Files.newBufferedWriter(logFile, StandardCharsets.UTF_8))) {
+                    dumpIds(mod_id, writer, "Missing textures", MISSING_TEXTURES);
+                    dumpIds(mod_id, writer, "Textures with broken metadata", BAD_TEXTURES);
+                    dumpStrings(mod_id, writer, "Missing language keys", MISSING_LANGUAGE_KEYS);
+                } catch (UncheckedIOException | IOException e) {
+                    IncubusCore.LOG.error("Failed to write \"{}\" client devel log for mod \"{}\".", logFile.toString(), mod_id);
+                    e.printStackTrace();
+                }
             }
         }
     }

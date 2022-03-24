@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "IngredientMixin",
+    "blocklikeentities.ServerWorldMixin",
     "devel.server.ChunkRegionMixin",
     "entity.BlockEntityMixin",
     "entity.EntityDamageSourceMixin",
@@ -16,6 +17,8 @@
     "world.gen.chunk.NoiseChunkGeneratorMixin"
   ],
   "client": [
+    "blocklikeentities.client.ClientWorldMixin",
+    "blocklikeentities.client.ClientPlayerEntityMixin",
     "client.CapeMixin",
     "client.GameRendererMixin",
     "client.InterpFixMixin",

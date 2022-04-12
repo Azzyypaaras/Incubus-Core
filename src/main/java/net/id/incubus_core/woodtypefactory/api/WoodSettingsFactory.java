@@ -89,6 +89,13 @@ public record WoodSettingsFactory(MapColor woodColor, MapColor barkColor, MapCol
     }
 
     /**
+     * @return The settings for a potted sapling of this wood type.
+     */
+    public AbstractBlock.Settings pottedSapling() {
+        return copy(POTTED_OAK_SAPLING);
+    }
+
+    /**
      * @return The settings for a leaves block of this wood type.
      */
     public AbstractBlock.Settings leaves() {

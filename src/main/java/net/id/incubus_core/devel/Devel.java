@@ -22,9 +22,9 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 public final class Devel {
-    private static final String[] MOD_IDS = IncubusDevel.Config.MODS;
+    private static final String[] MOD_IDS = IncubusDevel.DevelConfig.MODS;
     private static final boolean isDevel = FabricLoader.getInstance().isDevelopmentEnvironment();
-    private static Path directory = IncubusDevel.Config.DIRECTORY;
+    private static Path directory = IncubusDevel.DevelConfig.DIRECTORY;
 
     static final Set<String> BAD_FEATURES = new HashSet<>();
 

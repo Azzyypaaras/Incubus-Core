@@ -25,7 +25,7 @@ public abstract class ChunkRegionMixin{
             )
     )
     private void isValidForSetBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir){
-        if(IncubusDevel.Config.PRINT_SETBLOCK_STACK_TRACE){
+        if(IncubusDevel.DevelConfig.PRINT_SETBLOCK_STACK_TRACE){
             StackTraceElement[] trace = Thread.currentThread().getStackTrace();
             for(StackTraceElement traceElement : trace){
                 if(traceElement.getModuleName() != null){

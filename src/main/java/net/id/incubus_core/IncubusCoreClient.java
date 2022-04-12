@@ -23,6 +23,7 @@ public class IncubusCoreClient implements ClientModInitializer {
 
         if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
             IncubusDevel.initClient();
+            DevInit.clientInit();
         }
     }
 }

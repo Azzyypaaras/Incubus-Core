@@ -1,4 +1,4 @@
-package net.id.incubus_core.util;
+package net.id.incubus_core.woodtypefactory.api;
 
 
 import net.fabricmc.fabric.mixin.object.builder.AbstractBlockSettingsAccessor;
@@ -22,8 +22,8 @@ import static net.minecraft.block.Blocks.OAK_WALL_SIGN;
  * @param plankColor The color of the wooden planks for this wood type
  */
 @SuppressWarnings("unused")
-public record WoodTypeFactory(MapColor woodColor, MapColor barkColor, MapColor leafColor,
-                               MapColor plankColor) {
+public record WoodSettingsFactory(MapColor woodColor, MapColor barkColor, MapColor leafColor,
+                                  MapColor plankColor) {
 
     private static final AbstractBlock.ContextPredicate never = (state, view, pos) -> false;
     private static final AbstractBlock.ContextPredicate always = (state, view, pos) -> true;
@@ -31,7 +31,7 @@ public record WoodTypeFactory(MapColor woodColor, MapColor barkColor, MapColor l
     /**
      * With this constructor, the plankColor is inferred to be the same as the woodColor.
      */
-    public WoodTypeFactory(MapColor woodColor, MapColor barkColor, MapColor leafColor) {
+    public WoodSettingsFactory(MapColor woodColor, MapColor barkColor, MapColor leafColor) {
         this(woodColor, barkColor, leafColor, woodColor);
     }
 
@@ -39,7 +39,7 @@ public record WoodTypeFactory(MapColor woodColor, MapColor barkColor, MapColor l
      * With this constructor, the plankColor is inferred to be the same as the woodColor,
      * and the leaf color is inferred to be dark green.
      */
-    public WoodTypeFactory(MapColor woodColor, MapColor barkColor) {
+    public WoodSettingsFactory(MapColor woodColor, MapColor barkColor) {
         this(woodColor, barkColor, MapColor.DARK_GREEN, woodColor);
     }
 
@@ -47,8 +47,8 @@ public record WoodTypeFactory(MapColor woodColor, MapColor barkColor, MapColor l
      * @return A WoodTypeFactory that is the same as this one, but with a different specified leaf color.
      *         Note: This does not mutate this WoodTypeFactory, but rather makes a new one.
      */
-    public WoodTypeFactory withLeafColor(MapColor color) {
-        return new WoodTypeFactory(this.woodColor, this.barkColor, color, this.plankColor);
+    public WoodSettingsFactory withLeafColor(MapColor color) {
+        return new WoodSettingsFactory(this.woodColor, this.barkColor, color, this.plankColor);
     }
 
     /**
@@ -178,6 +178,13 @@ public record WoodTypeFactory(MapColor woodColor, MapColor barkColor, MapColor l
      */
     public AbstractBlock.Settings wallSign() {
         return copy(OAK_WALL_SIGN).mapColor(this.plankColor);
+    }
+
+    /**
+     * @return The settings for a chest block of this wood type
+     */
+    public AbstractBlock.Settings chest() {
+        return copy(CHEST).mapColor(plankColor);
     }
 
     private static AbstractBlock.Settings aural(AbstractBlock.Settings settings) {

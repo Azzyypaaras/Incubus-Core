@@ -5,7 +5,10 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
+import net.id.incubus_core.condition.IncubusCondition;
 import net.id.incubus_core.dev.DevInit;
+import net.id.incubus_core.devel.Devel;
+import net.id.incubus_core.devel.IncubusDevel;
 import net.id.incubus_core.misc.IncubusToolMaterials;
 import net.id.incubus_core.misc.WorthinessChecker;
 import net.id.incubus_core.misc.item.DebugFlameItem;
@@ -33,12 +36,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
+import java.util.SplittableRandom;
 
 
 public class IncubusCore implements ModInitializer {
 
 	public static final String MODID = "incubus_core";
 	public static final Logger LOG = LogManager.getLogger(MODID);
+
+	public static final SplittableRandom RANDOM = new SplittableRandom(System.currentTimeMillis());
 
 	public static final Block RENDER_TEST_BLOCK = registerBlock("render_test", new RenderTestBlock(FabricBlockSettings.copyOf(Blocks.AMETHYST_BLOCK).nonOpaque().luminance(5).blockVision((state, world, pos) -> false).allowsSpawning((state, world, pos, type) -> false).suffocates((state, world, pos) -> false).solidBlock((state, world, pos) -> false)));
 	public static final BlockEntityType<RenderTestBlockEntity> RENDER_TEST_BLOCK_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(RenderTestBlockEntity::new, RENDER_TEST_BLOCK).build();
@@ -53,6 +59,7 @@ public class IncubusCore implements ModInitializer {
 
 		WorthinessChecker.init();
 		RegistryRegistry.init();
+		IncubusCondition.init();
 
 		registerItem("lunarian_saber", new LunarianSaberItem(IncubusToolMaterials.LUNARIAN, 1, 0F, new FabricItemSettings()));
 		registerItem("hand_piston", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).maxCount(1), false));
@@ -61,9 +68,10 @@ public class IncubusCore implements ModInitializer {
 		registerItem("sacred_disc_1", new IncubusMusicDiscItem(0, DUPED_SHOVELS, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.EPIC)));
 		registerItem("render_test", new BlockItem(RENDER_TEST_BLOCK, new FabricItemSettings()));
 		registerBE("render_test", RENDER_TEST_BLOCK_ENTITY_TYPE);
-		
+
 		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			DevInit.commonInit();
+			IncubusDevel.init();
 		}
 	}
 

@@ -28,6 +28,10 @@ repositories {
 		name = "TerraformersMC"
 		url = "https://maven.terraformersmc.com/releases/"
 	}
+	maven {
+		name = "Ladysnake Libs"
+		url = "https://ladysnake.jfrog.io/artifactory/mods"
+	}
 //	maven {
 //		url = "https://maven.shedaniel.me/"
 //	}
@@ -41,6 +45,13 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_version}"))
+
+	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_version}"))
+
+	// Implement Trinkets for parachutes, rings etc.
+	modImplementation(include("dev.emi:trinkets:${project.trinkets_version}"))
 
 	modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 //	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"

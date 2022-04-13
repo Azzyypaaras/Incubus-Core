@@ -40,6 +40,9 @@
     "minecraft": "*"
   },
   "custom": {
+    "cardinal-components": [
+      "incubus_core:condition_manager"
+    ],
     "modmenu": {
       "links": {
         "modmenu.discord": "https://discord.gg/vAa35wQ2ZP"

@@ -14,11 +14,6 @@ public final class Config {
     private Config(){}
 
     /**
-     * Allows for overriding the holiday.
-     */
-    public static final String HOLIDAY_OVERRIDE = getString(IncubusCore.locate("holiday_override"), null);
-
-    /**
      * @return Whether the mod with the specified id is loaded.
      */
     public static boolean isLoaded(String id){

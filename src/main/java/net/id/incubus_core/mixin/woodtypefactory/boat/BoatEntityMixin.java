@@ -16,7 +16,7 @@ public abstract class BoatEntityMixin {
     public abstract BoatEntity.Type getBoatType();
 
     @Inject(method = "asItem", at = @At(value = "FIELD", target = "Lnet/minecraft/item/Items;OAK_BOAT:Lnet/minecraft/item/Item;", opcode = Opcodes.GETSTATIC), cancellable = true)
-    private void checkAetherBoats(CallbackInfoReturnable<Item> cir) {
+    private void checkCustomBoats(CallbackInfoReturnable<Item> cir) {
         BoatEntity.Type type = this.getBoatType();
         if (type != BoatEntity.Type.OAK) {
             for (var entry : BoatFactory.BOAT_FACTORIES){

@@ -1,5 +1,7 @@
 package net.id.incubus_core.util;
 
+import net.id.incubus_core.IncubusCore;
+
 import java.util.Calendar;
 import java.util.function.Predicate;
 
@@ -8,7 +10,7 @@ import java.util.function.Predicate;
  * <p>
  * The order of this enum is important, the first holiday (minus none) in this enum is picked first.
  * <p>
- * You can set the property the_aether.holiday_override to a valid holiday to override it.
+ * You can set the property incubus_core.holiday_override to a valid holiday to override it.
  */
 public enum IncubusHoliday {
     /**
@@ -48,6 +50,11 @@ public enum IncubusHoliday {
     }),
     ;
 
+    /**
+     * Allows for overriding the holiday.
+     */
+    public static final String HOLIDAY_OVERRIDE = Config.getString(IncubusCore.locate("holiday_override"), null);
+
     private final String name;
     private final Predicate<Calendar> predicate;
 
@@ -60,9 +67,9 @@ public enum IncubusHoliday {
     
     static {
         IncubusHoliday holiday = NONE;
-        if (Config.HOLIDAY_OVERRIDE != null) {
+        if (HOLIDAY_OVERRIDE != null) {
             for (var value : values()) {
-                if (value.getName().equals(Config.HOLIDAY_OVERRIDE)) {
+                if (value.getName().equals(HOLIDAY_OVERRIDE)) {
                     holiday = value;
                     break;
                 }

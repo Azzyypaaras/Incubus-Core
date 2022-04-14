@@ -202,7 +202,9 @@ public record WoodTypeFactory(@NotNull String modId,
 
     /**
      * Puts blocks on their correct render layer.
+     * <br>Note: Only call this method client-side.
      */
+    @Environment(EnvType.CLIENT)
     public void registerRenderLayers() {
         RenderLayer cutout = RenderLayer.getCutout();
         if (this.sapling != null) BlockRenderLayerMap.INSTANCE.putBlock(this.sapling, cutout);
@@ -256,7 +258,10 @@ public record WoodTypeFactory(@NotNull String modId,
     }
 
     /**
-     * Must be called in order for things to render properly
+     * Must be called in order for block entities to render properly
+     * <br>Note: Only call this method client-side.
+     * <br>Note: Will not register render layers.
+     * @see #registerRenderLayers()
      */
     @Environment(EnvType.CLIENT)
     public void registerClient() {

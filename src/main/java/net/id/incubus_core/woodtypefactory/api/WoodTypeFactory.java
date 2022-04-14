@@ -2,11 +2,15 @@ package net.id.incubus_core.woodtypefactory.api;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.id.incubus_core.woodtypefactory.api.boat.BoatFactory;
 import net.id.incubus_core.woodtypefactory.api.chest.ChestFactory;
 import net.id.incubus_core.woodtypefactory.api.sign.SignFactory;
 import net.minecraft.block.*;
 import net.minecraft.block.sapling.SaplingGenerator;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -100,6 +104,12 @@ public record WoodTypeFactory(@NotNull String modId,
     /**
      * Registers any remaining blocks for this wood that have not been registered yet.
      * <br>Note: Will not overwrite existing registered blocks, and will not break if there are any.
+     * <br>Note: Does not register any items.
+     * <br>Note: Does not register flammability, stripping, nor render layers.
+     * @see #registerRemainingItems(ItemGroup, ItemGroup, ItemGroup, ItemGroup)
+     * @see #registerFlammability()
+     * @see #registerStripping()
+     * @see #registerRenderLayers()
      */
     public void registerRemainingBlocks() {
         this.registerBlockSafely(this.sapling, this.woodName + "_sapling");
@@ -127,8 +137,16 @@ public record WoodTypeFactory(@NotNull String modId,
 
     /**
      * Registers any remaining items for this wood that have not been registered yet.
-     * <br>Note: Will not overwrite existing registered blocks, and will not break if there are any.
-     * <br>Note: This does not register a boat item
+     * <br>Note: Will not overwrite existing registered items, and will not break if there are any.
+     * <br>Note: Will not register items for blocks that have not been registered yet.
+     * <br>Note: Will not register a boat item.
+     * <br>Note: Will not register any blocks.
+     * <br>Note: Does not register flammability, stripping, nor render layers.
+     * @see #registerRemainingBlocks()
+     * @see #registerBoat(Item.Settings) 
+     * @see #registerFlammability()
+     * @see #registerStripping()
+     * @see #registerRenderLayers()
      */
     public void registerRemainingItems(ItemGroup blocks, ItemGroup decorations, ItemGroup doors, ItemGroup buttonsAndPressurePlates) {
         Item.Settings decorGroup = new Item.Settings().group(decorations);
@@ -155,9 +173,54 @@ public record WoodTypeFactory(@NotNull String modId,
     }
 
     /**
+     * Registers blocks to FAPI's FlammableBlockRegistry.
+     */
+    public void registerFlammability() {
+        var registry = FlammableBlockRegistry.getDefaultInstance();
+        // Burns like logs
+        registry.add(this.log, 5, 5);
+        registry.add(this.wood, 5, 5);
+        registry.add(this.strippedLog, 5, 5);
+        registry.add(this.strippedWood, 5, 5);
+        // Burns like leaves
+        if (this.leaves != null) registry.add(this.leaves, 60, 30);
+        // Burns like planks
+        registry.add(this.planks, 20, 5);
+        registry.add(this.fence, 20, 5);
+        registry.add(this.fenceGate, 20, 5);
+        registry.add(this.slab, 20, 5);
+        registry.add(this.stairs, 20, 5);
+    }
+
+    /**
+     * Registers blocks to FAPI's StrippableBlockRegistry
+     */
+    public void registerStripping() {
+        StrippableBlockRegistry.register(this.log, this.strippedLog);
+        StrippableBlockRegistry.register(this.wood, this.strippedWood);
+    }
+
+    /**
+     * Puts blocks on their correct render layer.
+     */
+    public void registerRenderLayers() {
+        RenderLayer cutout = RenderLayer.getCutout();
+        if (this.sapling != null) BlockRenderLayerMap.INSTANCE.putBlock(this.sapling, cutout);
+        if (this.pottedSapling != null) BlockRenderLayerMap.INSTANCE.putBlock(this.pottedSapling, cutout);
+        if (this.leaves != null) BlockRenderLayerMap.INSTANCE.putBlock(this.leaves, RenderLayer.getCutoutMipped());
+        BlockRenderLayerMap.INSTANCE.putBlock(this.trapdoor, cutout);
+        BlockRenderLayerMap.INSTANCE.putBlock(this.door, cutout);
+    }
+
+    /**
      * Registers any remaining blocks and items for this wood that have not been registered yet.
      * <br>Note: Will not overwrite existing registered blocks, and will not break if there are any.
-     * <br>Note: This does not register a boat
+     * <br>Note: Will not register a boat.
+     * <br>Note: Does not register flammability, stripping, nor render layers.
+     * @see #registerBoat(Item.Settings)
+     * @see #registerFlammability()
+     * @see #registerStripping()
+     * @see #registerRenderLayers()
      */
     public void registerRemaining(ItemGroup blocks, ItemGroup decorations, ItemGroup doors, ItemGroup buttonsAndPressurePlates) {
         registerRemainingBlocks();
@@ -187,6 +250,7 @@ public record WoodTypeFactory(@NotNull String modId,
 
         Identifier identifier = new Identifier(this.modId, id);
         if (Registry.ITEM.containsId(identifier)) return; // Nice try.
+        if (!Registry.BLOCK.containsId(identifier)) return; // Almost got me there.
 
         Registry.register(Registry.ITEM, identifier, new BlockItem(block, settings));
     }

@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.woodtypefactory.api.boat.BoatFactory;
 import net.id.incubus_core.woodtypefactory.api.chest.ChestFactory;
 import net.id.incubus_core.woodtypefactory.api.sign.SignFactory;
@@ -17,37 +18,71 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SignItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 /**
  * A factory for all things wood.
- * <br>The default constructor isn't recommended. Instead, use the ::of method,
- * which does eveything for you
+ * <br>This class will create all the blocks and items for you, as
+ * long as you specify what blocks and items you want.
+ * Example:
+ * <pre>
+ * // We want to create a wood type called incubus wood.
+ * private static final WoodTypeFactory INCUBUS =
+ *     new WoodTypeFactory(
+ *         new WoodSettingsFactory(MapColor.BLACK, MapColor.BRIGHT_RED),
+ *         "incubus_core", "incubus"
+ *     );
+ *
+ * public static final PillarBlock INCUBUS_LOG = INCUBUS.log();
+ * public static final Block INCUBUS_PLANKS = INCUBUS.planks();
+ * public static final ChestBlock INCUBUS_CHEST = INCUBUS.chestFactory().chest;
+ * public static final Item INCUBUS_BOAT = INCUBUS.boatFactory(GROUP).item;
+ * ... etc.
+ *
+ * ... later on ...
+ * public static void init() {
+ *     INCUBUS.registerRemaining();
+ *     INCUBUS.registerStrippable();
+ *     INCUBUS.registerFlammable();
+ * }
+ *
+ * public static void initClient() {
+ *     INCUBUS.registerClient();
+ *     INCUBUS.registerRenderLayers();
+ * }
+ * </pre>
+ *
  * @author Jack Papel
  */
 @SuppressWarnings("unused")
-public record WoodTypeFactory(@NotNull String modId,
-                              @NotNull String woodName,
-                              @Nullable SaplingBlock sapling,
-                              @Nullable FlowerPotBlock pottedSapling,
-                              PillarBlock log,
-                              PillarBlock wood,
-                              PillarBlock strippedLog,
-                              PillarBlock strippedWood,
-                              @Nullable LeavesBlock leaves,
-                              Block planks,
-                              FenceBlock fence,
-                              FenceGateBlock fenceGate,
-                              SlabBlock slab,
-                              StairsBlock stairs,
-                              TrapdoorBlock trapdoor,
-                              DoorBlock door,
-                              WoodenButtonBlock button,
-                              PressurePlateBlock pressurePlate,
-                              SignFactory signFactory,
-                              @Nullable ChestFactory chestFactory
-) {
+public final class WoodTypeFactory {
+    public final @NotNull String modId;
+    public final @NotNull String woodName;
+    public final @NotNull WoodSettingsFactory settings;
+    private final @Nullable SaplingGenerator saplingGenerator;
+    private SaplingBlock sapling;
+    private FlowerPotBlock pottedSapling;
+    private PillarBlock log;
+    private PillarBlock wood;
+    private PillarBlock strippedLog;
+    private PillarBlock strippedWood;
+    private LeavesBlock leaves;
+    private Block planks;
+    private FenceBlock fence;
+    private FenceGateBlock fenceGate;
+    private SlabBlock slab;
+    private StairsBlock stairs;
+    private TrapdoorBlock trapdoor;
+    private DoorBlock door;
+    private WoodenButtonBlock button;
+    private PressurePlateBlock pressurePlate;
+    private SignFactory signFactory;
+    private ChestFactory chestFactory;
+    private BoatFactory boatFactory;
 
     /**
      * Creates a new WoodTypeFactory with the given parameters
@@ -56,53 +91,52 @@ public record WoodTypeFactory(@NotNull String modId,
      * @param woodName The id of this wood, before any affixes.
      *                 For example: The woodName for "birch_planks" and "birch_stairs" is "birch"
      * @param saplingGenerator The sapling generator for this wood's tree.
-     * @param hasChest Whether to create a new chest type for this kind of wood.
      */
-    public static WoodTypeFactory of(WoodSettingsFactory settings, String modId, String woodName,
-                                     @Nullable SaplingGenerator saplingGenerator, boolean hasChest,
-                                     boolean hasLeaves) {
-        boolean hasSapling = saplingGenerator != null;
-        SaplingBlock sapling = new IncubusSaplingBlock(saplingGenerator, settings.sapling());
-
-        Block planks = new Block(settings.planks());
-
-        return new WoodTypeFactory(
-                modId,
-                woodName,
-                hasSapling ? sapling : null,
-                hasSapling ? new FlowerPotBlock(sapling, settings.pottedSapling()) : null,
-                new PillarBlock(settings.log()),
-                new PillarBlock(settings.wood()),
-                new PillarBlock(settings.strippedLog()),
-                new PillarBlock(settings.strippedWood()),
-                hasLeaves ? new LeavesBlock(settings.leaves()) : null,
-                planks,
-                new FenceBlock(settings.planks()),
-                new FenceGateBlock(settings.planks()),
-                new SlabBlock(settings.planks()),
-                new IncubusStairsBlock(planks.getDefaultState(), settings.planks()),
-                new IncubusTrapdoorBlock(settings.planks()),
-                new IncubusDoorBlock(settings.door()),
-                new IncubusWoodenButtonBlock(settings.button()),
-                new IncubusWoodenPressurePlateBlock(settings.pressurePlate()),
-                new SignFactory(modId, woodName, settings.sign(), settings.wallSign()),
-                hasChest ? new ChestFactory(modId, woodName, settings.chest()) : null
-        );
+    public WoodTypeFactory(@NotNull WoodSettingsFactory settings, @NotNull String modId, @NotNull String woodName,
+                           @Nullable SaplingGenerator saplingGenerator) {
+        this.settings = settings;
+        this.modId = modId;
+        this.woodName = woodName;
+        this.saplingGenerator = saplingGenerator;
     }
 
     /**
-     * Creates a new WoodTypeFactory with the given parameters, without a chest, a sapling block, or leaves
+     * Creates a new WoodTypeFactory with the given parameters
+     * @param settings The WoodSettingsFactory associated with this kind of wood.
+     * @param woodId The identifier of this wood, before any affixes.
+     *                 For example: The woodId for "minecraft:birch_planks" and "minecraft:birch_stairs" is "minecraft:birch"
+     * @param saplingGenerator The sapling generator for this wood's tree.
+     */
+    public WoodTypeFactory(@NotNull WoodSettingsFactory settings, @NotNull Identifier woodId,
+                           @Nullable SaplingGenerator saplingGenerator) {
+        this(settings, woodId.getNamespace(), woodId.getPath(), saplingGenerator);
+    }
+
+    /**
+     * Creates a new WoodTypeFactory with the given parameters, without a sapling generator.
+     * <br>Note: Using this constructor, you cannot use the ::sapling() or ::pottedSapling() methods.
      * @param settings The WoodSettingsFactory associated with this kind of wood.
      * @param modId The id of your mod, obviously.
      * @param woodName The id of this wood, before any affixes.
      *                 For example: The woodName for "birch_planks" and "birch_stairs" is "birch"
      */
-    public static WoodTypeFactory of(WoodSettingsFactory settings, String modId, String woodName) {
-        return of(settings, modId, woodName, null, false, false);
+    public WoodTypeFactory(WoodSettingsFactory settings, String modId, String woodName) {
+        this(settings, modId, woodName, null);
     }
 
     /**
-     * Registers any remaining blocks for this wood that have not been registered yet.
+     * Creates a new WoodTypeFactory with the given parameters
+     * <br>Note: Using this constructor, you cannot use the ::sapling() or ::pottedSapling() methods.
+     * @param settings The WoodSettingsFactory associated with this kind of wood.
+     * @param woodId The identifier of this wood, before any affixes.
+     *                 For example: The woodId for "minecraft:birch_planks" and "minecraft:birch_stairs" is "minecraft:birch"
+     */
+    public WoodTypeFactory(@NotNull WoodSettingsFactory settings, @NotNull Identifier woodId) {
+        this(settings, woodId.getNamespace(), woodId.getPath());
+    }
+
+    /**
+     * Registers any blocks for this wood type that have been created but not registered.
      * <br>Note: Will not overwrite existing registered blocks, and will not break if there are any.
      * <br>Note: Does not register any items.
      * <br>Note: Does not register flammability, stripping, nor render layers.
@@ -128,22 +162,24 @@ public record WoodTypeFactory(@NotNull String modId,
         this.registerBlockSafely(this.door, this.woodName + "_door");
         this.registerBlockSafely(this.button, this.woodName + "_button");
         this.registerBlockSafely(this.pressurePlate, this.woodName + "_pressure_plate");
-        this.registerBlockSafely(this.signFactory.signBlock, this.woodName + "_sign");
-        this.registerBlockSafely(this.signFactory.wallSignBlock, this.woodName + "_wall_sign");
+        if (this.signFactory != null) {
+            this.registerBlockSafely(this.signFactory.signBlock, this.woodName + "_sign");
+            this.registerBlockSafely(this.signFactory.wallSignBlock, this.woodName + "_wall_sign");
+        }
         if (this.chestFactory != null) {
             this.registerBlockSafely(this.chestFactory.chest, this.chestFactory.chestName + "_chest");
         }
     }
 
     /**
-     * Registers any remaining items for this wood that have not been registered yet.
+     * Registers any remaining items for this wood that have been created but not registered.
      * <br>Note: Will not overwrite existing registered items, and will not break if there are any.
-     * <br>Note: Will not register items for blocks that have not been registered yet.
+     * <br>Note: Will not register items for blocks that have not been registered.
      * <br>Note: Will not register a boat item.
      * <br>Note: Will not register any blocks.
      * <br>Note: Does not register flammability, stripping, nor render layers.
      * @see #registerRemainingBlocks()
-     * @see #registerBoat(Item.Settings) 
+     * @see #boatFactory(Item.Settings)
      * @see #registerFlammability()
      * @see #registerStripping()
      * @see #registerRenderLayers()
@@ -166,7 +202,9 @@ public record WoodTypeFactory(@NotNull String modId,
         this.registerBlockItemSafely(this.door, this.woodName + "_door", new Item.Settings().group(doors));
         this.registerBlockItemSafely(this.button, this.woodName + "_button", new Item.Settings().group(buttonsAndPressurePlates));
         this.registerBlockItemSafely(this.pressurePlate, this.woodName + "_pressure_plate", new Item.Settings().group(buttonsAndPressurePlates));
-        this.registerItemSafely(new SignItem(new Item.Settings().group(decorations).maxCount(16), this.signFactory.signBlock, this.signFactory.wallSignBlock), this.woodName + "_sign");
+        if (this.signFactory != null) {
+            this.registerItemSafely(new SignItem(new Item.Settings().group(decorations).maxCount(16), this.signFactory.signBlock, this.signFactory.wallSignBlock), this.woodName + "_sign");
+        }
         if (this.chestFactory != null) {
             this.registerBlockItemSafely(this.chestFactory.chest, this.chestFactory.chestName + "_chest", new Item.Settings().group(decorations));
         }
@@ -176,28 +214,38 @@ public record WoodTypeFactory(@NotNull String modId,
      * Registers blocks to FAPI's FlammableBlockRegistry.
      */
     public void registerFlammability() {
-        var registry = FlammableBlockRegistry.getDefaultInstance();
         // Burns like logs
-        registry.add(this.log, 5, 5);
-        registry.add(this.wood, 5, 5);
-        registry.add(this.strippedLog, 5, 5);
-        registry.add(this.strippedWood, 5, 5);
+        safelyRegisterFlammability(this.log, 5, 5);
+        safelyRegisterFlammability(this.wood, 5, 5);
+        safelyRegisterFlammability(this.strippedLog, 5, 5);
+        safelyRegisterFlammability(this.strippedWood, 5, 5);
         // Burns like leaves
-        if (this.leaves != null) registry.add(this.leaves, 60, 30);
+        safelyRegisterFlammability(this.leaves, 60, 30);
         // Burns like planks
-        registry.add(this.planks, 20, 5);
-        registry.add(this.fence, 20, 5);
-        registry.add(this.fenceGate, 20, 5);
-        registry.add(this.slab, 20, 5);
-        registry.add(this.stairs, 20, 5);
+        safelyRegisterFlammability(this.planks, 20, 5);
+        safelyRegisterFlammability(this.fence, 20, 5);
+        safelyRegisterFlammability(this.fenceGate, 20, 5);
+        safelyRegisterFlammability(this.slab, 20, 5);
+        safelyRegisterFlammability(this.stairs, 20, 5);
+    }
+
+    private void safelyRegisterFlammability(Block block, int burn, int spread) {
+        if (block == null) return;
+
+        FlammableBlockRegistry.getDefaultInstance().add(block, burn, spread);
     }
 
     /**
      * Registers blocks to FAPI's StrippableBlockRegistry
      */
+    @SuppressWarnings("SpellCheckingInspection")
     public void registerStripping() {
-        StrippableBlockRegistry.register(this.log, this.strippedLog);
-        StrippableBlockRegistry.register(this.wood, this.strippedWood);
+        if (this.log != null && this.strippedLog != null) {
+            StrippableBlockRegistry.register(this.log, this.strippedLog);
+        }
+        if (this.wood != null & this.strippedWood != null) {
+            StrippableBlockRegistry.register(this.wood, this.strippedWood);
+        }
     }
 
     /**
@@ -207,19 +255,26 @@ public record WoodTypeFactory(@NotNull String modId,
     @Environment(EnvType.CLIENT)
     public void registerRenderLayers() {
         RenderLayer cutout = RenderLayer.getCutout();
-        if (this.sapling != null) BlockRenderLayerMap.INSTANCE.putBlock(this.sapling, cutout);
-        if (this.pottedSapling != null) BlockRenderLayerMap.INSTANCE.putBlock(this.pottedSapling, cutout);
-        if (this.leaves != null) BlockRenderLayerMap.INSTANCE.putBlock(this.leaves, RenderLayer.getCutoutMipped());
-        BlockRenderLayerMap.INSTANCE.putBlock(this.trapdoor, cutout);
-        BlockRenderLayerMap.INSTANCE.putBlock(this.door, cutout);
+        safelyRegisterRenderLayer(this.sapling, cutout);
+        safelyRegisterRenderLayer(this.pottedSapling, cutout);
+        safelyRegisterRenderLayer(this.leaves, RenderLayer.getCutoutMipped());
+        safelyRegisterRenderLayer(this.trapdoor, cutout);
+        safelyRegisterRenderLayer(this.door, cutout);
+    }
+
+    @Environment(EnvType.CLIENT)
+    private void safelyRegisterRenderLayer(Block block, RenderLayer layer) {
+        if (block == null) return;
+
+        BlockRenderLayerMap.INSTANCE.putBlock(block, layer);
     }
 
     /**
-     * Registers any remaining blocks and items for this wood that have not been registered yet.
+     * Registers any remaining blocks and items for this wood that have not been created but not registered.
      * <br>Note: Will not overwrite existing registered blocks, and will not break if there are any.
      * <br>Note: Will not register a boat.
      * <br>Note: Does not register flammability, stripping, nor render layers.
-     * @see #registerBoat(Item.Settings)
+     * @see #boatFactory(Item.Settings)
      * @see #registerFlammability()
      * @see #registerStripping()
      * @see #registerRenderLayers()
@@ -232,8 +287,10 @@ public record WoodTypeFactory(@NotNull String modId,
     private void registerBlockSafely(Block block, String id) {
         if (block == null) return; // Nope.
 
-        Identifier identifier = new Identifier(this.modId, id);
-        if (Registry.BLOCK.containsId(identifier)) return; // Nice try.
+        Identifier identifier = new Identifier(modId, id);
+        if (Registry.BLOCK.containsId(identifier)) {
+            throw new IllegalStateException("Block " + identifier + " already registered before " + this + "tried to register it!");
+        }
 
         Registry.register(Registry.BLOCK, identifier, block);
     }
@@ -241,8 +298,10 @@ public record WoodTypeFactory(@NotNull String modId,
     private void registerItemSafely(Item item, String id) {
         if (item == null) return; // Nope.
 
-        Identifier identifier = new Identifier(this.modId, id);
-        if (Registry.ITEM.containsId(identifier)) return; // Nice try.
+        Identifier identifier = new Identifier(modId, id);
+        if (Registry.BLOCK.containsId(identifier)) {
+            throw new IllegalStateException("Item " + identifier + " already registered before " + this + "tried to register it!");
+        }
 
         Registry.register(Registry.ITEM, identifier, item);
     }
@@ -251,8 +310,12 @@ public record WoodTypeFactory(@NotNull String modId,
         if (block == null) return; // Nope.
 
         Identifier identifier = new Identifier(this.modId, id);
-        if (Registry.ITEM.containsId(identifier)) return; // Nice try.
-        if (!Registry.BLOCK.containsId(identifier)) return; // Almost got me there.
+        if (Registry.ITEM.containsId(identifier)) {
+            throw new IllegalStateException("Item " + identifier + " already registered before " + this + "tried to register it!");
+        }
+        if (!Registry.BLOCK.containsId(identifier)) {
+            new RuntimeException(this + ": Register your blocks before your items! Perpetrator: " + identifier).printStackTrace();
+        }
 
         Registry.register(Registry.ITEM, identifier, new BlockItem(block, settings));
     }
@@ -273,23 +336,167 @@ public record WoodTypeFactory(@NotNull String modId,
         }
     }
 
-    /**
-     * Note: Don't call this method or its overloaded methods twice, or else it registers the boat and item twice,
-     * which it cannot do.
-     * @return The boat factory for this wood type.
-     */
-    public BoatFactory registerBoat(Item.Settings settings) {
+    @Contract(value = "_ -> new")
+    public BoatFactory boatFactory(Item.Settings settings) {
+        if (this.boatFactory != null) return boatFactory;
+        if (this.planks == null) throw new IllegalStateException("Create a planks block for " + this + " before creating a boat!");
+
         return new BoatFactory(settings, this.planks(), this.modId, this.woodName);
     }
 
-    /**
-     * Note: Don't call this method or its overloaded methods twice, or else it registers the boat and item twice,
-     * which it cannot do.
-     * @return The boat factory for this wood type.
-     */
     @SuppressWarnings("UnusedReturnValue")
-    public BoatFactory registerBoat(ItemGroup group) {
-        return registerBoat(new Item.Settings().group(group).maxCount(16));
+    @Contract(value = "_ -> new")
+    public BoatFactory boatFactory(ItemGroup group) {
+        return boatFactory(new Item.Settings().group(group).maxCount(16));
+    }
+
+    /**
+     * Can only be called if a saplingGenerator was specified in {@link #WoodTypeFactory(WoodSettingsFactory, String, String, SaplingGenerator) the constructor}.
+     */
+    @Contract(value = "-> new")
+    public SaplingBlock sapling() {
+        if (this.sapling != null) return sapling;
+        if (this.saplingGenerator == null) {
+            throw new IllegalStateException("Specify a sapling generator for " + this + " if you want a sapling!");
+        }
+
+        return this.sapling = new IncubusSaplingBlock(this.saplingGenerator, this.settings.sapling());
+    }
+
+    /**
+     * Can only be called after {@link #sapling()}
+     */
+    @Contract(value = "-> new")
+    public FlowerPotBlock pottedSapling() {
+        if (this.pottedSapling != null) return pottedSapling;
+        if (this.sapling == null) {
+            throw new IllegalStateException("Create a sapling for " + this + " first if you want a potted sapling!");
+        }
+
+        return this.pottedSapling = new FlowerPotBlock(this.sapling, this.settings.pottedSapling());
+    }
+
+    @Contract(value = "-> new")
+    public PillarBlock log() {
+        if (this.log != null) return log;
+        return this.log = new PillarBlock(this.settings.log());
+    }
+
+    @Contract(value = "-> new")
+    public PillarBlock wood() {
+        if (this.wood != null) return wood;
+        return this.wood = new PillarBlock(this.settings.wood());
+    }
+
+    @Contract(value = "-> new")
+    public PillarBlock strippedLog() {
+        if (this.strippedLog != null) return strippedLog;
+        return this.strippedLog = new PillarBlock(this.settings.strippedLog());
+    }
+
+    @Contract(value = "-> new")
+    public PillarBlock strippedWood() {
+        if (this.strippedWood != null) return strippedWood;
+        return this.strippedWood = new PillarBlock(this.settings.strippedWood());
+    }
+
+    @Contract(value = "-> new")
+    public LeavesBlock leaves() {
+        if (this.leaves != null) return leaves;
+        return this.leaves = new LeavesBlock(this.settings.leaves());
+    }
+
+    @Contract(value = "-> new")
+    public Block planks() {
+        if (this.planks != null) return planks;
+        return this.planks = new Block(this.settings.planks());
+    }
+
+    @Contract(value = "-> new")
+    public FenceBlock fence() {
+        if (this.fence != null) return fence;
+        return this.fence = new FenceBlock(this.settings.planks());
+    }
+
+    @Contract(value = "-> new")
+    public FenceGateBlock fenceGate() {
+        if (this.fenceGate != null) return fenceGate;
+        return this.fenceGate = new FenceGateBlock(this.settings.planks());
+    }
+
+    @Contract(value = "-> new")
+    public SlabBlock slab() {
+        if (this.slab != null) return slab;
+        return this.slab = new SlabBlock(this.settings.planks());
+    }
+
+    /**
+     * Can only be called after {@link #planks()}
+     */
+    @Contract(value = "-> new")
+    public StairsBlock stairs() {
+        if (this.stairs != null) return stairs;
+        if (this.planks == null) {
+            throw new IllegalStateException("Create planks for " + this + " first if you want stairs!");
+        }
+        return this.stairs = new IncubusStairsBlock(this.planks.getDefaultState(), this.settings.planks());
+    }
+
+    @Contract(value = "-> new")
+    public TrapdoorBlock trapdoor() {
+        if (this.trapdoor != null) return trapdoor;
+        return this.trapdoor = new IncubusTrapdoorBlock(this.settings.trapdoor());
+    }
+
+    @Contract(value = "-> new")
+    public DoorBlock door() {
+        if (this.door != null) return door;
+        return this.door = new IncubusDoorBlock(this.settings.door());
+    }
+
+    @Contract(value = "-> new")
+    public WoodenButtonBlock button() {
+        if (this.button != null) return button;
+        return this.button = new IncubusWoodenButtonBlock(this.settings.button());
+    }
+
+    @Contract(value = "-> new")
+    public PressurePlateBlock pressurePlate() {
+        if (this.pressurePlate != null) return pressurePlate;
+        return this.pressurePlate = new IncubusWoodenPressurePlateBlock(this.settings.pressurePlate());
+    }
+
+    @Contract(value = "-> new")
+    public SignFactory signFactory() {
+        if (this.signFactory != null) return signFactory;
+        return this.signFactory = new SignFactory(modId, woodName, settings.sign(), settings.wallSign());
+    }
+
+    @Contract(value = "-> new")
+    public ChestFactory chestFactory() {
+        if (this.chestFactory != null) return chestFactory;
+        return this.chestFactory = new ChestFactory(modId, woodName, settings.chest());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (WoodTypeFactory) obj;
+        return Objects.equals(this.modId, that.modId) &&
+                Objects.equals(this.woodName, that.woodName) &&
+                Objects.equals(this.saplingGenerator, that.saplingGenerator) &&
+                Objects.equals(this.settings, that.settings);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(modId, woodName, saplingGenerator, settings);
+    }
+
+    @Override
+    public String toString() {
+        return "WoodTypeFactory[" + modId + ":" + woodName +"]";
     }
 
     /*
@@ -300,26 +507,31 @@ public record WoodTypeFactory(@NotNull String modId,
             super(generator, settings);
         }
     }
+
     public static class IncubusStairsBlock extends StairsBlock {
         public IncubusStairsBlock(BlockState baseBlockState, Settings settings) {
             super(baseBlockState, settings);
         }
     }
+
     public static class IncubusTrapdoorBlock extends TrapdoorBlock {
         public IncubusTrapdoorBlock(Settings settings) {
             super(settings);
         }
     }
+
     public static class IncubusDoorBlock extends DoorBlock {
         public IncubusDoorBlock(Settings settings) {
             super(settings);
         }
     }
+
     public static class IncubusWoodenButtonBlock extends WoodenButtonBlock {
         public IncubusWoodenButtonBlock(Settings settings) {
             super(settings);
         }
     }
+
     public static class IncubusWoodenPressurePlateBlock extends PressurePlateBlock {
         public IncubusWoodenPressurePlateBlock(Settings settings) {
             super(ActivationRule.EVERYTHING, settings);

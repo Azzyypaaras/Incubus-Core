@@ -7,8 +7,9 @@ import net.id.incubus_core.IncubusCore;
 import net.id.incubus_core.dev.item.EntityDeathMessageTestItem;
 import net.id.incubus_core.woodtypefactory.api.WoodSettingsFactory;
 import net.id.incubus_core.woodtypefactory.api.WoodTypeFactory;
+import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
-import net.minecraft.block.sapling.OakSaplingGenerator;
+import net.minecraft.block.PillarBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -32,27 +33,19 @@ public final class DevInit {
     private static final Item ENTITY_DEATH_MESSAGE_ITEM = new EntityDeathMessageTestItem(new FabricItemSettings().group(GROUP));
 
     private static final WoodTypeFactory INCUBUS_WOOD =
-            WoodTypeFactory.of(
+            new WoodTypeFactory(
                     new WoodSettingsFactory(MapColor.BLACK, MapColor.BRIGHT_RED),
-                    MODID, "incubus",
-                    new OakSaplingGenerator(), // Not writing a whole sapling generator for this demo.
-                    true, // Create a chest
-                    true // Create leaves
+                    MODID, "incubus"
             );
-    /*
-    You would probably still want to have static constants for your wood, like
     private static final PillarBlock INCUBUS_LOG = INCUBUS_WOOD.log();
-    private static final PillarBlock INCUBUS_WOOD = INCUBUS_WOOD.wood();
-    ... etc.
-
-    I've opted not to do that in order to avoid clutter, since this is only a test.
-     */
+    private static final Block INCUBUS_PLANKS = INCUBUS_WOOD.planks();
+    private static final Block INCUBUS_CHEST = INCUBUS_WOOD.chestFactory().chest;
+    private static final Item INCUBUS_BOAT = INCUBUS_WOOD.boatFactory(GROUP).item;
 
     public static void commonInit() {
         registerItem("entity_death_message_item", ENTITY_DEATH_MESSAGE_ITEM);
 
         INCUBUS_WOOD.registerRemaining(GROUP, GROUP, GROUP, GROUP);
-        INCUBUS_WOOD.registerBoat(GROUP);
     }
 
     public static void clientInit() {

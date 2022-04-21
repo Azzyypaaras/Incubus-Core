@@ -376,55 +376,46 @@ public final class WoodTypeFactory {
         return this.pottedSapling = new FlowerPotBlock(this.sapling, this.settings.pottedSapling());
     }
 
-    @Contract(value = "-> new")
     public PillarBlock log() {
         if (this.log != null) return log;
         return this.log = new PillarBlock(this.settings.log());
     }
 
-    @Contract(value = "-> new")
     public PillarBlock wood() {
         if (this.wood != null) return wood;
         return this.wood = new PillarBlock(this.settings.wood());
     }
 
-    @Contract(value = "-> new")
     public PillarBlock strippedLog() {
         if (this.strippedLog != null) return strippedLog;
         return this.strippedLog = new PillarBlock(this.settings.strippedLog());
     }
 
-    @Contract(value = "-> new")
     public PillarBlock strippedWood() {
         if (this.strippedWood != null) return strippedWood;
         return this.strippedWood = new PillarBlock(this.settings.strippedWood());
     }
 
-    @Contract(value = "-> new")
     public LeavesBlock leaves() {
         if (this.leaves != null) return leaves;
         return this.leaves = new LeavesBlock(this.settings.leaves());
     }
 
-    @Contract(value = "-> new")
     public Block planks() {
         if (this.planks != null) return planks;
         return this.planks = new Block(this.settings.planks());
     }
 
-    @Contract(value = "-> new")
     public FenceBlock fence() {
         if (this.fence != null) return fence;
         return this.fence = new FenceBlock(this.settings.planks());
     }
 
-    @Contract(value = "-> new")
     public FenceGateBlock fenceGate() {
         if (this.fenceGate != null) return fenceGate;
         return this.fenceGate = new FenceGateBlock(this.settings.planks());
     }
 
-    @Contract(value = "-> new")
     public SlabBlock slab() {
         if (this.slab != null) return slab;
         return this.slab = new SlabBlock(this.settings.planks());
@@ -433,7 +424,6 @@ public final class WoodTypeFactory {
     /**
      * Can only be called after {@link #planks()}
      */
-    @Contract(value = "-> new")
     public StairsBlock stairs() {
         if (this.stairs != null) return stairs;
         if (this.planks == null) {
@@ -442,37 +432,31 @@ public final class WoodTypeFactory {
         return this.stairs = new IncubusStairsBlock(this.planks.getDefaultState(), this.settings.planks());
     }
 
-    @Contract(value = "-> new")
     public TrapdoorBlock trapdoor() {
         if (this.trapdoor != null) return trapdoor;
         return this.trapdoor = new IncubusTrapdoorBlock(this.settings.trapdoor());
     }
 
-    @Contract(value = "-> new")
     public DoorBlock door() {
         if (this.door != null) return door;
         return this.door = new IncubusDoorBlock(this.settings.door());
     }
 
-    @Contract(value = "-> new")
     public WoodenButtonBlock button() {
         if (this.button != null) return button;
         return this.button = new IncubusWoodenButtonBlock(this.settings.button());
     }
 
-    @Contract(value = "-> new")
     public PressurePlateBlock pressurePlate() {
         if (this.pressurePlate != null) return pressurePlate;
         return this.pressurePlate = new IncubusWoodenPressurePlateBlock(this.settings.pressurePlate());
     }
 
-    @Contract(value = "-> new")
     public SignFactory signFactory() {
         if (this.signFactory != null) return signFactory;
         return this.signFactory = new SignFactory(modId, woodName, settings.sign(), settings.wallSign());
     }
 
-    @Contract(value = "-> new")
     public ChestFactory chestFactory() {
         if (this.chestFactory != null) return chestFactory;
         return this.chestFactory = new ChestFactory(modId, woodName, settings.chest());

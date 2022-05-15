@@ -1,7 +1,6 @@
 package net.id.incubus_core.be;
 
 import com.google.common.base.Preconditions;
-import net.id.incubus_core.IncubusCore;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -10,51 +9,13 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
-@SuppressWarnings("unused")
-public abstract class SpacedTickBlockEntity extends BlockEntity {
-    protected boolean initialized;
-    private final int tickSpacing, tickOffset;
+public abstract class IncubusBaseBE extends BlockEntity {
+
     private boolean shouldClientRemesh = true;
 
-    public SpacedTickBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int tickSpacing) {
+    public IncubusBaseBE(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        this.tickSpacing = tickSpacing;
-        this.tickOffset = tickSpacing > 1 ? IncubusCore.RANDOM.nextInt(tickSpacing) : 0;
-    }
-
-    public SpacedTickBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        this(type, pos, state, 0);
-    }
-
-    public static <T extends BlockEntity> void tick(World world, BlockPos pos, BlockState state, T be) {
-        var entity = (SpacedTickBlockEntity) be;
-        if(!entity.initialized) {
-            entity.initialized = entity.initialize(world, pos, state);
-        }
-        if(entity.hasInitialized()) {
-            entity.tick(pos, state);
-            if(!world.isClient()) {
-                entity.tickServer(pos, state);
-            }
-        }
-    }
-
-    protected abstract void tick(BlockPos pos, BlockState state);
-
-    public void tickServer(BlockPos pos, BlockState state) {}
-
-    public boolean allowTick() {
-        return tickSpacing == 0 || (world.getTime() + tickOffset) % tickSpacing == 0;
-    }
-
-    protected boolean initialize(World world, BlockPos pos, BlockState state) {
-        return true;
-    }
-
-    public boolean hasInitialized() {
-        return initialized;
     }
 
     @Override
@@ -103,12 +64,10 @@ public abstract class SpacedTickBlockEntity extends BlockEntity {
 
     public void save(NbtCompound nbt) {
         super.writeNbt(nbt);
-        nbt.putBoolean("initialized", initialized);
     }
 
     public void load(NbtCompound nbt) {
         super.readNbt(nbt);
-        initialized = nbt.getBoolean("initialized");
     }
 
     public abstract void saveClient(NbtCompound nbt);

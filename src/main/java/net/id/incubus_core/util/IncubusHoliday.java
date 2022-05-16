@@ -33,7 +33,7 @@ public enum IncubusHoliday {
      * <p>
      * Minecraft uses this to spawn bipeds with carved pumpkin headgear.
      */
-    HALLOWEEN("holoween", (calendar) ->
+    HALLOWEEN("halloween", (calendar) ->
         calendar.get(Calendar.MONTH) == Calendar.OCTOBER && calendar.get(Calendar.DATE) == 31
     ),
 

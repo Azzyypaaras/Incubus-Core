@@ -33,7 +33,7 @@ public class UuidHelper {
      */
     @Environment(EnvType.CLIENT)
     @Nullable
-    public static UUID findUuid(String playerName) throws IOException, HttpResponseException, TimeoutException {
+    public static UUID findUuid(String playerName) throws IOException, TimeoutException {
         UUID uuid = null;
 
         // Asynchronously search for a users UUID
@@ -43,8 +43,7 @@ public class UuidHelper {
             uuid = uuidFuture.get(TIMEOUT_IN_SECS, TimeUnit.SECONDS);
         }
         catch(ExecutionException ee) {
-            if(ee.getCause() instanceof HttpResponseException hre) throw hre;
-            else if(ee.getCause() instanceof IOException ioe) throw ioe;
+            if(ee.getCause() instanceof IOException ioe) throw ioe;
         }
         catch(TimeoutException te) {
             throw new TimeoutException("Timed out. Took longer than: " + TIMEOUT_IN_SECS + " seconds to complete");

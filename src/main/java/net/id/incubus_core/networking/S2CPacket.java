@@ -12,11 +12,14 @@ import net.minecraft.util.Identifier;
 
 import java.util.List;
 
+/**
+ * Server to Client Abstract packet
+ */
 public abstract class S2CPacket implements Packet, ClientPlayNetworking.PlayChannelHandler {
 
-    private List<ServerPlayerEntity> recipients;
+    private List<ServerPlayerEntity> recipients; // List of recipients to send the packet to
 
-    public S2CPacket() {}
+    public S2CPacket() {} // Default constructor, used when registering the packet
 
     public S2CPacket(List<ServerPlayerEntity> recipients) {
         this.recipients = recipients;
@@ -35,10 +38,19 @@ public abstract class S2CPacket implements Packet, ClientPlayNetworking.PlayChan
     @Override
     public void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
         this.read(buf);
-        client.execute(() -> execute(client, handler, buf, responseSender));
+        client.execute(() -> execute(client, handler, buf, responseSender)); // Switch from networking thread to client thread
     }
 
+    /**
+     * Executed after a packet is received on the client
+     */
     abstract void execute(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender);
 
-    public static <T extends S2CPacket> void register(Identifier id, T obj) { ClientPlayNetworking.registerGlobalReceiver(id, obj); }
+    /**
+     * Registers a Server to Client Packet
+     *
+     * @param id Packet identifier
+     * @param packetObj A reference to the packet class you want to register
+     */
+    public static <T extends S2CPacket> void register(Identifier id, T packetObj) { ClientPlayNetworking.registerGlobalReceiver(id, packetObj); }
 }

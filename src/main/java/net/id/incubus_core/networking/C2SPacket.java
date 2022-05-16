@@ -12,6 +12,9 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
+/**
+ * Client to Server Abstract packet
+ */
 public abstract class C2SPacket implements Packet, ServerPlayNetworking.PlayChannelHandler {
 
     @Environment(EnvType.CLIENT)
@@ -25,10 +28,19 @@ public abstract class C2SPacket implements Packet, ServerPlayNetworking.PlayChan
     @Override
     public void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
         this.read(buf);
-        server.execute(() -> execute(server, player, handler, buf, responseSender));
+        server.execute(() -> execute(server, player, handler, buf, responseSender)); // Switch from the network thread and execute on the server
     }
 
+    /**
+     * Executed after a packet is received on the server
+     */
     abstract void execute(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender);
 
-    public static <T extends C2SPacket> void register(Identifier id, T obj) { ServerPlayNetworking.registerGlobalReceiver(id, obj); }
+    /**
+     * Registers a Client to Server Packet
+     *
+     * @param id Packet identifier
+     * @param packetObj A reference to the packet class you want to register
+     */
+    public static <T extends C2SPacket> void register(Identifier id, T packetObj) { ServerPlayNetworking.registerGlobalReceiver(id, packetObj); }
 }

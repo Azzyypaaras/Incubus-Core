@@ -189,9 +189,6 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
         this.postTickMoveEntities();
 
         if (this.shouldCease()) this.cease();
-
-        // Drag
-        this.setVelocity(this.getVelocity().multiply(0.98D));
     }
 
     /**

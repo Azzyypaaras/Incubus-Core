@@ -195,7 +195,8 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
     }
 
     /**
-     * You likely won't need to override this method, but it moves entities to the top of this block.
+     * You likely won't need to override this method, but it imparts this block's
+     * momentum onto other entities.
      */
     public void postTickMoveEntities() {
         if (FallingBlock.canFallThrough(this.blockState)) return;
@@ -207,7 +208,8 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
                 entity.setOnGround(true);
 
                 // If we're about to stop touching, give the entity momentum.
-                if (!entity.getBoundingBox().offset(entity.getVelocity().multiply(2)).intersects(this.getBoundingBox())) {
+                if (!entity.getBoundingBox().offset(entity.getVelocity().multiply(2)).intersects(
+                        this.getBoundingBox().offset(this.getVelocity().multiply(2)))) {
                     entity.setVelocity(entity.getVelocity().add(this.getVelocity()));
                 }
             }

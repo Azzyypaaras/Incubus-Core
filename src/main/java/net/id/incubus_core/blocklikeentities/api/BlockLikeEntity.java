@@ -294,16 +294,16 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
     }
 
     /**
-     * End entity movememnt and become a block in the world (Removes this entity).
+     * End entity movement and become a block in the world (Removes this entity).
      */
     public void cease() {
         if (this.isRemoved()) {
             return;
         }
-        BlockPos blockPos = this.getBlockPos();
-        BlockState blockState = this.world.getBlockState(blockPos);
+        BlockPos pos = this.getBlockPos();
+        BlockState state = this.world.getBlockState(pos);
         // I don't like this
-        if (blockState.isOf(Blocks.MOVING_PISTON)) {
+        if (state.isOf(Blocks.MOVING_PISTON)) {
             this.setVelocity(this.getVelocity().multiply(0.7, 0.5, 0.7));
             return;
         }
@@ -357,6 +357,8 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
      * Break the block, spawn break particles, and drop stacks if it can.
      */
     public void breakApart() {
+        if (this.isRemoved()) return;
+
         this.discard();
         if (this.dropItem && this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
             Block.dropStacks(this.blockState, this.world, this.getBlockPos());

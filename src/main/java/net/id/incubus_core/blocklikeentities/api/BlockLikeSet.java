@@ -14,6 +14,7 @@ import java.util.function.Predicate;
  * <br>These are ticked every post-tick until destroyed. (Similar to {@link PostTickEntity})
  * @author Jack Papel
  */
+@SuppressWarnings("unused")
 public class BlockLikeSet {
     private static final Set<BlockLikeSet> structures = new HashSet<>();
     private final Map<Vec3i, BlockLikeEntity> entries;
@@ -71,6 +72,7 @@ public class BlockLikeSet {
 
         for (BlockLikeEntity block : entries.values()) {
             if (block.isRemoved()) {
+                // If one block ceases, the rest must as well.
                 World world = block.world;
                 BlockState state = block.getBlockState();
                 boolean success = world.getBlockState(block.getBlockPos()).isOf(state.getBlock());
@@ -81,19 +83,30 @@ public class BlockLikeSet {
     }
 
     public void land(BlockLikeEntity lander, boolean success) {
-        synchronize();
+        this.synchronize();
+
         for (BlockLikeEntity block : entries.values()) {
             if (block != lander) {
                 if (success) {
                     block.cease();
                 } else {
+                    World world = block.world;
+                    BlockState state = block.getBlockState();
+                    BlockPos pos = block.getBlockPos();
+
+                    // If the block has been set already, remove it. We want this BLE to break.
+                    // This is imperfect - if the block lands on a grass plant, say, then
+                    // the grass plant is already gone. But this should prevent duplications.
+                    if (world.getBlockState(pos).isOf(state.getBlock())) {
+                        world.removeBlock(pos, false);
+                    }
                     block.breakApart();
                 }
             }
             block.dropItem = false;
         }
         this.entries.clear();
-        structures.remove(this);
+        this.remove();
     }
 
     public BlockLikeEntity getMasterBlock() {
@@ -108,8 +121,8 @@ public class BlockLikeSet {
         structures.add(this);
     }
 
-    public boolean remove() {
-        return structures.remove(this);
+    public void remove() {
+        structures.remove(this);
     }
 
     /**

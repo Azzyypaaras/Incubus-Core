@@ -43,13 +43,13 @@ import java.util.Objects;
  *
  * ... later on ...
  * public static void init() {
- *     INCUBUS.registerRemaining();
+ *     INCUBUS.registerCreatedBlocksAndItems();
  *     INCUBUS.registerStrippable();
  *     INCUBUS.registerFlammable();
  * }
  *
  * public static void initClient() {
- *     INCUBUS.registerClient();
+ *     INCUBUS.registerBlockEntityRenderers();
  *     INCUBUS.registerRenderLayers();
  * }
  * </pre>

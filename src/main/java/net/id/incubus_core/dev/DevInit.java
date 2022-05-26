@@ -14,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -68,16 +67,17 @@ public final class DevInit {
     private static final PillarBlock INCUBUS_LOG = INCUBUS_WOOD.log();
     private static final Block INCUBUS_PLANKS = INCUBUS_WOOD.planks();
     private static final Block INCUBUS_CHEST = INCUBUS_WOOD.chestFactory().chest;
+    private static final Block INCUBUS_SIGN = INCUBUS_WOOD.signFactory().signBlock;
     private static final Item INCUBUS_BOAT = INCUBUS_WOOD.boatFactory(GROUP).item;
 
     public static void commonInit() {
         registerItem("entity_death_message_item", ENTITY_DEATH_MESSAGE_ITEM);
 
-        INCUBUS_WOOD.registerRemaining(GROUP, GROUP, GROUP, GROUP);
+        INCUBUS_WOOD.registerCreatedBlocksAndItems(GROUP, GROUP, GROUP, GROUP);
     }
 
     public static void clientInit() {
-        INCUBUS_WOOD.registerClient();
+        INCUBUS_WOOD.registerBlockEntityRenderers();
         Registry.register(IncubusCondition.CONDITION_REGISTRY, IncubusCore.locate("test_condition"), TEST_CONDITION);
     }
 }

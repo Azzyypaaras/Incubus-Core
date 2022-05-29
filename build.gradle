@@ -94,13 +94,17 @@ jar {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
+			artifactId archivesBaseName
 			from components.java
 		}
 	}
-
-	// select the repositories you want to publish to
 	repositories {
-		// uncomment to publish to the local maven
-		// mavenLocal()
+		maven {
+			url ='s3://maven.kyrptonaught.dev'
+			credentials(AwsCredentials) {
+				accessKey = System.getenv('maven-key-id')
+				secretKey = System.getenv('maven-key')
+			}
+		}
 	}
 }

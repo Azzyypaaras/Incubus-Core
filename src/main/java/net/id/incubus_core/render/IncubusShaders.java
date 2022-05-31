@@ -1,6 +1,8 @@
 package net.id.incubus_core.render;
 
-import ladysnake.satin.api.event.ShaderEffectRenderCallback;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import ladysnake.satin.api.event.PostWorldRenderCallbackV2;
 import ladysnake.satin.api.managed.ManagedFramebuffer;
 import ladysnake.satin.api.managed.ManagedShaderEffect;
 import ladysnake.satin.api.managed.ShaderEffectManager;
@@ -84,19 +86,26 @@ public class IncubusShaders extends RenderLayer {
 
     // Call me to enable bloom
     public static void enableBloom() {
+        if(!renderingBloom) {
+            initBloom();
+        }
         renderingBloom = true;
     }
-
-    public static void init() {
-        ShaderEffectRenderCallback.EVENT.register(tickDelta -> {
-            if (renderingBloom) {
-                SOFT_BLOOM.render(tickDelta);
-                HARD_BLOOM.render(tickDelta);
-                SOFT_BLOOM_BUFFER.clear(MinecraftClient.IS_SYSTEM_MAC);
-                HARD_BLOOM_BUFFER.clear(MinecraftClient.IS_SYSTEM_MAC);
-            }
+    
+    private static void initBloom() {
+        PostWorldRenderCallbackV2.EVENT.register((matrixStack, camera, tickDelta, nanoTime)->{
+            RenderSystem.enableBlend();
+            RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ZERO, GlStateManager.DstFactor.ONE);
+            SOFT_BLOOM.render(tickDelta);
+            HARD_BLOOM.render(tickDelta);
+            SOFT_BLOOM_BUFFER.clear(MinecraftClient.IS_SYSTEM_MAC);
+            HARD_BLOOM_BUFFER.clear(MinecraftClient.IS_SYSTEM_MAC);
+            MinecraftClient.getInstance().getFramebuffer().beginWrite(false);
+            RenderSystem.disableBlend();
         });
-
+    }
+    
+    public static void init() {
         if (Config.getBoolean(locate("enable_bloom"), false)) {
             enableBloom();
         }

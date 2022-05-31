@@ -6,6 +6,7 @@ import ladysnake.satin.api.event.PostWorldRenderCallbackV2;
 import ladysnake.satin.api.managed.ManagedFramebuffer;
 import ladysnake.satin.api.managed.ManagedShaderEffect;
 import ladysnake.satin.api.managed.ShaderEffectManager;
+import ladysnake.satin.api.managed.uniform.Uniform1f;
 import ladysnake.satin.api.util.RenderLayerHelper;
 import ladysnake.satin.mixin.client.render.RenderLayerAccessor;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -26,13 +27,15 @@ import static net.id.incubus_core.IncubusCore.locate;
 public class IncubusShaders extends RenderLayer {
     private static boolean renderingBloom = false;
 
-    public static final ManagedShaderEffect SOFT_BLOOM = ShaderEffectManager.getInstance().manage(new Identifier("shaders/post/soft_bloom.json"));
-    public static final ManagedShaderEffect HARD_BLOOM = ShaderEffectManager.getInstance().manage(new Identifier("shaders/post/hard_bloom.json"));
-    private static final ManagedFramebuffer SOFT_BLOOM_BUFFER = SOFT_BLOOM.getTarget("light_sources");
-    private static final ManagedFramebuffer HARD_BLOOM_BUFFER = HARD_BLOOM.getTarget("light_sources");
-    
+    public static final ManagedShaderEffect BLOOM = ShaderEffectManager.getInstance().manage(new Identifier("shaders/post/bloom.json"));
+    private static final ManagedFramebuffer BLOOM_BUFFER = BLOOM.getTarget("light_sources");
+
+    private static final Uniform1f BLOOM_RADIUS = BLOOM.findUniform1f("radius");
+    private static final Uniform1f BLOOM_DIVISOR = BLOOM.findUniform1f("divisor");
+
+
     // We need to do this outside of Satin's normal APIs because we require something they don't support.
-    public static final RenderLayer SOFT_BLOOM_RENDER_LAYER = RenderLayerAccessor.satin$of(
+    public static final RenderLayer BLOOM_RENDER_LAYER = RenderLayerAccessor.satin$of(
         "incubus_core_soft_bloom_overlay",
         VertexFormats.POSITION_COLOR,
         VertexFormat.DrawMode.QUADS,
@@ -46,30 +49,8 @@ public class IncubusShaders extends RenderLayer {
             .target(new Target(
                 "incubus_core_soft_bloom_target",
                 () -> {
-                    SOFT_BLOOM_BUFFER.copyDepthFrom(MinecraftClient.getInstance().getFramebuffer());
-                    SOFT_BLOOM_BUFFER.beginWrite(false);
-                },
-                () -> MinecraftClient.getInstance().getFramebuffer().beginWrite(false)
-            ))
-            .lightmap(DISABLE_LIGHTMAP)
-            .build(true)
-    );
-    public static final RenderLayer HARD_BLOOM_RENDER_LAYER = RenderLayerAccessor.satin$of(
-        "incubus_core_hard_bloom_overlay",
-        VertexFormats.POSITION_COLOR,
-        VertexFormat.DrawMode.QUADS,
-        256,
-        false,
-        true,
-        MultiPhaseParameters.builder()
-            .texture(new Texture(locate("textures/special/blank.png"), false, false))
-            .shader(RenderPhase.LIGHTNING_SHADER)
-            .transparency(RenderPhase.LIGHTNING_TRANSPARENCY)
-            .target(new Target(
-                "incubus_core_hard_bloom_target",
-                () -> {
-                    HARD_BLOOM_BUFFER.copyDepthFrom(MinecraftClient.getInstance().getFramebuffer());
-                    HARD_BLOOM_BUFFER.beginWrite(false);
+                    BLOOM_BUFFER.copyDepthFrom(MinecraftClient.getInstance().getFramebuffer());
+                    BLOOM_BUFFER.beginWrite(false);
                 },
                 () -> MinecraftClient.getInstance().getFramebuffer().beginWrite(false)
             ))
@@ -93,13 +74,13 @@ public class IncubusShaders extends RenderLayer {
     }
     
     private static void initBloom() {
+
+
         PostWorldRenderCallbackV2.EVENT.register((matrixStack, camera, tickDelta, nanoTime)->{
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ZERO, GlStateManager.DstFactor.ONE);
-            SOFT_BLOOM.render(tickDelta);
-            HARD_BLOOM.render(tickDelta);
-            SOFT_BLOOM_BUFFER.clear(MinecraftClient.IS_SYSTEM_MAC);
-            HARD_BLOOM_BUFFER.clear(MinecraftClient.IS_SYSTEM_MAC);
+            BLOOM.render(tickDelta);
+            BLOOM_BUFFER.clear(MinecraftClient.IS_SYSTEM_MAC);
             MinecraftClient.getInstance().getFramebuffer().beginWrite(false);
             RenderSystem.disableBlend();
         });
@@ -110,8 +91,7 @@ public class IncubusShaders extends RenderLayer {
             enableBloom();
         }
 
-        RenderLayerHelper.registerBlockRenderLayer(SOFT_BLOOM_RENDER_LAYER);
-        RenderLayerHelper.registerBlockRenderLayer(HARD_BLOOM_RENDER_LAYER);
+        RenderLayerHelper.registerBlockRenderLayer(BLOOM_RENDER_LAYER);
 
         // Don't remove this next line, or you may embarrass yourself in front of Pyrofab
         BlockEntityRendererRegistry.register(IncubusCore.RENDER_TEST_BLOCK_ENTITY_TYPE, context -> new RenderTestBlockEntityRenderer());

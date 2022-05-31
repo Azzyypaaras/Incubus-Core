@@ -11,17 +11,18 @@ out vec4 fragColor;
 const float pi = 3.141592654;
 const float tau = pi * 2;
 
-const float radius = 15.0;
+uniform float Radius = 15.0;
+uniform float Divisor = 33;
 
 void main() {
     vec4 blur = texture(LightSourceSampler, texCoord);
 
     for (float d = 0.0; d < tau; d += tau / 16) {
         for (float i = 0.33; i <= 1.0; i += 0.33) {
-            blur += texture(LightSourceSampler, texCoord + vec2(cos(d), sin(d)) * oneTexel * radius * i);
+            blur += texture(LightSourceSampler, texCoord + vec2(cos(d), sin(d)) * oneTexel * Radius * i);
         }
     }
 
-    blur /= 33;
+    blur /= Divisor;
     fragColor = vec4((texture(DiffuseSampler, texCoord) + blur).rgb, 1);
 }

@@ -5,7 +5,7 @@
   ],
   "passes": [
     {
-      "name": "soft_bloom",
+      "name": "bloom",
       "intarget": "minecraft:main",
       "outtarget": "main",
       "auxtargets": [

@@ -15,6 +15,7 @@ import net.id.incubus_core.misc.item.HandPistonItem;
 import net.id.incubus_core.misc.item.IncubusMusicDiscItem;
 import net.id.incubus_core.misc.item.LunarianSaberItem;
 import net.id.incubus_core.potion.ZonkedEffect;
+import net.id.incubus_core.recipe.IncubusRecipes;
 import net.id.incubus_core.render.test.RenderTestBlock;
 import net.id.incubus_core.render.test.RenderTestBlockEntity;
 import net.id.incubus_core.systems.RegistryRegistry;
@@ -58,6 +59,7 @@ public class IncubusCore implements ModInitializer {
 		WorthinessChecker.init();
 		RegistryRegistry.init();
 		IncubusCondition.init();
+		IncubusRecipes.init();
 
 		registerItem("lunarian_saber", new LunarianSaberItem(IncubusToolMaterials.LUNARIAN, 1, 0F, new FabricItemSettings()));
 		registerItem("hand_piston", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).maxCount(1), false));

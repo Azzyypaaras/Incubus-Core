@@ -1,5 +1,6 @@
-package net.id.incubus_core.render;
+package net.id.incubus_core.render.test;
 
+import net.id.incubus_core.render.RenderHelper;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;

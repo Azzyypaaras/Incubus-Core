@@ -1,4 +1,4 @@
-package net.id.incubus_core.render;
+package net.id.incubus_core.render.test;
 
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;

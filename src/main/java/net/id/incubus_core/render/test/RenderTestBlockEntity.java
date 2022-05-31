@@ -1,8 +1,7 @@
-package net.id.incubus_core.render;
+package net.id.incubus_core.render.test;
 
 import com.google.common.base.Preconditions;
 import net.id.incubus_core.IncubusCore;
-import net.id.incubus_core.dev.DevInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.world.ClientWorld;

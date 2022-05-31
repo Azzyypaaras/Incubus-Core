@@ -25,12 +25,10 @@
     "blocklikeentities.client.ClientPlayerEntityMixin",
     "blocklikeentities.client.ClientWorldMixin",
     "client.CapeMixin",
-    "client.GameRendererMixin",
     "client.InterpFixMixin",
     "client.Sprite$AnimationAccessor",
     "client.Sprite$AnimationFrameAccessor",
     "client.SpriteAccessor",
-    "client.WorldRendererMixin",
     "devel.client.SpriteAtlasTextureMixin",
     "devel.client.TranslationStorageMixin",
     "woodtypefactory.client.TexturedRenderLayersMixin"

@@ -61,7 +61,7 @@ public class RenderHelper {
         consumer.vertex(matrix.getPositionMatrix(), 0, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
     }
 
-    public static void drawBloomCube(VertexConsumerProvider vertexConsumers, MatrixStack matrices, Vec3f color, float trans, boolean hard) {
+    public static void drawBloomCube(VertexConsumerProvider vertexConsumers, MatrixStack matrices, Vec3f color, float trans) {
         MatrixStack.Entry matrix = matrices.peek();
         VertexConsumer consumer = vertexConsumers.getBuffer(IncubusShaders.BLOOM_RENDER_LAYER);
 

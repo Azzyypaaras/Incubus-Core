@@ -9,9 +9,9 @@ import ladysnake.satin.api.managed.ShaderEffectManager;
 import ladysnake.satin.api.managed.uniform.Uniform1f;
 import ladysnake.satin.api.util.RenderLayerHelper;
 import ladysnake.satin.mixin.client.render.RenderLayerAccessor;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.id.incubus_core.IncubusCore;
+import net.id.incubus_core.render.test.RenderTestBlockEntityRenderer;
 import net.id.incubus_core.util.Config;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
@@ -31,7 +31,6 @@ public class IncubusShaders extends RenderLayer {
 
     private static final Uniform1f BLOOM_RADIUS = BLOOM.findUniform1f("Radius");
     private static final Uniform1f BLOOM_DIVISOR = BLOOM.findUniform1f("Divisor");
-
 
     // We need to do this outside of Satin's normal APIs because we require something they don't support.
     public static final RenderLayer BLOOM_RENDER_LAYER = RenderLayerAccessor.satin$of(
@@ -55,29 +54,6 @@ public class IncubusShaders extends RenderLayer {
             ))
             .lightmap(DISABLE_LIGHTMAP)
             .build(true)
-    );
-
-    public static final RenderLayer BLOOM_BLOCK_RENDER_LAYER = RenderLayerAccessor.satin$of(
-            "incubus_core_block_bloom_overlay",
-            VertexFormats.POSITION_COLOR_TEXTURE_LIGHT_NORMAL,
-            VertexFormat.DrawMode.QUADS,
-            2097152,
-            false,
-            true,
-            MultiPhaseParameters.builder()
-                    .texture(RenderPhase.BLOCK_ATLAS_TEXTURE)
-                    .shader(RenderPhase.TRANSLUCENT_SHADER)
-                    .transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
-                    .target(new Target(
-                            "incubus_core_block_bloom_target",
-                            () -> {
-                                BLOOM_BUFFER.copyDepthFrom(MinecraftClient.getInstance().getFramebuffer());
-                                BLOOM_BUFFER.beginWrite(false);
-                            },
-                            () -> MinecraftClient.getInstance().getFramebuffer().beginWrite(false)
-                    ))
-                    .lightmap(DISABLE_LIGHTMAP)
-                    .build(true)
     );
 
     public static final RenderLayer BLOOM_BASE = RenderLayerConstructor.buildMultiPhase("bloom_base", VertexFormats.POSITION_COLOR, VertexFormat.DrawMode.QUADS, 256, false, true, RenderLayer.MultiPhaseParameters.builder().texture(new RenderPhase.Texture(locate("textures/special/blank.png"), false, false)).shader(RenderPhase.LIGHTNING_SHADER).transparency(RenderPhase.LIGHTNING_TRANSPARENCY).target(RenderPhase.WEATHER_TARGET).lightmap(DISABLE_LIGHTMAP).build(true));
@@ -114,9 +90,9 @@ public class IncubusShaders extends RenderLayer {
         }
 
         RenderLayerHelper.registerBlockRenderLayer(BLOOM_RENDER_LAYER);
-        RenderLayerHelper.registerBlockRenderLayer(BLOOM_BLOCK_RENDER_LAYER);
 
         // Don't remove this next line, or you may embarrass yourself in front of Pyrofab
-        BlockRenderLayerMap.INSTANCE.putBlock(IncubusCore.RENDER_TEST_BLOCK, BLOOM_BLOCK_RENDER_LAYER);
+        // Bloom doesn't work with baked quads right now, that needs to be fixed at some point.
+        BlockEntityRendererRegistry.register(IncubusCore.RENDER_TEST_BLOCK_ENTITY_TYPE, RenderTestBlockEntityRenderer::new);
     }
 }

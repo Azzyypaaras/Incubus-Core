@@ -20,19 +20,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-// TODO finish docs
 @SuppressWarnings("unused")
 public class ConditionManager implements AutoSyncedComponent, CommonTickingComponent, PlayerComponent<ConditionManager> {
 
     private final LivingEntity target;
     private final List<ConditionTracker> conditionTrackers = new ArrayList<>();
 
+    /**
+     * Internal
+     */
     public ConditionManager(LivingEntity target) {
         this.target = target;
         var conditions = Condition.getValidConditions(target.getType());
         conditions.forEach(condition -> conditionTrackers.add(new ConditionTracker(condition)));
     }
 
+    /**
+     * Internal
+     */
     @Override
     public void tick() {
         conditionTrackers.forEach(tracker -> {
@@ -53,6 +58,9 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         });
     }
 
+    /**
+     * Internal
+     */
     @Override
     @Environment(EnvType.CLIENT)
     public void clientTick() {
@@ -67,6 +75,9 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         });
     }
 
+    /**
+     * Sets the persistence of the condition to the given value
+     */
     public boolean set(Condition condition, Persistence persistence, float value) {
         return Optional.ofNullable(this.getConditionTracker(condition)).map(tracker -> {
             switch (persistence) {
@@ -119,7 +130,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
     }
 
     /**
-     * Syncs this.
+     * Syncs this with the server and client
      */
     public void trySync() {
         IncubusCondition.CONDITION_MANAGER_KEY.sync(this.target);
@@ -129,6 +140,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      * @return Whether this entity is immune to the specified condition.
      */
     public boolean isImmuneTo(Condition condition) {
+        // Should be equivalent to return Condition#isApplicableTo(this.target);
         return conditionTrackers.stream().noneMatch(tracker -> tracker.getCondition() == condition);
     }
 
@@ -237,6 +249,9 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         return modifiers;
     }
 
+    /**
+     * Internal
+     */
     @Override
     public void readFromNbt(NbtCompound tag) {
         conditionTrackers.forEach(tracker -> {
@@ -247,6 +262,9 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         });
     }
 
+    /**
+     * Internal
+     */
     @Override
     public void writeToNbt(NbtCompound tag) {
         conditionTrackers.forEach(tracker -> {
@@ -256,11 +274,17 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         });
     }
 
+    /**
+     * Internal
+     */
     @Override
     public void copyFrom(ConditionManager other) {
         PlayerComponent.super.copyFrom(other);
     }
 
+    /**
+     * Internal
+     */
     @Override
     public void copyForRespawn(ConditionManager original, boolean lossless, boolean keepInventory, boolean sameCharacter) {
         if(sameCharacter) {
@@ -268,6 +292,9 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         }
     }
 
+    /**
+     * Internal
+     */
     @Override
     public boolean shouldCopyForRespawn(boolean lossless, boolean keepInventory, boolean sameCharacter) {
         return false;

@@ -77,6 +77,9 @@ public enum Severity {
         return this.triggerPercent >= severity.triggerPercent;
     }
 
+    /**
+     * @return The translation key of this Severity <br> e.g. {@code "condition.severity.negligible"}.
+     */
     public final String getTranslationKey(){
         return "condition.severity." + this.name().toLowerCase();
     }

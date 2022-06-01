@@ -1,6 +1,5 @@
 package net.id.incubus_core.condition.base;
 
-
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;

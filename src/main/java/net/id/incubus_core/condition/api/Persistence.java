@@ -31,6 +31,8 @@ public enum Persistence {
     CONSTANT;
 
     /**
+     * @deprecated
+     * Use {@link #getTranslationKey()} instead. <br>
      * The translation key. <br> e.g. {@code "condition.persistence.temporary"}.
      */
     @Deprecated(forRemoval = true, since = "1.7.0")

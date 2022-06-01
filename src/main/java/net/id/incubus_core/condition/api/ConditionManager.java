@@ -13,7 +13,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -175,7 +174,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         return false;
     }
 
-    public float getScaledDecay(Persistence persistence, @NotNull Condition condition) {
+    public float getScaledDecay(Persistence persistence, Condition condition) {
         return switch (persistence) {
             case TEMPORARY -> condition.tempDecay;
             case CHRONIC -> condition.chronDecay;
@@ -183,7 +182,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         } * getDecayMultiplier(condition);
     }
 
-    public float getDecayMultiplier(@NotNull Condition condition) {
+    public float getDecayMultiplier(Condition condition) {
         var modifiers = getActiveModifiers();
         if(!modifiers.isEmpty()) {
             return (float) modifiers.stream()
@@ -193,15 +192,15 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         return 1;
     }
 
-    public float getScaledSeverity(@NotNull Condition condition) {
+    public float getScaledSeverity(Condition condition) {
         return MathHelper.clamp((getRawCondition(condition) / getScalingValueForCondition(condition)) * getSeverityMultiplier(condition), 0, 1);
     }
 
-    public float getSeverityMultiplier(@NotNull Condition condition) {
+    public float getSeverityMultiplier(Condition condition) {
         return (float) getActiveModifiers().stream().mapToDouble(mod -> mod.getSeverityMultiplier(condition)).average().orElse(1);
     }
 
-    public float getScalingValueForCondition(@NotNull Condition condition) {
+    public float getScalingValueForCondition(Condition condition) {
         var modifiers = getActiveModifiers();
         float scalingValue = condition.scalingValue;
         scalingValue *= modifiers.stream().mapToDouble(mod -> mod.getScalingMultiplier(condition)).average().orElse(1);
@@ -209,7 +208,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         return scalingValue;
     }
 
-    public float getRawCondition(@NotNull Condition condition) {
+    public float getRawCondition(Condition condition) {
         return Optional.ofNullable(this.getConditionTracker(condition)).map(tracker -> {
             float partial = tracker.getPartialCondition();
             partial += getActiveModifiers().stream().mapToDouble(mod -> mod.getConstantCondition(condition)).sum();
@@ -254,7 +253,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      * Internal
      */
     @Override
-    public void readFromNbt(@NotNull NbtCompound tag) {
+    public void readFromNbt(NbtCompound tag) {
         conditionTrackers.forEach(tracker -> {
             var condition = tracker.getCondition();
             if(tag.contains(condition.getId().toString())) {
@@ -268,7 +267,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      * Internal
      */
     @Override
-    public void writeToNbt(@NotNull NbtCompound tag) {
+    public void writeToNbt(NbtCompound tag) {
         conditionTrackers.forEach(tracker -> {
             var nbt = new NbtCompound();
             tracker.writeToNbt(nbt);
@@ -280,7 +279,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      * Internal
      */
     @Override
-    public void copyFrom(@NotNull ConditionManager other) {
+    public void copyFrom(ConditionManager other) {
         PlayerComponent.super.copyFrom(other);
     }
 
@@ -288,7 +287,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      * Internal
      */
     @Override
-    public void copyForRespawn(@NotNull ConditionManager original, boolean lossless, boolean keepInventory, boolean sameCharacter) {
+    public void copyForRespawn(ConditionManager original, boolean lossless, boolean keepInventory, boolean sameCharacter) {
         if(sameCharacter) {
             PlayerComponent.super.copyForRespawn(original, lossless, keepInventory, sameCharacter);
         }

@@ -99,7 +99,7 @@ public class ConditionCommand {
                     var rawSeverity = target.getConditionManager().getScaledSeverity(condition);
                     var severity = Severity.getSeverity(rawSeverity);
 
-                    if (!condition.isExempt(target)) {
+                    if (condition.isApplicableTo(target)) {
                         // todo: also print who is being queried
                         source.sendFeedback(new TranslatableText("commands.incubus_core.condition.success.query", new TranslatableText(condition.getTranslationKey()), new TranslatableText(severity.getTranslationKey()), rawSeverity), false);
                     } else {
@@ -131,7 +131,7 @@ public class ConditionCommand {
 
             var manager = target.getConditionManager();
 
-            if(!condition.isExempt(target)) {
+            if(condition.isApplicableTo(target)) {
                 if(manager.set(condition, persistence, value)) {
                     var rawSeverity = manager.getScaledSeverity(condition);
                     var severity = Severity.getSeverity(rawSeverity);

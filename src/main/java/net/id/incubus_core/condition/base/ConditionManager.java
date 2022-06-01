@@ -137,8 +137,8 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      * @return Whether the effects of the given condition are visible on this entity.
      */
     public boolean isVisible(Condition condition) {
-        if (condition.isExempt(this.target)) return false;
-        return getScaledSeverity(condition) >= condition.visThreshold;
+        if (!condition.isApplicableTo(this.target)) return false;
+        return this.getScaledSeverity(condition) >= condition.visThreshold;
     }
 
     private ConditionTracker getConditionTracker(Condition condition){

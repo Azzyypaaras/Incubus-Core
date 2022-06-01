@@ -1,5 +1,6 @@
 package net.id.incubus_core;
 
+import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -32,8 +33,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.util.Random;
 import java.util.SplittableRandom;
@@ -42,7 +42,7 @@ import java.util.SplittableRandom;
 public class IncubusCore implements ModInitializer {
 
 	public static final String MODID = "incubus_core";
-	public static final Logger LOG = LogManager.getLogger(MODID);
+	public static final Logger LOG = LogUtils.getLogger();
 
 	public static final SplittableRandom RANDOM = new SplittableRandom(System.currentTimeMillis());
 

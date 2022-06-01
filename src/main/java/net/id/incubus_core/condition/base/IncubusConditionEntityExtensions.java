@@ -6,7 +6,6 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
-@ApiStatus.Experimental
 public interface IncubusConditionEntityExtensions {
     /**
      * @return The condition manager of this entity

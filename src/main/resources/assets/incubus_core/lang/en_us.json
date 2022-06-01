@@ -10,12 +10,12 @@
 
 
   "commands.incubus_core.condition.failure.assign": "...you tried setting a constant condition, didn't you?",
-  "commands.incubus_core.condition.failure.get_condition" : "No condition manager found registered for entry: %1$s",
+  "commands.incubus_core.condition.failure.get_condition" : "No condition found registered as %1$s",
   "commands.incubus_core.condition.failure.get_persistence" : "%1$s is not a valid persistence",
-  "commands.incubus_core.condition.failure.query": "Entity is immune to %1$s",
+  "commands.incubus_core.condition.failure.query": "%1$s is immune to %2$s",
   "commands.incubus_core.condition.failure.get_entity" : "No entity was specified",
-  "commands.incubus_core.condition.success.query": "%1$s: %2$s - %3$s",
-  "commands.incubus_core.condition.success.assign": "%1$s is now: %2$s - %3$s",
+  "commands.incubus_core.condition.success.query": "%1$s has %2$s with severity %3$s (%4$s)",
+  "commands.incubus_core.condition.success.assign": "%1$s now has %2$s with severity %3$s (%4$s)",
   "commands.incubus_core.condition.success.clear" : "Successfully cleared condition(s)",
   "commands.incubus_core.condition.success.clear.individual": "Cleared %1$s condition(s) from %2$s",
 

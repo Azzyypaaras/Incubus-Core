@@ -113,18 +113,17 @@ public class ConditionCommand {
 
     private static int setCondition(ServerCommandSource source, Entity entity, Identifier attributeId, float value, String persistenceString) {
         if(entity instanceof LivingEntity target) {
-            Condition condition;
+            Condition condition = Condition.get(attributeId);
             Persistence persistence;
 
-            try {
-                condition = Condition.getOrThrow(attributeId);
-            } catch (NoSuchElementException e) {
+            if (condition == null) {
                 source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_condition", attributeId));
                 return 1;
             }
+
             try {
                 persistence = Persistence.valueOf(persistenceString);
-            } catch (NoSuchElementException e) {
+            } catch (IllegalArgumentException e) {
                 source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_persistence", persistenceString));
                 return 1;
             }
@@ -161,18 +160,18 @@ public class ConditionCommand {
     }
 
     private static Collection<Condition> handleNullCondition(ServerCommandSource source, Identifier attributeId, LivingEntity target){
-        Collection<Condition> conditions;
-        if (attributeId != null) {
-            try {
-                conditions = List.of(Condition.getOrThrow(attributeId));
-            } catch (NoSuchElementException e) {
-                source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_condition", attributeId));
-                conditions = List.of();
-            }
-        } else {
-            conditions = Condition.getValidConditions(target.getType());
+        if (attributeId == null) {
+            return Condition.getValidConditions(target.getType());
         }
-        return conditions;
+
+        Condition condition = Condition.get(attributeId);
+
+        if (condition == null) {
+            source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_condition", attributeId));
+            return List.of();
+        }
+
+        return List.of(condition);
     }
 
     public static class ConditionSuggester implements SuggestionProvider<ServerCommandSource> {
@@ -186,11 +185,9 @@ public class ConditionCommand {
     public static class SeveritySuggester implements SuggestionProvider<ServerCommandSource> {
         @Override
         public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) throws CommandSyntaxException {
-            Condition condition;
+            Condition condition = Condition.get(IdentifierArgumentType.getIdentifier(context, "condition"));
 
-            try {
-                condition = Condition.getOrThrow(IdentifierArgumentType.getIdentifier(context, "condition"));
-            } catch (Exception e){
+            if (condition == null) {
                 return builder.suggest(0).buildFuture();
             }
 

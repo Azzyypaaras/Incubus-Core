@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -43,7 +44,7 @@ public abstract class Condition {
      * This field will become private in a later version. <br>
      * A tag containing all {@code EntityType}s which cannot get this condition.
      */
-    @Deprecated(forRemoval = true, since = "1.7.0")
+    @Deprecated(since = "1.7.0", forRemoval = true)
     public final TagKey<EntityType<?>> exempt;
     /**
      * The maximum value for the {@code Temporary} {@link Persistence}.
@@ -103,7 +104,7 @@ public abstract class Condition {
      * @param entity A {@code LivingEntity} to be tested.
      * @return Whether the provided {@code LivingEntity} is exempt from the condition
      */
-    @Deprecated(forRemoval = true, since = "1.7.0")
+    @Deprecated(since = "1.7.0", forRemoval = true)
     public final boolean isExempt(LivingEntity entity) {
         return !isApplicableTo(entity);
     }
@@ -160,11 +161,23 @@ public abstract class Condition {
     }
 
     /**
+     * @deprecated It is recommended to use {@link #get(Identifier)} instead,
+     * but this method isn't going anywhere.
+     * @param id The unique {@code Identifier} of the desired {@code Condition}.
+     * @return The {@code Condition} corresponding to the given {@code Identifier}
+     * @throws NoSuchElementException if no condition is registered with the given id.
+     */
+    @Deprecated(since = "1.7.0")
+    public static Condition getOrThrow(Identifier id) {
+        return IncubusCondition.CONDITION_REGISTRY.getOrEmpty(id).orElseThrow((() -> new NoSuchElementException("No Condition found registered for entry: " + id)));
+    }
+
+    /**
      * @param id The unique {@code Identifier} of the desired {@code Condition}.
      * @return The {@code Condition} corresponding to the given {@code Identifier}
      */
-    public static Condition getOrThrow(Identifier id) {
-        return IncubusCondition.CONDITION_REGISTRY.getOrEmpty(id).orElseThrow((() -> new NoSuchElementException("No Condition found registered for entry: " + id.toString())));
+    public static @Nullable Condition get(Identifier id) {
+        return IncubusCondition.CONDITION_REGISTRY.get(id);
     }
 
     /**

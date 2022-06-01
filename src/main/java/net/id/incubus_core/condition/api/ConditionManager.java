@@ -14,13 +14,14 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "UnstableApiUsage"})
 public class ConditionManager implements AutoSyncedComponent, CommonTickingComponent, PlayerComponent<ConditionManager> {
 
     private final LivingEntity target;
@@ -152,7 +153,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         return this.getScaledSeverity(condition) >= condition.visThreshold;
     }
 
-    private ConditionTracker getConditionTracker(Condition condition){
+    private @Nullable ConditionTracker getConditionTracker(Condition condition){
         for (var tracker : conditionTrackers) {
             if (tracker.getCondition() == condition){
                 return tracker;
@@ -253,10 +254,11 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      * Internal
      */
     @Override
-    public void readFromNbt(NbtCompound tag) {
+    public void readFromNbt(@NotNull NbtCompound tag) {
         conditionTrackers.forEach(tracker -> {
             var condition = tracker.getCondition();
             if(tag.contains(condition.getId().toString())) {
+                //noinspection ConstantConditions
                 tracker.fromNbt((NbtCompound) tag.get(condition.getId().toString()));
             }
         });
@@ -266,7 +268,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      * Internal
      */
     @Override
-    public void writeToNbt(NbtCompound tag) {
+    public void writeToNbt(@NotNull NbtCompound tag) {
         conditionTrackers.forEach(tracker -> {
             var nbt = new NbtCompound();
             tracker.writeToNbt(nbt);
@@ -278,7 +280,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      * Internal
      */
     @Override
-    public void copyFrom(ConditionManager other) {
+    public void copyFrom(@NotNull ConditionManager other) {
         PlayerComponent.super.copyFrom(other);
     }
 
@@ -286,7 +288,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      * Internal
      */
     @Override
-    public void copyForRespawn(ConditionManager original, boolean lossless, boolean keepInventory, boolean sameCharacter) {
+    public void copyForRespawn(@NotNull ConditionManager original, boolean lossless, boolean keepInventory, boolean sameCharacter) {
         if(sameCharacter) {
             PlayerComponent.super.copyForRespawn(original, lossless, keepInventory, sameCharacter);
         }

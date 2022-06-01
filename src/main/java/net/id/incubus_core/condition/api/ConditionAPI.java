@@ -13,13 +13,13 @@ import java.util.List;
  * @author AzazelTheDemonLord
  */
 @SuppressWarnings("unused")
-@Deprecated(forRemoval = true, since = "1.7.0")
+@Deprecated(since = "1.7.0", forRemoval = true)
 public class ConditionAPI {
     /**
      * @param type The {@code EntityType} to test
      * @return A list of all conditions the given entity is not immune to.
      */
-    @Deprecated(forRemoval = true, since = "1.7.0")
+    @Deprecated(since = "1.7.0", forRemoval = true)
     public static List<Condition> getValidConditions(EntityType<?> type) {
         return Condition.getValidConditions(type);
     }
@@ -30,7 +30,7 @@ public class ConditionAPI {
      * @param id The unique {@code Identifier} of the {@code Condition}.
      * @return The {@code Condition} corresponding to the given {@code Identifier}
      */
-    @Deprecated(forRemoval = true, since = "1.7.0")
+    @Deprecated(since = "1.7.0", forRemoval = true)
     public static Condition getOrThrow(Identifier id) {
         return Condition.getOrThrow(id);
     }
@@ -43,7 +43,7 @@ public class ConditionAPI {
      * @return Whether the given {@code Condition} is currently outwardly
      * visible on the given entity.
      */
-    @Deprecated(forRemoval = true, since = "1.7.0")
+    @Deprecated(since = "1.7.0", forRemoval = true)
     public static boolean isVisible(Condition condition, LivingEntity entity) {
         return entity.getConditionManager().isVisible(condition);
     }
@@ -54,7 +54,7 @@ public class ConditionAPI {
      * @param entity The entity you want to get the {@code ConditionManager} of.
      * @return The {@code ConditionManager} of the given entity.
      */
-    @Deprecated(forRemoval = true, since = "1.7.0")
+    @Deprecated(since = "1.7.0", forRemoval = true)
     public static ConditionManager getConditionManager(LivingEntity entity) {
         return entity.getConditionManager();
     }
@@ -65,7 +65,7 @@ public class ConditionAPI {
      * Syncs a given entity's {@code ConditionManager}.
      * @param entity The entity whose {@code ConditionManager} you wish to sync.
      */
-    @Deprecated(forRemoval = true, since = "1.7.0")
+    @Deprecated(since = "1.7.0", forRemoval = true)
     public static void trySync(LivingEntity entity) {
         entity.getConditionManager().trySync();
     }
@@ -76,7 +76,7 @@ public class ConditionAPI {
      * @param condition The {@code Condition} you want the translation string of
      * @return The translation string of the given {@code Condition}
      */
-    @Deprecated(forRemoval = true, since = "1.7.0")
+    @Deprecated(since = "1.7.0", forRemoval = true)
     public static String getTranslationString(Condition condition) {
         return condition.getTranslationKey();
     }

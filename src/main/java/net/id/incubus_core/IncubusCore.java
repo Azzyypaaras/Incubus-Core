@@ -19,6 +19,7 @@ import net.id.incubus_core.recipe.IncubusRecipes;
 import net.id.incubus_core.render.test.RenderTestBlock;
 import net.id.incubus_core.render.test.RenderTestBlockEntity;
 import net.id.incubus_core.systems.RegistryRegistry;
+import net.id.incubus_core.util.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
@@ -69,8 +70,9 @@ public class IncubusCore implements ModInitializer {
 		registerItem("render_test", new BlockItem(RENDER_TEST_BLOCK, new FabricItemSettings()));
 
 		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
-			DevInit.commonInit();
 			IncubusDevel.init();
+			if (Config.getBoolean(locate("devtools"), true))
+				DevInit.commonInit();
 		}
 	}
 

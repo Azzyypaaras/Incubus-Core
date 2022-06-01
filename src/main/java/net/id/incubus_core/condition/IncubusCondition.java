@@ -9,7 +9,7 @@ import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.id.incubus_core.IncubusCore;
 import net.id.incubus_core.condition.api.Condition;
 import net.id.incubus_core.condition.base.ConditionCommand;
-import net.id.incubus_core.condition.base.ConditionManager;
+import net.id.incubus_core.condition.api.ConditionManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.registry.Registry;
 

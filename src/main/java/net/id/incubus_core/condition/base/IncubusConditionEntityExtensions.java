@@ -1,6 +1,7 @@
 package net.id.incubus_core.condition.base;
 
 import net.id.incubus_core.condition.IncubusCondition;
+import net.id.incubus_core.condition.api.ConditionManager;
 
 public interface IncubusConditionEntityExtensions {
     /**

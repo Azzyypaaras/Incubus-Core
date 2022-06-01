@@ -1,6 +1,5 @@
 package net.id.incubus_core.condition.api;
 
-import net.id.incubus_core.condition.base.ConditionManager;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;

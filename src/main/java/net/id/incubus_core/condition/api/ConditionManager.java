@@ -1,4 +1,4 @@
-package net.id.incubus_core.condition.base;
+package net.id.incubus_core.condition.api;
 
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -7,7 +7,6 @@ import dev.onyxstudios.cca.api.v3.entity.PlayerComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.id.incubus_core.condition.IncubusCondition;
-import net.id.incubus_core.condition.api.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

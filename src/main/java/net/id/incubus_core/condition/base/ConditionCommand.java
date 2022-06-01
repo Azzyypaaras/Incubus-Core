@@ -12,6 +12,7 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.id.incubus_core.IncubusCore;
 import net.id.incubus_core.condition.IncubusCondition;
 import net.id.incubus_core.condition.api.Condition;
+import net.id.incubus_core.condition.api.ConditionManager;
 import net.id.incubus_core.condition.api.Persistence;
 import net.id.incubus_core.condition.api.Severity;
 import net.minecraft.command.argument.EntityArgumentType;

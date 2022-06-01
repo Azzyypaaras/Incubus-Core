@@ -1,5 +1,7 @@
 package net.id.incubus_core.condition.api;
 
+import org.jetbrains.annotations.ApiStatus;
+
 /**
  * {@code Persistence} is how much a {@code Condition} persists.
  * There are three main types: {@link Persistence#TEMPORARY},
@@ -36,6 +38,7 @@ public enum Persistence {
      * The translation key. <br> e.g. {@code "condition.persistence.temporary"}.
      */
     @Deprecated(since = "1.7.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval
     public final String translation;
 
     Persistence() {

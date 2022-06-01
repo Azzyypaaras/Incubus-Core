@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -26,18 +27,14 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
     private final LivingEntity target;
     private final List<ConditionTracker> conditionTrackers = new ArrayList<>();
 
-    /**
-     * Internal
-     */
+    @ApiStatus.Internal
     public ConditionManager(LivingEntity target) {
         this.target = target;
         var conditions = Condition.getValidConditions(target.getType());
         conditions.forEach(condition -> conditionTrackers.add(new ConditionTracker(condition)));
     }
 
-    /**
-     * Internal
-     */
+    @ApiStatus.Internal
     @Override
     public void tick() {
         conditionTrackers.forEach(tracker -> {
@@ -58,9 +55,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         });
     }
 
-    /**
-     * Internal
-     */
+    @ApiStatus.Internal
     @Override
     @Environment(EnvType.CLIENT)
     public void clientTick() {
@@ -139,6 +134,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
     /**
      * @return Whether this entity is immune to the specified condition.
      */
+    @ApiStatus.Experimental
     public boolean isImmuneTo(Condition condition) {
         // Should be equivalent to return Condition#isApplicableTo(this.target);
         return conditionTrackers.stream().noneMatch(tracker -> tracker.getCondition() == condition);
@@ -249,9 +245,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         return modifiers;
     }
 
-    /**
-     * Internal
-     */
+    @ApiStatus.Internal
     @Override
     public void readFromNbt(NbtCompound tag) {
         conditionTrackers.forEach(tracker -> {
@@ -263,9 +257,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         });
     }
 
-    /**
-     * Internal
-     */
+    @ApiStatus.Internal
     @Override
     public void writeToNbt(NbtCompound tag) {
         conditionTrackers.forEach(tracker -> {
@@ -275,17 +267,13 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         });
     }
 
-    /**
-     * Internal
-     */
+    @ApiStatus.Internal
     @Override
     public void copyFrom(ConditionManager other) {
         PlayerComponent.super.copyFrom(other);
     }
 
-    /**
-     * Internal
-     */
+    @ApiStatus.Internal
     @Override
     public void copyForRespawn(ConditionManager original, boolean lossless, boolean keepInventory, boolean sameCharacter) {
         if(sameCharacter) {
@@ -293,14 +281,13 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         }
     }
 
-    /**
-     * Internal
-     */
+    @ApiStatus.Internal
     @Override
     public boolean shouldCopyForRespawn(boolean lossless, boolean keepInventory, boolean sameCharacter) {
         return false;
     }
 
+    @ApiStatus.Internal
     private static class ConditionTracker {
 
         private final Condition parent;

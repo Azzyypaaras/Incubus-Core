@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -45,6 +46,7 @@ public abstract class Condition {
      * A tag containing all {@code EntityType}s which cannot get this condition.
      */
     @Deprecated(since = "1.7.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval
     public final TagKey<EntityType<?>> exempt;
     /**
      * The maximum value for the {@code Temporary} {@link Persistence}.
@@ -105,6 +107,7 @@ public abstract class Condition {
      * @return Whether the provided {@code LivingEntity} is exempt from the condition
      */
     @Deprecated(since = "1.7.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval
     public final boolean isExempt(LivingEntity entity) {
         return !isApplicableTo(entity);
     }

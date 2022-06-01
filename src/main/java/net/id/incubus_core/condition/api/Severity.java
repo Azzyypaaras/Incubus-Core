@@ -67,7 +67,7 @@ public enum Severity {
         }
         return severity;
     }
-    
+
     /**
      * Returns whether a given {@code Severity} is equal or more severe that this {@code Severity}
      * @param severity The {@code Severity} to test

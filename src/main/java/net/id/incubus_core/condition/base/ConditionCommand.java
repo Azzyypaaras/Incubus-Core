@@ -12,7 +12,6 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.id.incubus_core.IncubusCore;
 import net.id.incubus_core.condition.IncubusCondition;
 import net.id.incubus_core.condition.api.Condition;
-import net.id.incubus_core.condition.api.ConditionAPI;
 import net.id.incubus_core.condition.api.Persistence;
 import net.id.incubus_core.condition.api.Severity;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -71,11 +70,10 @@ public class ConditionCommand {
                 var conditions = handleNullCondition(source, attributeId, target);
                 if (!conditions.isEmpty()) {
                     conditions.forEach(condition -> {
-                        ConditionManager manager = ConditionAPI.getConditionManager(target);
+                        ConditionManager manager = target.getConditionManager();
                         manager.set(condition, Persistence.TEMPORARY, 0);
                         manager.set(condition, Persistence.CHRONIC, 0);
-
-                        ConditionAPI.trySync(target);
+                        manager.trySync();
                     });
 
                     source.sendFeedback(
@@ -98,7 +96,7 @@ public class ConditionCommand {
             if(entity instanceof LivingEntity target) {
                 var conditions = handleNullCondition(source, attributeId, target);
                 conditions.forEach(condition -> {
-                    var rawSeverity = ConditionAPI.getConditionManager(target).getScaledSeverity(condition);
+                    var rawSeverity = target.getConditionManager().getScaledSeverity(condition);
                     var severity = Severity.getSeverity(rawSeverity);
 
                     if (!condition.isExempt(target)) {
@@ -119,7 +117,7 @@ public class ConditionCommand {
             Persistence persistence;
 
             try {
-                condition = ConditionAPI.getOrThrow(attributeId);
+                condition = Condition.getOrThrow(attributeId);
             } catch (NoSuchElementException e) {
                 source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_condition", attributeId));
                 return 1;
@@ -131,16 +129,16 @@ public class ConditionCommand {
                 return 1;
             }
 
-            var manager = ConditionAPI.getConditionManager(target);
+            var manager = target.getConditionManager();
 
             if(!condition.isExempt(target)) {
                 if(manager.set(condition, persistence, value)) {
-                    var rawSeverity = ConditionAPI.getConditionManager(target).getScaledSeverity(condition);
+                    var rawSeverity = manager.getScaledSeverity(condition);
                     var severity = Severity.getSeverity(rawSeverity);
 
                     // todo: also print who the condition is being assigned to
                     source.sendFeedback(new TranslatableText("commands.incubus_core.condition.success.assign", new TranslatableText(condition.getTranslationKey()), new TranslatableText(severity.getTranslationKey()), rawSeverity), false);
-                    ConditionAPI.trySync(target);
+                    manager.trySync();
                 }
                 else {
                     source.sendError(new TranslatableText("commands.incubus_core.condition.failure.assign"));
@@ -166,13 +164,13 @@ public class ConditionCommand {
         Collection<Condition> conditions;
         if (attributeId != null) {
             try {
-                conditions = List.of(ConditionAPI.getOrThrow(attributeId));
+                conditions = List.of(Condition.getOrThrow(attributeId));
             } catch (NoSuchElementException e) {
                 source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_condition", attributeId));
                 conditions = List.of();
             }
         } else {
-            conditions = ConditionAPI.getValidConditions(target.getType());
+            conditions = Condition.getValidConditions(target.getType());
         }
         return conditions;
     }
@@ -191,7 +189,7 @@ public class ConditionCommand {
             Condition condition;
 
             try {
-                condition = ConditionAPI.getOrThrow(IdentifierArgumentType.getIdentifier(context, "condition"));
+                condition = Condition.getOrThrow(IdentifierArgumentType.getIdentifier(context, "condition"));
             } catch (Exception e){
                 return builder.suggest(0).buildFuture();
             }

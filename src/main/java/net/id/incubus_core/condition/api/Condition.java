@@ -11,6 +11,10 @@ import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
 /**
  * <p>   These are supposed to be flywheel objects ya nut.
  * <br>  No you don't get any further documentation, go nag jack.
@@ -133,5 +137,24 @@ public abstract class Condition {
      */
     public final String getTranslationKey() {
         return "condition." + this.getId().getNamespace() + ".condition." + this.getId().getPath();
+    }
+
+    /**
+     * @param id The unique {@code Identifier} of the desired {@code Condition}.
+     * @return The {@code Condition} corresponding to the given {@code Identifier}
+     */
+    public static Condition getOrThrow(Identifier id) {
+        return IncubusCondition.CONDITION_REGISTRY.getOrEmpty(id).orElseThrow((() -> new NoSuchElementException("No Condition found registered for entry: " + id.toString())));
+    }
+
+    /**
+     * @param type The {@code EntityType} to test
+     * @return A list of all conditions the given entity is not immune to.
+     */
+    public static List<Condition> getValidConditions(EntityType<?> type) {
+        return IncubusCondition.CONDITION_REGISTRY
+                .stream()
+                .filter(condition -> !type.isIn(condition.exempt))
+                .collect(Collectors.toList());
     }
 }

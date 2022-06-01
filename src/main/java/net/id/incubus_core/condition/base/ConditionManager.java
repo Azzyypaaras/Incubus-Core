@@ -6,6 +6,7 @@ import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import dev.onyxstudios.cca.api.v3.entity.PlayerComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.id.incubus_core.condition.IncubusCondition;
 import net.id.incubus_core.condition.api.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
@@ -29,7 +30,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
 
     public ConditionManager(LivingEntity target) {
         this.target = target;
-        var conditions = ConditionAPI.getValidConditions(target.getType());
+        var conditions = Condition.getValidConditions(target.getType());
         conditions.forEach(condition -> conditionTrackers.add(new ConditionTracker(condition)));
     }
 
@@ -74,7 +75,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
                 case CHRONIC -> tracker.chronVal = value;
                 case CONSTANT -> throw new IllegalArgumentException("Constant condition values may not be directly edited");
             }
-            ConditionAPI.trySync(this.target);
+            this.trySync();
             return true;
         }).orElse(false);
     }
@@ -84,7 +85,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      */
     public void add(Condition condition, Persistence persistence, float amount) {
         Optional.ofNullable(this.getConditionTracker(condition)).ifPresent(tracker -> tracker.add(persistence, amount));
-        ConditionAPI.trySync(this.target);
+        this.trySync();
     }
 
     /**
@@ -92,7 +93,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      */
     public void remove(Condition condition, Persistence persistence, float amount) {
         Optional.ofNullable(this.getConditionTracker(condition)).ifPresent(tracker -> tracker.remove(persistence, amount));
-        ConditionAPI.trySync(this.target);
+        this.trySync();
     }
 
     /**
@@ -119,10 +120,25 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
     }
 
     /**
+     * Syncs this.
+     */
+    public void trySync() {
+        IncubusCondition.CONDITION_MANAGER_KEY.sync(this.target);
+    }
+
+    /**
      * @return Whether this entity is immune to the specified condition.
      */
     public boolean isImmuneTo(Condition condition) {
         return conditionTrackers.stream().noneMatch(tracker -> tracker.getCondition() == condition);
+    }
+
+    /**
+     * @return Whether the effects of the given condition are visible on this entity.
+     */
+    public boolean isVisible(Condition condition) {
+        if (condition.isExempt(this.target)) return false;
+        return getScaledSeverity(condition) >= condition.visThreshold;
     }
 
     private ConditionTracker getConditionTracker(Condition condition){

@@ -27,5 +27,7 @@
   "condition.severity.mild": "Mild",
   "condition.severity.acute": "Acute",
   "condition.severity.dire": "Dire",
-  "condition.severity.extreme": "Extreme"
+  "condition.severity.extreme": "Extreme",
+
+  "condition.incubus_core.condition.test_condition": "Test Condition"
 }

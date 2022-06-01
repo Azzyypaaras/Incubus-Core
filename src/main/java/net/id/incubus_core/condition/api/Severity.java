@@ -53,6 +53,7 @@ public enum Severity {
     Severity(float triggerPercent) {
         this.triggerPercent = triggerPercent;
     }
+
     /**
      * Converts a raw severity percent to a {@code Severity}.
      * @param rawSeverity The raw percent of how strong the {@code Condition} is
@@ -66,6 +67,7 @@ public enum Severity {
         }
         return severity;
     }
+    
     /**
      * Returns whether a given {@code Severity} is equal or more severe that this {@code Severity}
      * @param severity The {@code Severity} to test
@@ -75,7 +77,7 @@ public enum Severity {
         return this.triggerPercent >= severity.triggerPercent;
     }
 
-    public String getTranslationKey(){
+    public final String getTranslationKey(){
         return "condition.severity." + this.name().toLowerCase();
     }
 }

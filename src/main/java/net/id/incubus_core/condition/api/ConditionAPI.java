@@ -67,10 +67,13 @@ public class ConditionAPI {
     }
 
     /**
+     * @deprecated
+     * Use {@link Condition#getTranslationKey()} instead
      * @param condition The {@code Condition} you want the translation string of
      * @return The translation string of the given {@code Condition}
      */
+    @Deprecated(forRemoval = true, since = "1.7.0")
     public static String getTranslationString(Condition condition) {
-        return "condition." + condition.getId().getNamespace() + ".condition." + condition.getId().getPath();
+        return condition.getTranslationKey();
     }
 }

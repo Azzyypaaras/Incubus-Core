@@ -103,9 +103,9 @@ public class ConditionCommand {
 
                     if (!condition.isExempt(target)) {
                         // todo: also print who is being queried
-                        source.sendFeedback(new TranslatableText("commands.incubus_core.condition.success.query", new TranslatableText(ConditionAPI.getTranslationString(condition)), new TranslatableText(severity.getTranslationKey()), rawSeverity), false);
+                        source.sendFeedback(new TranslatableText("commands.incubus_core.condition.success.query", new TranslatableText(condition.getTranslationKey()), new TranslatableText(severity.getTranslationKey()), rawSeverity), false);
                     } else {
-                        source.sendError(new TranslatableText("commands.incubus_core.condition.failure.query", new TranslatableText(ConditionAPI.getTranslationString(condition))));
+                        source.sendError(new TranslatableText("commands.incubus_core.condition.failure.query", new TranslatableText(condition.getTranslationKey())));
                     }
                 });
             }
@@ -139,7 +139,7 @@ public class ConditionCommand {
                     var severity = Severity.getSeverity(rawSeverity);
 
                     // todo: also print who the condition is being assigned to
-                    source.sendFeedback(new TranslatableText("commands.incubus_core.condition.success.assign", new TranslatableText(ConditionAPI.getTranslationString(condition)), new TranslatableText(severity.getTranslationKey()), rawSeverity), false);
+                    source.sendFeedback(new TranslatableText("commands.incubus_core.condition.success.assign", new TranslatableText(condition.getTranslationKey()), new TranslatableText(severity.getTranslationKey()), rawSeverity), false);
                     ConditionAPI.trySync(target);
                 }
                 else {

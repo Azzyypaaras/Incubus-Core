@@ -127,4 +127,11 @@ public abstract class Condition {
      */
     @Environment(EnvType.CLIENT)
     public abstract void clientTick(ClientWorld world, LivingEntity entity, Severity severity, float rawSeverity);
+
+    /**
+     * @return The translation key of this condition
+     */
+    public final String getTranslationKey() {
+        return "condition." + this.getId().getNamespace() + ".condition." + this.getId().getPath();
+    }
 }

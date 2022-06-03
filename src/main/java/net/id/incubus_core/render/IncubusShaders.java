@@ -23,6 +23,7 @@ import net.minecraft.util.Identifier;
 import static net.id.incubus_core.IncubusCore.locate;
 
 // This extends RenderLayer only to get access to protected inner classes.
+@SuppressWarnings("UnstableApiUsage")
 public class IncubusShaders extends RenderLayer {
     private static boolean renderingBloom = false;
 
@@ -56,7 +57,21 @@ public class IncubusShaders extends RenderLayer {
             .build(true)
     );
 
-    public static final RenderLayer BLOOM_BASE = RenderLayerConstructor.buildMultiPhase("bloom_base", VertexFormats.POSITION_COLOR, VertexFormat.DrawMode.QUADS, 256, false, true, RenderLayer.MultiPhaseParameters.builder().texture(new RenderPhase.Texture(locate("textures/special/blank.png"), false, false)).shader(RenderPhase.LIGHTNING_SHADER).transparency(RenderPhase.LIGHTNING_TRANSPARENCY).target(RenderPhase.WEATHER_TARGET).lightmap(DISABLE_LIGHTMAP).build(true));
+    public static final RenderLayer BLOOM_BASE = RenderLayerAccessor.satin$of(
+        "bloom_base",
+        VertexFormats.POSITION_COLOR,
+        VertexFormat.DrawMode.QUADS,
+        256, 
+        false,
+        true,
+        MultiPhaseParameters.builder()
+            .texture(new RenderPhase.Texture(locate("textures/special/blank.png"), false, false))
+            .shader(RenderPhase.LIGHTNING_SHADER)
+            .transparency(RenderPhase.LIGHTNING_TRANSPARENCY)
+            .target(RenderPhase.WEATHER_TARGET)
+            .lightmap(DISABLE_LIGHTMAP)
+            .build(true)
+    );
 
     private IncubusShaders(String name, VertexFormat vertexFormat, VertexFormat.DrawMode drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {
         super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction);

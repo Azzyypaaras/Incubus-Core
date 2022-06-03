@@ -16,16 +16,14 @@ import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({"unused", "UnstableApiUsage"})
 public class ConditionManager implements AutoSyncedComponent, CommonTickingComponent, PlayerComponent<ConditionManager> {
 
     private final LivingEntity target;
-    private final List<ConditionTracker> conditionTrackers = new ArrayList<>();
+    private final Set<ConditionTracker> conditionTrackers = new HashSet<>();
 
     @ApiStatus.Internal
     public ConditionManager(LivingEntity target) {

@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public class ConditionAPI {
      */
     @Deprecated(since = "1.7.0", forRemoval = true)
     public static List<Condition> getValidConditions(EntityType<?> type) {
-        return Condition.getValidConditions(type);
+        return new ArrayList<>(Condition.getValidConditions(type));
     }
 
     /**

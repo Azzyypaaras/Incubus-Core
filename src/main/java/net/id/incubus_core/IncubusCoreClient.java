@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.dev.DevInit;
 import net.id.incubus_core.devel.IncubusDevel;
+import net.id.incubus_core.render.FancyBlockModelRegistry;
 import net.id.incubus_core.render.IncubusShaders;
 import net.id.incubus_core.util.Config;
 
@@ -15,6 +16,7 @@ public class IncubusCoreClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         IncubusShaders.init();
+        FancyBlockModelRegistry.init();
 
         if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
             IncubusDevel.initClient();

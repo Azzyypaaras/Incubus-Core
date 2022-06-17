@@ -1,6 +1,7 @@
 package net.id.incubus_core.systems;
 
 import net.id.incubus_core.mixin.world.BiomeAccessor;
+import net.id.incubus_core.util.RandomShim;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -21,7 +22,7 @@ public class HeatHelper {
         var validExchangeDirs = io.getValidDirections();
 
         if(!validExchangeDirs.isEmpty()) {
-            Collections.shuffle(validExchangeDirs, world.getRandom());
+            Collections.shuffle(validExchangeDirs, new RandomShim(world.getRandom()));
             var exchangeDir = io.getPreferredDirection().orElse(validExchangeDirs.get(0));
 
             if(validExchangeDirs.contains(exchangeDir)) {
@@ -38,6 +39,7 @@ public class HeatHelper {
     public static double translateBiomeHeat(BlockPos pos, Biome biome, boolean night, boolean rain) {
 
         double baseTemp = biome.getTemperature();
+        /*FIXME They remove Biome categories from what I can tell. This is just to make it compile for now.
         Biome.Category category = ((BiomeAccessor) (Object) biome).getCategory();
 
         double temp = switch (category) {
@@ -47,14 +49,16 @@ public class HeatHelper {
             case OCEAN -> baseTemp + 0.1;
             default -> baseTemp;
         };
+         */
+        double temp = baseTemp;
 
         temp *= 26.25;
 
         if(night) {
-            if(category == Biome.Category.DESERT || category == Biome.Category.MESA) {
+            if(/*category == Biome.Category.DESERT || category == Biome.Category.MESA*/ false) {
                 temp -= temp * 0.75;
             } else if(biome.getPrecipitation() == Biome.Precipitation.SNOW) {
-                if(category == Biome.Category.ICY && temp < 0)
+                if(/*category == Biome.Category.ICY*/ false && temp < 0)
                     temp += temp * 1.25;
                 else
                     temp -= 20;

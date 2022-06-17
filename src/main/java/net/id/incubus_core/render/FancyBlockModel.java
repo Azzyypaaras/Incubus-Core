@@ -1,18 +1,18 @@
 package net.id.incubus_core.render;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
-import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.*;
-import net.minecraft.client.render.model.json.*;
+import net.minecraft.client.render.model.json.JsonUnbakedModel;
+import net.minecraft.client.render.model.json.ModelOverrideList;
+import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.item.ItemStack;
@@ -23,7 +23,10 @@ import net.minecraft.world.BlockRenderView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -81,13 +84,12 @@ final class FancyBlockModel extends JsonUnbakedModel {
             var sprite = textureGetter.apply(texture.identifier());
     
             switch (texture.type()) {
-                case PARTICLE:
+                case PARTICLE -> {
                     particle = sprite;
                     continue;
+                }
                 
-                case EMISSIVE:
-                    finder.emissive(0, true);
-                    break;
+                case EMISSIVE -> finder.emissive(0, true);
             }
             
             var material = finder.blendMode(0, texture.blendMode())
@@ -124,17 +126,17 @@ final class FancyBlockModel extends JsonUnbakedModel {
         }
     
         @Override
-        public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
+        public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<net.minecraft.util.math.random.Random> randomSupplier, RenderContext context) {
             context.meshConsumer().accept(mesh);
         }
     
         @Override
-        public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
+        public void emitItemQuads(ItemStack stack, Supplier<net.minecraft.util.math.random.Random> randomSupplier, RenderContext context) {
             context.meshConsumer().accept(mesh);
         }
-    
+        
         @Override
-        public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
+        public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, net.minecraft.util.math.random.Random random) {
             return null;
         }
     

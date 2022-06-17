@@ -11,8 +11,6 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
 
-import java.util.Random;
-
 public class UnderwaterPlantFeature extends Feature<BiFeatureConfig> {
 
     public UnderwaterPlantFeature(Codec<BiFeatureConfig> codec) {
@@ -22,9 +20,8 @@ public class UnderwaterPlantFeature extends Feature<BiFeatureConfig> {
     public boolean generate(FeatureContext<BiFeatureConfig> context) {
         StructureWorldAccess structureWorldAccess = context.getWorld();
         BiFeatureConfig config = context.getConfig();
-        Random random = context.getRandom();
+        var random = context.getRandom();
         BlockPos pos = context.getOrigin();
-
 
         boolean success = false;
         int i = random.nextInt(8) - random.nextInt(8);

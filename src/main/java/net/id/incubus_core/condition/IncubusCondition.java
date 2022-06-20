@@ -9,11 +9,13 @@ import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.id.incubus_core.IncubusCore;
 import net.id.incubus_core.condition.api.Condition;
 import net.id.incubus_core.condition.base.ConditionCommand;
-import net.id.incubus_core.condition.base.ConditionManager;
+import net.id.incubus_core.condition.api.ConditionManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.ApiStatus;
 
-public class IncubusCondition implements EntityComponentInitializer {
+@ApiStatus.Internal
+public final class IncubusCondition implements EntityComponentInitializer {
 
     public static final ComponentKey<ConditionManager> CONDITION_MANAGER_KEY = ComponentRegistry.getOrCreate(IncubusCore.locate("condition_manager"), ConditionManager.class);
 

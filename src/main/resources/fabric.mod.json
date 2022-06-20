@@ -53,6 +53,9 @@
       "badges": [
         "library"
       ]
+    },
+    "loom:injected_interfaces": {
+      "net/minecraft/class_1309": ["net/id/incubus_core/condition/base/IncubusConditionEntityExtensions"]
     }
   }
 }

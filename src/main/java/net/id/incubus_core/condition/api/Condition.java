@@ -10,6 +10,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * <p>   These are supposed to be flywheel objects ya nut.
@@ -35,8 +41,12 @@ import net.minecraft.world.World;
 public abstract class Condition {
 
     /**
+     * @deprecated
+     * This field will become private in a later version. <br>
      * A tag containing all {@code EntityType}s which cannot get this condition.
      */
+    @Deprecated(since = "1.7.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval
     public final TagKey<EntityType<?>> exempt;
     /**
      * The maximum value for the {@code Temporary} {@link Persistence}.
@@ -91,11 +101,29 @@ public abstract class Condition {
     }
 
     /**
+     * @deprecated
+     * Use {@link #isApplicableTo(LivingEntity)}
      * @param entity A {@code LivingEntity} to be tested.
      * @return Whether the provided {@code LivingEntity} is exempt from the condition
      */
+    @Deprecated(since = "1.7.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval
     public final boolean isExempt(LivingEntity entity) {
-        return entity.getType().isIn(exempt);
+        return !isApplicableTo(entity);
+    }
+
+    /**
+     * @return Whether this condition is applicable to the given entity
+     */
+    public final boolean isApplicableTo(LivingEntity entity) {
+        return isApplicableTo(entity.getType());
+    }
+
+    /**
+     * @return Whether this condition is applicable to the given entity type
+     */
+    public final boolean isApplicableTo(EntityType<?> entityType) {
+        return !entityType.isIn(exempt);
     }
 
     /**
@@ -127,4 +155,42 @@ public abstract class Condition {
      */
     @Environment(EnvType.CLIENT)
     public abstract void clientTick(ClientWorld world, LivingEntity entity, Severity severity, float rawSeverity);
+
+    /**
+     * @return The translation key of this condition
+     */
+    public final String getTranslationKey() {
+        return "condition." + this.getId().getNamespace() + ".condition." + this.getId().getPath();
+    }
+
+    /**
+     * @deprecated It is recommended to use {@link #get(Identifier)} instead,
+     * but this method isn't going anywhere.
+     * @param id The unique {@code Identifier} of the desired {@code Condition}.
+     * @return The {@code Condition} corresponding to the given {@code Identifier}
+     * @throws NoSuchElementException if no condition is registered with the given id.
+     */
+    @Deprecated(since = "1.7.0")
+    public static Condition getOrThrow(Identifier id) {
+        return IncubusCondition.CONDITION_REGISTRY.getOrEmpty(id).orElseThrow((() -> new NoSuchElementException("No Condition found registered for entry: " + id)));
+    }
+
+    /**
+     * @param id The unique {@code Identifier} of the desired {@code Condition}.
+     * @return The {@code Condition} corresponding to the given {@code Identifier}
+     */
+    public static @Nullable Condition get(Identifier id) {
+        return IncubusCondition.CONDITION_REGISTRY.get(id);
+    }
+
+    /**
+     * @param type The {@code EntityType} to test
+     * @return A list of all conditions the given entity is not immune to.
+     */
+    public static Set<Condition> getValidConditions(EntityType<?> type) {
+        return IncubusCondition.CONDITION_REGISTRY
+                .stream()
+                .filter(condition -> condition.isApplicableTo(type))
+                .collect(Collectors.toSet());
+    }
 }

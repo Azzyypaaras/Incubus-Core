@@ -1,18 +1,16 @@
 package net.id.incubus_core.condition.base;
 
-
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.id.incubus_core.IncubusCore;
 import net.id.incubus_core.condition.IncubusCondition;
 import net.id.incubus_core.condition.api.Condition;
-import net.id.incubus_core.condition.api.ConditionAPI;
+import net.id.incubus_core.condition.api.ConditionManager;
 import net.id.incubus_core.condition.api.Persistence;
 import net.id.incubus_core.condition.api.Severity;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -27,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.server.command.CommandManager.argument;
@@ -64,122 +61,156 @@ public class ConditionCommand {
         );
     }
 
-    private static int clearCondition(ServerCommandSource source, Collection<? extends Entity> entities, Identifier attributeId) {
-        entities = handleNullEntity(source, entities);
-        entities.forEach(entity -> {
-            if(entity instanceof LivingEntity target) {
-                var conditions = handleNullCondition(source, attributeId, target);
-                if (!conditions.isEmpty()) {
-                    conditions.forEach(condition -> {
-                        ConditionManager manager = ConditionAPI.getConditionManager(target);
-                        manager.set(condition, Persistence.TEMPORARY, 0);
-                        manager.set(condition, Persistence.CHRONIC, 0);
-
-                        ConditionAPI.trySync(target);
-                    });
-
-                    source.sendFeedback(
-                            new TranslatableText(
-                                    "commands.incubus_core.condition.success.clear.individual",
-                                    conditions.size(), entity.getDisplayName()
-                            ),
-                            true
-                    );
-                }
+    private static int clearCondition(ServerCommandSource source, Collection<? extends Entity> targets, Identifier attributeId) {
+        for (var entity : resolveTargets(source, targets)) {
+            if (!(entity instanceof LivingEntity target)) {
+                errorImmune(source, entity, null);
+                continue;
             }
-        });
+
+            var conditions = resolveConditions(source, attributeId, target);
+            if (conditions.isEmpty()) continue;
+
+            ConditionManager manager = target.getConditionManager();
+            for (Condition condition : conditions) {
+                manager.set(condition, Persistence.TEMPORARY, 0);
+                manager.set(condition, Persistence.CHRONIC, 0);
+            }
+            manager.trySync();
+
+            source.sendFeedback(
+                    new TranslatableText(
+                            "commands.incubus_core.condition.success.clear.individual",
+                            conditions.size(),
+                            entity.getDisplayName()
+                    ),
+                    true
+            );
+        }
+
         source.sendFeedback(new TranslatableText("commands.incubus_core.condition.success.clear"), true);
         return 1;
     }
 
     private static int printCondition(ServerCommandSource source, @Nullable Collection<? extends Entity> entities, Identifier attributeId) {
-        entities = handleNullEntity(source, entities);
-        entities.forEach(entity -> {
-            if(entity instanceof LivingEntity target) {
-                var conditions = handleNullCondition(source, attributeId, target);
-                conditions.forEach(condition -> {
-                    var rawSeverity = ConditionAPI.getConditionManager(target).getScaledSeverity(condition);
-                    var severity = Severity.getSeverity(rawSeverity);
-
-                    if (!condition.isExempt(target)) {
-                        // todo: also print who is being queried
-                        source.sendFeedback(new TranslatableText("commands.incubus_core.condition.success.query", new TranslatableText(ConditionAPI.getTranslationString(condition)), new TranslatableText(severity.getTranslationKey()), rawSeverity), false);
-                    } else {
-                        source.sendError(new TranslatableText("commands.incubus_core.condition.failure.query", new TranslatableText(ConditionAPI.getTranslationString(condition))));
-                    }
-                });
+        for (Entity entity : resolveTargets(source, entities)) {
+            if (!(entity instanceof LivingEntity target)) {
+                errorImmune(source, entity, null);
+                continue;
             }
-        });
+
+            var conditions = resolveConditions(source, attributeId, target);
+            for (Condition condition : conditions) {
+                float rawSeverity = target.getConditionManager().getScaledSeverity(condition);
+                Severity severity = Severity.getSeverity(rawSeverity);
+
+                if (!condition.isApplicableTo(target)) {
+                    errorImmune(source, target, condition);
+                    continue;
+                }
+
+                source.sendFeedback(
+                        new TranslatableText(
+                                "commands.incubus_core.condition.success.query",
+                                entity.getName(),
+                                new TranslatableText(condition.getTranslationKey()),
+                                new TranslatableText(severity.getTranslationKey()),
+                                rawSeverity), false);
+            }
+        }
         return 1;
     }
 
     private static int setCondition(ServerCommandSource source, Entity entity, Identifier attributeId, float value, String persistenceString) {
-        if(entity instanceof LivingEntity target) {
-            Condition condition;
-            Persistence persistence;
+        Condition condition = Condition.get(attributeId);
 
-            try {
-                condition = ConditionAPI.getOrThrow(attributeId);
-            } catch (NoSuchElementException e) {
-                source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_condition", attributeId));
-                return 1;
-            }
-            try {
-                persistence = Persistence.valueOf(persistenceString);
-            } catch (NoSuchElementException e) {
-                source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_persistence", persistenceString));
-                return 1;
-            }
+        if (condition == null) {
+            source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_condition", attributeId));
+            return 1;
+        }
 
-            var manager = ConditionAPI.getConditionManager(target);
+        if (!(entity instanceof LivingEntity target))
+            return errorImmune(source, entity, condition);
 
-            if(!condition.isExempt(target)) {
-                if(manager.set(condition, persistence, value)) {
-                    var rawSeverity = ConditionAPI.getConditionManager(target).getScaledSeverity(condition);
-                    var severity = Severity.getSeverity(rawSeverity);
+        Persistence persistence;
 
-                    // todo: also print who the condition is being assigned to
-                    source.sendFeedback(new TranslatableText("commands.incubus_core.condition.success.assign", new TranslatableText(ConditionAPI.getTranslationString(condition)), new TranslatableText(severity.getTranslationKey()), rawSeverity), false);
-                    ConditionAPI.trySync(target);
-                }
-                else {
-                    source.sendError(new TranslatableText("commands.incubus_core.condition.failure.assign"));
-                }
-            }
+        try {
+            persistence = Persistence.valueOf(persistenceString);
+        } catch (IllegalArgumentException e) {
+            source.sendError(
+                    new TranslatableText(
+                            "commands.incubus_core.condition.failure.get_persistence",
+                            persistenceString));
+            return 1;
+        }
+        if (!condition.isApplicableTo(target))
+            return errorImmune(source, target, condition);
+
+        var manager = target.getConditionManager();
+
+        if(manager.set(condition, persistence, value)) {
+            float rawSeverity = manager.getScaledSeverity(condition);
+            Severity severity = Severity.getSeverity(rawSeverity);
+
+            source.sendFeedback(
+                    new TranslatableText("commands.incubus_core.condition.success.assign",
+                            target.getName(),
+                            new TranslatableText(condition.getTranslationKey()),
+                            new TranslatableText(severity.getTranslationKey()),
+                            rawSeverity), false);
+            manager.trySync();
+        } else {
+            source.sendError(new TranslatableText("commands.incubus_core.condition.failure.assign"));
         }
         return 1;
     }
 
-    private static Collection<? extends Entity> handleNullEntity(ServerCommandSource source, Collection<? extends Entity> entities){
+    private static int errorImmune(ServerCommandSource source, Entity target, Condition condition) {
+        source.sendError(
+                new TranslatableText(
+                        "commands.incubus_core.condition.failure.query",
+                        target.getName(),
+                        condition == null ? "that condition!" :
+                                new TranslatableText(condition.getTranslationKey()))
+        );
+        return 1;
+    }
+
+    private static Collection<? extends Entity> resolveTargets(ServerCommandSource source, Collection<? extends Entity> entities){
         if (entities == null) {
-            try {
-                entities = List.of(source.getEntityOrThrow());
-            } catch (Exception e) {
-                source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_entity"));
-                entities = List.of();
+            // Apply to self if unspecified
+            Entity sourceEntity = source.getEntity();
+            if (sourceEntity != null) {
+                return List.of(sourceEntity);
             }
+            // Nothing can be targeted
+            source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_entity"));
+            return List.of();
         }
+
         return entities;
     }
 
-    private static Collection<Condition> handleNullCondition(ServerCommandSource source, Identifier attributeId, LivingEntity target){
-        Collection<Condition> conditions;
-        if (attributeId != null) {
-            try {
-                conditions = List.of(ConditionAPI.getOrThrow(attributeId));
-            } catch (NoSuchElementException e) {
-                source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_condition", attributeId));
-                conditions = List.of();
-            }
-        } else {
-            conditions = ConditionAPI.getValidConditions(target.getType());
+    private static Collection<Condition> resolveConditions(ServerCommandSource source, Identifier attributeId, LivingEntity target){
+        if (attributeId == null) {
+            // If none specified, return all valid conditions.
+            return Condition.getValidConditions(target.getType());
         }
-        return conditions;
+
+        Condition condition = Condition.get(attributeId);
+
+        if (condition == null) {
+            // Invalid condition
+            source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_condition", attributeId));
+            return List.of();
+        }
+
+        return List.of(condition);
     }
 
     public static class ConditionSuggester implements SuggestionProvider<ServerCommandSource> {
         @Override
-        public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) throws CommandSyntaxException {
+        public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
             IncubusCondition.CONDITION_REGISTRY.getIds().forEach(id -> builder.suggest(id.toString()));
             return builder.buildFuture();
         }
@@ -187,12 +218,10 @@ public class ConditionCommand {
 
     public static class SeveritySuggester implements SuggestionProvider<ServerCommandSource> {
         @Override
-        public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) throws CommandSyntaxException {
-            Condition condition;
+        public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
+            Condition condition = Condition.get(IdentifierArgumentType.getIdentifier(context, "condition"));
 
-            try {
-                condition = ConditionAPI.getOrThrow(IdentifierArgumentType.getIdentifier(context, "condition"));
-            } catch (Exception e){
+            if (condition == null) {
                 return builder.suggest(0).buildFuture();
             }
 
@@ -207,7 +236,7 @@ public class ConditionCommand {
 
     public static class PersistenceSuggester implements SuggestionProvider<ServerCommandSource> {
         @Override
-        public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) throws CommandSyntaxException {
+        public CompletableFuture<Suggestions> getSuggestions(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
             builder.suggest(Persistence.TEMPORARY.name());
             builder.suggest(Persistence.CHRONIC.name());
             return builder.buildFuture();

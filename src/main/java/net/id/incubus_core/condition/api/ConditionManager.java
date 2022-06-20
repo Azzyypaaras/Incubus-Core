@@ -1,4 +1,4 @@
-package net.id.incubus_core.condition.base;
+package net.id.incubus_core.condition.api;
 
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -6,33 +6,33 @@ import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import dev.onyxstudios.cca.api.v3.entity.PlayerComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.id.incubus_core.condition.api.*;
+import net.id.incubus_core.condition.IncubusCondition;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
-// TODO finish docs
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "UnstableApiUsage"})
 public class ConditionManager implements AutoSyncedComponent, CommonTickingComponent, PlayerComponent<ConditionManager> {
 
     private final LivingEntity target;
-    private final List<ConditionTracker> conditionTrackers = new ArrayList<>();
+    private final Set<ConditionTracker> conditionTrackers = new HashSet<>();
 
+    @ApiStatus.Internal
     public ConditionManager(LivingEntity target) {
         this.target = target;
-        var conditions = ConditionAPI.getValidConditions(target.getType());
+        var conditions = Condition.getValidConditions(target.getType());
         conditions.forEach(condition -> conditionTrackers.add(new ConditionTracker(condition)));
     }
 
+    @ApiStatus.Internal
     @Override
     public void tick() {
         conditionTrackers.forEach(tracker -> {
@@ -53,6 +53,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         });
     }
 
+    @ApiStatus.Internal
     @Override
     @Environment(EnvType.CLIENT)
     public void clientTick() {
@@ -67,6 +68,9 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         });
     }
 
+    /**
+     * Sets the persistence of the condition to the given value
+     */
     public boolean set(Condition condition, Persistence persistence, float value) {
         return Optional.ofNullable(this.getConditionTracker(condition)).map(tracker -> {
             switch (persistence) {
@@ -74,7 +78,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
                 case CHRONIC -> tracker.chronVal = value;
                 case CONSTANT -> throw new IllegalArgumentException("Constant condition values may not be directly edited");
             }
-            ConditionAPI.trySync(this.target);
+            this.trySync();
             return true;
         }).orElse(false);
     }
@@ -84,7 +88,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      */
     public void add(Condition condition, Persistence persistence, float amount) {
         Optional.ofNullable(this.getConditionTracker(condition)).ifPresent(tracker -> tracker.add(persistence, amount));
-        ConditionAPI.trySync(this.target);
+        this.trySync();
     }
 
     /**
@@ -92,7 +96,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
      */
     public void remove(Condition condition, Persistence persistence, float amount) {
         Optional.ofNullable(this.getConditionTracker(condition)).ifPresent(tracker -> tracker.remove(persistence, amount));
-        ConditionAPI.trySync(this.target);
+        this.trySync();
     }
 
     /**
@@ -119,13 +123,30 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
     }
 
     /**
+     * Syncs this with the server and client
+     */
+    public void trySync() {
+        IncubusCondition.CONDITION_MANAGER_KEY.sync(this.target);
+    }
+
+    /**
      * @return Whether this entity is immune to the specified condition.
      */
+    @ApiStatus.Experimental
     public boolean isImmuneTo(Condition condition) {
+        // Should be equivalent to return Condition#isApplicableTo(this.target);
         return conditionTrackers.stream().noneMatch(tracker -> tracker.getCondition() == condition);
     }
 
-    private ConditionTracker getConditionTracker(Condition condition){
+    /**
+     * @return Whether the effects of the given condition are visible on this entity.
+     */
+    public boolean isVisible(Condition condition) {
+        if (!condition.isApplicableTo(this.target)) return false;
+        return this.getScaledSeverity(condition) >= condition.visThreshold;
+    }
+
+    private @Nullable ConditionTracker getConditionTracker(Condition condition){
         for (var tracker : conditionTrackers) {
             if (tracker.getCondition() == condition){
                 return tracker;
@@ -147,7 +168,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         return false;
     }
 
-    public float getScaledDecay(Persistence persistence, @NotNull Condition condition) {
+    public float getScaledDecay(Persistence persistence, Condition condition) {
         return switch (persistence) {
             case TEMPORARY -> condition.tempDecay;
             case CHRONIC -> condition.chronDecay;
@@ -155,7 +176,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         } * getDecayMultiplier(condition);
     }
 
-    public float getDecayMultiplier(@NotNull Condition condition) {
+    public float getDecayMultiplier(Condition condition) {
         var modifiers = getActiveModifiers();
         if(!modifiers.isEmpty()) {
             return (float) modifiers.stream()
@@ -165,15 +186,15 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         return 1;
     }
 
-    public float getScaledSeverity(@NotNull Condition condition) {
+    public float getScaledSeverity(Condition condition) {
         return MathHelper.clamp((getRawCondition(condition) / getScalingValueForCondition(condition)) * getSeverityMultiplier(condition), 0, 1);
     }
 
-    public float getSeverityMultiplier(@NotNull Condition condition) {
+    public float getSeverityMultiplier(Condition condition) {
         return (float) getActiveModifiers().stream().mapToDouble(mod -> mod.getSeverityMultiplier(condition)).average().orElse(1);
     }
 
-    public float getScalingValueForCondition(@NotNull Condition condition) {
+    public float getScalingValueForCondition(Condition condition) {
         var modifiers = getActiveModifiers();
         float scalingValue = condition.scalingValue;
         scalingValue *= modifiers.stream().mapToDouble(mod -> mod.getScalingMultiplier(condition)).average().orElse(1);
@@ -181,7 +202,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         return scalingValue;
     }
 
-    public float getRawCondition(@NotNull Condition condition) {
+    public float getRawCondition(Condition condition) {
         return Optional.ofNullable(this.getConditionTracker(condition)).map(tracker -> {
             float partial = tracker.getPartialCondition();
             partial += getActiveModifiers().stream().mapToDouble(mod -> mod.getConstantCondition(condition)).sum();
@@ -222,16 +243,19 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         return modifiers;
     }
 
+    @ApiStatus.Internal
     @Override
     public void readFromNbt(NbtCompound tag) {
         conditionTrackers.forEach(tracker -> {
             var condition = tracker.getCondition();
             if(tag.contains(condition.getId().toString())) {
+                //noinspection ConstantConditions
                 tracker.fromNbt((NbtCompound) tag.get(condition.getId().toString()));
             }
         });
     }
 
+    @ApiStatus.Internal
     @Override
     public void writeToNbt(NbtCompound tag) {
         conditionTrackers.forEach(tracker -> {
@@ -241,11 +265,13 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         });
     }
 
+    @ApiStatus.Internal
     @Override
     public void copyFrom(ConditionManager other) {
         PlayerComponent.super.copyFrom(other);
     }
 
+    @ApiStatus.Internal
     @Override
     public void copyForRespawn(ConditionManager original, boolean lossless, boolean keepInventory, boolean sameCharacter) {
         if(sameCharacter) {
@@ -253,11 +279,13 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
         }
     }
 
+    @ApiStatus.Internal
     @Override
     public boolean shouldCopyForRespawn(boolean lossless, boolean keepInventory, boolean sameCharacter) {
         return false;
     }
 
+    @ApiStatus.Internal
     private static class ConditionTracker {
 
         private final Condition parent;

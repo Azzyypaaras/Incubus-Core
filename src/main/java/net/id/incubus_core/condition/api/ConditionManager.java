@@ -6,10 +6,13 @@ import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
 import dev.onyxstudios.cca.api.v3.entity.PlayerComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.condition.IncubusCondition;
+import net.id.incubus_core.condition.base.StupidTrinketsWorkaround;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
@@ -212,13 +215,13 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
 
     public List<ConditionModifier> getActiveModifiers() {
         List<ConditionModifier> modifiers = new ArrayList<>();
-        if(target instanceof PlayerEntity player) {
-            // TODO: Make this only use trinkets if it's installed, otherwise
-            //  start with an empty list.
-            var stacks =
-                    TrinketsApi.TRINKET_COMPONENT.get(player)
-                            .getEquipped(stack -> stack.getItem() instanceof ConditionModifier)
-                            .stream().map(Pair::getRight).collect(Collectors.toList());
+        if (target instanceof PlayerEntity player) {
+            List<ItemStack> stacks;
+            if (FabricLoader.getInstance().isModLoaded("trinkets")) {
+                stacks = StupidTrinketsWorkaround.getTrinketStuffs(player);
+            } else {
+                stacks = new ArrayList<>();
+            }
 
             player.getArmorItems().forEach(stack -> {
                 if(stack.getItem() instanceof ConditionModifier)

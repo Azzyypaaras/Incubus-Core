@@ -24,6 +24,7 @@ import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import static net.id.incubus_core.IncubusCore.*;
 import static net.minecraft.item.Items.DIAMOND;
@@ -71,6 +72,10 @@ public final class DevInit {
     private static final Item INCUBUS_BOAT = INCUBUS_WOOD.boatFactory(GROUP).item;
 
     public static void commonInit() {
+        // This should catch any mixin errors that occur later in runtime.
+        LOG.info("Running mixin audit because we are in debug mode...");
+        MixinEnvironment.getCurrentEnvironment().audit();
+    
         registerItem("entity_death_message_item", ENTITY_DEATH_MESSAGE_ITEM);
 
         INCUBUS_WOOD.registerCreatedBlocksAndItems(GROUP, GROUP, GROUP, GROUP);

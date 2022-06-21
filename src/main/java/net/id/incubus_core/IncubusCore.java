@@ -54,8 +54,9 @@ public class IncubusCore implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		var tempRandom = new Random(System.currentTimeMillis());
-		if(!FabricLoader.getInstance().isDevelopmentEnvironment() && tempRandom.nextInt(100) == 0)
+		if(!FabricLoader.getInstance().isDevelopmentEnvironment() && tempRandom.nextInt(100) == 0) {
 			LOG.info(IncubusCoreInit.HOLY_CONST);
+		}
 
 		WorthinessChecker.init();
 		RegistryRegistry.init();
@@ -71,8 +72,9 @@ public class IncubusCore implements ModInitializer {
 
 		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			IncubusDevel.init();
-			if (Config.getBoolean(locate("devtools"), true))
+			if (Config.getBoolean(locate("devtools"), true)) {
 				DevInit.commonInit();
+			}
 		}
 	}
 

@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "net.id.incubus_core.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "net.id.incubus_core.mixin.Plugin",
   "mixins": [
     "IngredientMixin",
     "blocklikeentities.ServerWorldMixin",

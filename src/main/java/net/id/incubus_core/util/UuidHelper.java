@@ -5,7 +5,6 @@ import com.google.gson.JsonParser;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.apache.http.client.HttpResponseException;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -13,26 +12,21 @@ import java.net.URL;
 import java.util.Scanner;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.function.Consumer;
 
 public class UuidHelper {
-    private static final String MOJANG_UUID_API = "https://api.mojang.com/users/profiles/minecraft/";
 
+    private static final String MOJANG_UUID_API = "https://api.mojang.com/users/profiles/minecraft/";
     private static CompletableFuture<UUID> uuidFuture;
 
     /**
      * Takes a users name and finds a matching UUID
      *
      * @param playerName Name of the player we want to search for
-     * @param finish lambda function to run after the UUID is found 
-     *
-     * @throws IOException Failed to either connect to the API or format the request
-     * @throws TimeoutException Response took too long
+     * @param finish lambda function to run after the UUID is found
      */
     @Environment(EnvType.CLIENT)
-    public static void findUuid(String playerName, Consumer<UUID> finish) throws IOException, TimeoutException {
+    public static void findUuid(String playerName, Consumer<UUID> finish) {
         // Asynchronously search for a users UUID
         uuidFuture = CompletableFuture.supplyAsync(() -> UuidHelper.getUuidFromPlayer(playerName));
         uuidFuture.thenAccept(finish);

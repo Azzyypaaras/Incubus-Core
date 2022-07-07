@@ -54,7 +54,7 @@ public final class RegistryQueue<T> {
      */
     public RegistryQueue(Registry<T> registry) {
         this.registry = registry;
-        entries = new LinkedHashMap<>(16);
+        this.entries = new LinkedHashMap<>(16);
     }
 
     /**
@@ -70,16 +70,15 @@ public final class RegistryQueue<T> {
         to update this value when they add a few new blocks.
         The default load factor is 0.75F, which is ridiculous for this use-case.
          */
-        entries = new LinkedHashMap<>(initialCapacity, 0.10F);
+        this.entries = new LinkedHashMap<>(initialCapacity, 0.10F);
     }
 
     /**
-     * This method is now deprecated. Instead use {@link Action#onClient()}.
-     * @return {@link Action#onClient()}
+     * Makes the action only act when the {@link EnvType} is {@link EnvType#CLIENT}.
+     * @return This action, modified to only occur in a client environment.
      */
-    @Deprecated(forRemoval = true, since = "1.7-rc.4")
     public static <S> Action<S> onClient(Action<S> action) {
-        return action.onClient();
+        return CLIENT ? action : (id, value) -> {};
     }
 
     /**
@@ -102,8 +101,8 @@ public final class RegistryQueue<T> {
      * in this RegistryQueue will be performed at this time.
      */
     public void register() {
-        entries.forEach(this::register);
-        entries.clear();
+        this.entries.forEach(this::register);
+        this.entries.clear();
     }
 
     private <V extends T> void register(Identifier id, Entry<V> pair) {
@@ -120,13 +119,6 @@ public final class RegistryQueue<T> {
      */
     @FunctionalInterface
     public interface Action<T> extends BiConsumer<Identifier, T> {
-        /**
-         * Makes the action only act when the {@link EnvType} is {@link EnvType#CLIENT}.
-         * @return This action, modified to only occur in a client environment.
-         */
-        default Action<T> onClient(){
-            return CLIENT ? this : (id, value) -> {};
-        }
     }
 
     /**

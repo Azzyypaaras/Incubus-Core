@@ -21,7 +21,7 @@ public class RenderHelper {
 
     public static void drawEmissiveCube(VertexConsumerProvider vertexConsumers, MatrixStack matrices, Vec3f color, float trans) {
         MatrixStack.Entry matrix = matrices.peek();
-        VertexConsumer consumer = vertexConsumers.getBuffer(IncubusRenderLayers.BLOOM_BASE);
+        VertexConsumer consumer = vertexConsumers.getBuffer(IncubusShaders.BLOOM_BASE);
 
 
         //north
@@ -61,10 +61,9 @@ public class RenderHelper {
         consumer.vertex(matrix.getPositionMatrix(), 0, 1, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();
     }
 
-    public static void drawBloomCube(VertexConsumerProvider vertexConsumers, MatrixStack matrices, Vec3f color, float trans, boolean hard) {
+    public static void drawBloomCube(VertexConsumerProvider vertexConsumers, MatrixStack matrices, Vec3f color, float trans) {
         MatrixStack.Entry matrix = matrices.peek();
-        VertexConsumer consumer = vertexConsumers.getBuffer(hard ? IncubusRenderLayers.HARD_BLOOM_OVERLAY : IncubusRenderLayers.SOFT_BLOOM_OVERLAY);
-
+        VertexConsumer consumer = vertexConsumers.getBuffer(IncubusShaders.BLOOM_RENDER_LAYER);
 
         //north
         consumer.vertex(matrix.getPositionMatrix(), 0, 0, 0).color(color.getX(), color.getY(), color.getZ(), trans).next();

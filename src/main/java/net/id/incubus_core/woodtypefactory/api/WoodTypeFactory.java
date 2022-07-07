@@ -5,7 +5,6 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
-import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.woodtypefactory.api.boat.BoatFactory;
 import net.id.incubus_core.woodtypefactory.api.chest.ChestFactory;
 import net.id.incubus_core.woodtypefactory.api.sign.SignFactory;
@@ -18,7 +17,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SignItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,13 +43,13 @@ import java.util.Objects;
  *
  * ... later on ...
  * public static void init() {
- *     INCUBUS.registerRemaining();
+ *     INCUBUS.registerCreatedBlocksAndItems();
  *     INCUBUS.registerStrippable();
  *     INCUBUS.registerFlammable();
  * }
  *
  * public static void initClient() {
- *     INCUBUS.registerClient();
+ *     INCUBUS.registerBlockEntityRenderers();
  *     INCUBUS.registerRenderLayers();
  * }
  * </pre>
@@ -120,7 +118,7 @@ public final class WoodTypeFactory {
      * @param woodName The id of this wood, before any affixes.
      *                 For example: The woodName for "birch_planks" and "birch_stairs" is "birch"
      */
-    public WoodTypeFactory(WoodSettingsFactory settings, String modId, String woodName) {
+    public WoodTypeFactory(@NotNull WoodSettingsFactory settings, String modId, String woodName) {
         this(settings, modId, woodName, null);
     }
 
@@ -140,12 +138,12 @@ public final class WoodTypeFactory {
      * <br>Note: Will not overwrite existing registered blocks, and will not break if there are any.
      * <br>Note: Does not register any items.
      * <br>Note: Does not register flammability, stripping, nor render layers.
-     * @see #registerRemainingItems(ItemGroup, ItemGroup, ItemGroup, ItemGroup)
+     * @see #registerCreatedItems(ItemGroup, ItemGroup, ItemGroup, ItemGroup)
      * @see #registerFlammability()
      * @see #registerStripping()
      * @see #registerRenderLayers()
      */
-    public void registerRemainingBlocks() {
+    public void registerCreatedBlocks() {
         this.registerBlockSafely(this.sapling, this.woodName + "_sapling");
         this.registerBlockSafely(this.pottedSapling, "potted_" + this.woodName + "_sapling");
         this.registerBlockSafely(this.log, this.woodName + "_log");
@@ -178,13 +176,13 @@ public final class WoodTypeFactory {
      * <br>Note: Will not register a boat item.
      * <br>Note: Will not register any blocks.
      * <br>Note: Does not register flammability, stripping, nor render layers.
-     * @see #registerRemainingBlocks()
+     * @see #registerCreatedBlocks()
      * @see #boatFactory(Item.Settings)
      * @see #registerFlammability()
      * @see #registerStripping()
      * @see #registerRenderLayers()
      */
-    public void registerRemainingItems(ItemGroup blocks, ItemGroup decorations, ItemGroup doors, ItemGroup buttonsAndPressurePlates) {
+    public void registerCreatedItems(ItemGroup blocks, ItemGroup decorations, ItemGroup doors, ItemGroup buttonsAndPressurePlates) {
         Item.Settings decorGroup = new Item.Settings().group(decorations);
         Item.Settings blocksGroup = new Item.Settings().group(blocks);
         this.registerBlockItemSafely(this.sapling, this.woodName + "_sapling", decorGroup);
@@ -215,21 +213,21 @@ public final class WoodTypeFactory {
      */
     public void registerFlammability() {
         // Burns like logs
-        safelyRegisterFlammability(this.log, 5, 5);
-        safelyRegisterFlammability(this.wood, 5, 5);
-        safelyRegisterFlammability(this.strippedLog, 5, 5);
-        safelyRegisterFlammability(this.strippedWood, 5, 5);
+        registerFlammabilitySafely(this.log, 5, 5);
+        registerFlammabilitySafely(this.wood, 5, 5);
+        registerFlammabilitySafely(this.strippedLog, 5, 5);
+        registerFlammabilitySafely(this.strippedWood, 5, 5);
         // Burns like leaves
-        safelyRegisterFlammability(this.leaves, 60, 30);
+        registerFlammabilitySafely(this.leaves, 60, 30);
         // Burns like planks
-        safelyRegisterFlammability(this.planks, 20, 5);
-        safelyRegisterFlammability(this.fence, 20, 5);
-        safelyRegisterFlammability(this.fenceGate, 20, 5);
-        safelyRegisterFlammability(this.slab, 20, 5);
-        safelyRegisterFlammability(this.stairs, 20, 5);
+        registerFlammabilitySafely(this.planks, 20, 5);
+        registerFlammabilitySafely(this.fence, 20, 5);
+        registerFlammabilitySafely(this.fenceGate, 20, 5);
+        registerFlammabilitySafely(this.slab, 20, 5);
+        registerFlammabilitySafely(this.stairs, 20, 5);
     }
 
-    private void safelyRegisterFlammability(Block block, int burn, int spread) {
+    private void registerFlammabilitySafely(Block block, int burn, int spread) {
         if (block == null) return;
 
         FlammableBlockRegistry.getDefaultInstance().add(block, burn, spread);
@@ -255,22 +253,22 @@ public final class WoodTypeFactory {
     @Environment(EnvType.CLIENT)
     public void registerRenderLayers() {
         RenderLayer cutout = RenderLayer.getCutout();
-        safelyRegisterRenderLayer(this.sapling, cutout);
-        safelyRegisterRenderLayer(this.pottedSapling, cutout);
-        safelyRegisterRenderLayer(this.leaves, RenderLayer.getCutoutMipped());
-        safelyRegisterRenderLayer(this.trapdoor, cutout);
-        safelyRegisterRenderLayer(this.door, cutout);
+        registerRenderLayerSafely(this.sapling, cutout);
+        registerRenderLayerSafely(this.pottedSapling, cutout);
+        registerRenderLayerSafely(this.leaves, RenderLayer.getCutoutMipped());
+        registerRenderLayerSafely(this.trapdoor, cutout);
+        registerRenderLayerSafely(this.door, cutout);
     }
 
     @Environment(EnvType.CLIENT)
-    private void safelyRegisterRenderLayer(Block block, RenderLayer layer) {
+    private void registerRenderLayerSafely(Block block, RenderLayer layer) {
         if (block == null) return;
 
         BlockRenderLayerMap.INSTANCE.putBlock(block, layer);
     }
 
     /**
-     * Registers any remaining blocks and items for this wood that have not been created but not registered.
+     * Registers any remaining blocks and items for this wood that have been created but not registered.
      * <br>Note: Will not overwrite existing registered blocks, and will not break if there are any.
      * <br>Note: Will not register a boat.
      * <br>Note: Does not register flammability, stripping, nor render layers.
@@ -279,18 +277,16 @@ public final class WoodTypeFactory {
      * @see #registerStripping()
      * @see #registerRenderLayers()
      */
-    public void registerRemaining(ItemGroup blocks, ItemGroup decorations, ItemGroup doors, ItemGroup buttonsAndPressurePlates) {
-        registerRemainingBlocks();
-        registerRemainingItems(blocks, decorations, doors, buttonsAndPressurePlates);
+    public void registerCreatedBlocksAndItems(ItemGroup blocks, ItemGroup decorations, ItemGroup doors, ItemGroup buttonsAndPressurePlates) {
+        registerCreatedBlocks();
+        registerCreatedItems(blocks, decorations, doors, buttonsAndPressurePlates);
     }
 
     private void registerBlockSafely(Block block, String id) {
         if (block == null) return; // Nope.
 
         Identifier identifier = new Identifier(modId, id);
-        if (Registry.BLOCK.containsId(identifier)) {
-            throw new IllegalStateException("Block " + identifier + " already registered before " + this + "tried to register it!");
-        }
+        if (Registry.BLOCK.containsId(identifier)) return;
 
         Registry.register(Registry.BLOCK, identifier, block);
     }
@@ -299,9 +295,7 @@ public final class WoodTypeFactory {
         if (item == null) return; // Nope.
 
         Identifier identifier = new Identifier(modId, id);
-        if (Registry.BLOCK.containsId(identifier)) {
-            throw new IllegalStateException("Item " + identifier + " already registered before " + this + "tried to register it!");
-        }
+        if (Registry.ITEM.containsId(identifier)) return;
 
         Registry.register(Registry.ITEM, identifier, item);
     }
@@ -310,11 +304,10 @@ public final class WoodTypeFactory {
         if (block == null) return; // Nope.
 
         Identifier identifier = new Identifier(this.modId, id);
-        if (Registry.ITEM.containsId(identifier)) {
-            throw new IllegalStateException("Item " + identifier + " already registered before " + this + "tried to register it!");
-        }
+        if (Registry.ITEM.containsId(identifier)) return;
+
         if (!Registry.BLOCK.containsId(identifier)) {
-            new RuntimeException(this + ": Register your blocks before your items! Perpetrator: " + identifier).printStackTrace();
+            throw new RuntimeException(this + ": Register your blocks before your items! Perpetrator: " + identifier);
         }
 
         Registry.register(Registry.ITEM, identifier, new BlockItem(block, settings));
@@ -327,7 +320,7 @@ public final class WoodTypeFactory {
      * @see #registerRenderLayers()
      */
     @Environment(EnvType.CLIENT)
-    public void registerClient() {
+    public void registerBlockEntityRenderers() {
         if (this.chestFactory != null) {
             this.chestFactory.registerChestRenderers();
         }
@@ -336,7 +329,6 @@ public final class WoodTypeFactory {
         }
     }
 
-    @Contract(value = "_ -> new")
     public BoatFactory boatFactory(Item.Settings settings) {
         if (this.boatFactory != null) return boatFactory;
         if (this.planks == null) throw new IllegalStateException("Create a planks block for " + this + " before creating a boat!");
@@ -344,8 +336,6 @@ public final class WoodTypeFactory {
         return new BoatFactory(settings, this.planks(), this.modId, this.woodName);
     }
 
-    @SuppressWarnings("UnusedReturnValue")
-    @Contract(value = "_ -> new")
     public BoatFactory boatFactory(ItemGroup group) {
         return boatFactory(new Item.Settings().group(group).maxCount(16));
     }
@@ -353,7 +343,6 @@ public final class WoodTypeFactory {
     /**
      * Can only be called if a saplingGenerator was specified in {@link #WoodTypeFactory(WoodSettingsFactory, String, String, SaplingGenerator) the constructor}.
      */
-    @Contract(value = "-> new")
     public SaplingBlock sapling() {
         if (this.sapling != null) return sapling;
         if (this.saplingGenerator == null) {
@@ -366,11 +355,10 @@ public final class WoodTypeFactory {
     /**
      * Can only be called after {@link #sapling()}
      */
-    @Contract(value = "-> new")
     public FlowerPotBlock pottedSapling() {
         if (this.pottedSapling != null) return pottedSapling;
         if (this.sapling == null) {
-            throw new IllegalStateException("Create a sapling for " + this + " first if you want a potted sapling!");
+            throw new IllegalStateException("Create a sapling for " + this + " before creating a potted sapling!");
         }
 
         return this.pottedSapling = new FlowerPotBlock(this.sapling, this.settings.pottedSapling());

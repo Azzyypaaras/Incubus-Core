@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "incubus_core:block/incubus_chest"
+    }
+  }
+}

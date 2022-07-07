@@ -20,6 +20,7 @@ public class BoatFactory {
     public static final Set<BoatFactory> BOAT_FACTORIES = new HashSet<>();
 
     public final BoatItem item;
+    public final BoatItem chestItem;
     public final BoatEntity.Type boatType;
 
     /**
@@ -30,8 +31,11 @@ public class BoatFactory {
 
         this.boatType = EnumExtender.add(BoatEntity.Type.class, boatId.toUpperCase(Locale.ROOT), rootBlock, boatId);
 
-        this.item = new BoatItem(this.boatType, itemSettings);
+        this.item = new BoatItem(false, this.boatType, itemSettings);
         Registry.register(Registry.ITEM, new Identifier(modId, boatName + "_boat"), this.item);
+    
+        this.chestItem = new BoatItem(true, this.boatType, itemSettings);
+        Registry.register(Registry.ITEM, new Identifier(modId, boatName + "_boat_with_chest"), this.chestItem);
 
         BOAT_FACTORIES.add(this);
     }

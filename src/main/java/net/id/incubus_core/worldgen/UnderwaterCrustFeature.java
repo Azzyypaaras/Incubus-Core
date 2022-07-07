@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
@@ -12,7 +13,6 @@ import net.minecraft.world.tick.OrderedTick;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Random;
 
 public class UnderwaterCrustFeature extends Feature<BiFeatureConfig> {
 
@@ -28,8 +28,7 @@ public class UnderwaterCrustFeature extends Feature<BiFeatureConfig> {
         BlockPos center = context.getOrigin();
         BiFeatureConfig config = context.getConfig();
         StructureWorldAccess world = context.getWorld();
-        Random random = context.getRandom();
-
+        var random = context.getRandom();
 
         if(!world.getFluidState(center).isIn(FluidTags.WATER))
             return false;

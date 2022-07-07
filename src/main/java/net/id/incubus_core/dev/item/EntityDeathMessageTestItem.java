@@ -12,9 +12,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.EntityDamageSource;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 
 import java.util.Optional;
@@ -40,13 +38,13 @@ public final class EntityDeathMessageTestItem extends Item implements CustomDeat
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if (!stack.hasCustomName()) {
-            stack.setCustomName(new LiteralText("Destroyer of Worlds"));
+            stack.setCustomName(Text.of("Destroyer of Worlds"));
         }
     }
     
     @Override
     public Optional<Text> getDeathMessage(EntityDamageSource damageSource, LivingEntity target, ItemStack stack, EntityDamageType type) {
-        return Optional.of(new TranslatableText("I hope this works out!"));
+        return Optional.of(Text.translatable("I hope this works out!"));
     }
     
     @Override

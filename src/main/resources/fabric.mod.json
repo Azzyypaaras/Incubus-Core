@@ -28,9 +28,6 @@
     ],
     "client": [
       "net.id.incubus_core.IncubusCoreClient"
-    ],
-    "cardinal-components": [
-      "net.id.incubus_core.condition.IncubusCondition"
     ]
   },
   "mixins": [

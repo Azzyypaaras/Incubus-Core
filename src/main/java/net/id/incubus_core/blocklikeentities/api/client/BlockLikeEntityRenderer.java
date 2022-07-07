@@ -16,13 +16,13 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 @Environment(EnvType.CLIENT)
 public class BlockLikeEntityRenderer extends EntityRenderer<BlockLikeEntity> {
-    private final Random random = Random.create();
-    
+
     public BlockLikeEntityRenderer(EntityRendererFactory.Context renderManager) {
         super(renderManager);
         this.shadowRadius = 0.5F;
@@ -41,7 +41,7 @@ public class BlockLikeEntityRenderer extends EntityRenderer<BlockLikeEntity> {
                 BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
                 matrices.translate(-0.5, 0.0, -0.5);
                 BlockRenderManager blockRenderManager = MinecraftClient.getInstance().getBlockRenderManager();
-                blockRenderManager.getModelRenderer().render(world, blockRenderManager.getModel(blockState), blockState, blockpos, matrices, vertexConsumers.getBuffer(RenderLayers.getMovingBlockLayer(blockState)), false, random, blockState.getRenderingSeed(entity.getOrigin()), OverlayTexture.DEFAULT_UV);
+                blockRenderManager.getModelRenderer().render(world, blockRenderManager.getModel(blockState), blockState, blockpos, matrices, vertexConsumers.getBuffer(RenderLayers.getMovingBlockLayer(blockState)), false, new Random(), blockState.getRenderingSeed(entity.getOrigin()), OverlayTexture.DEFAULT_UV);
                 matrices.pop();
                 super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
             }

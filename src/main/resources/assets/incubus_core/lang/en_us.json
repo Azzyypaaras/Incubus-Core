@@ -1,6 +1,5 @@
 {
   "itemGroup.incubus_core.core_group": "§5§nIncubus Core",
-  "itemGroup.incubus_core.dev": "§5§nDevcubus Core",
   "item.incubus_core.lunarian_saber": "§b§nLunarian Saber",
   "item.incubus_core.hand_piston": "Portable Piston",
   "item.incubus_core.hand_piston_advanced": "Refined Portable Piston",
@@ -8,13 +7,6 @@
   "item.incubus_core.sacred_disc_1.desc": "duped_shovels.tradetf.exe.ogg",
   "block.incubus_core.render_test": "Render Test",
   "effect.incubus_core.zonked": "Zonked State",
-
-  "item.incubus_core.entity_death_message_item" : "Someone programmed this item name in a very silly way. Put it in your inventory. Wow, you can really make these as long as you want. Is this really not going to wrap? Alright. The Meaning of Life, the Universe and Everything = 42. Wow. I can really put anything here, and you won't be able to see it 'cause it'll be off screen. What it means to feel “at home” is something authors have explored and tried to answer for a long time. For example, Ta-Nehisi Coates’ Between The World and Me is all about his effort to teach his son about his home and about his culture, and its place in the world. Meanwhile, Andrea Levy’s “Back to My Own Country” focuses on her journey to understand herself living within Britain, as well as venture to learn about her heritage. The concept of home in these stories is not black-and-white. Both authors hold a complex perspective on home – neither viewing it as solely one-or-the-other, but rather both a place and a state of mind.For an example, in an interview with Coates, he is asked about his love of the United States, to which he responds, paraphrased, “America is my home. It’s like being born into a family. I have no choice but to love it” – suggesting that he views home as a hard-and-fast place. In his writing however, it is clear that that his perception of home is deeply linked to heritage and culture. When writing to his son, he tells him that although he lives in France, he must not forget about the people struggling in America, because it is also his struggle, because he shares their culture. This implies that Coates views home as more than just a place, but also a state of mind – showing his complex relationship with the concept of home.Andrea Levy, on the other hand, seems to not want anything to do with her country of origin, at least initially in her essay. She writes “I hated myself. I was ashamed of my family, and embarrassed that they came from the Caribbean” (Levy 15). Home, to her, is not where she came from. However, she comes to embrace her culture, bringing with it a change to her concept of home. “I am now happy to be called a black British writer, and the fiction I have written has all been about my Caribbean heritage in some way or another” (Levy 24). Her perspective of home has come to include both her place of origin, as well as her state of mind and her acceptance of her culture.Though their individual thoughts on home may differ, it is clear that Coates’ and Levy’s definition of home is not so clear-cut. Both Coates and Levy demonstrate an understanding of home that isn’t defined solely as a place or a state of mind, but rather a mix of both. And it is through this complex perspective that they are able to gain new insight into their lives.Works Cited Coates, Ta-Nehisi. Between the World and Me. New York City, Spiegel & Grau, 2015.Levy, Andrea. “Back to My Own Country.” London, Tinder Press, 2014.Orwell, George. “Shooting an Elephant.” New Writing, Autumn, 1936.",
-  "item.incubus_core.incubus_boat" : "Boatcubus",
-  "block.incubus_core.incubus_log" : "Logubus",
-  "block.incubus_core.incubus_planks" : "Plankubus",
-  "block.incubus_core.incubus_sign" : "Signulous",
-  "block.incubus_core.incubus_chest" : "Succubus :3",
 
 
   "commands.incubus_core.condition.failure.assign": "...you tried setting a constant condition, didn't you?",

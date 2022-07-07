@@ -27,7 +27,7 @@ public abstract class NoiseChunkGeneratorMixin extends ChunkGenerator {
 		super(registry, optional, biomeSource);
 	}
 
-	/*TODO Does this need to be moved somewhere? NoiseChunkGenerator doesn't seem to handle seeds anymore.
+
 	@Redirect(
 		method = "method_28550(Lcom/mojang/serialization/codecs/RecordCodecBuilder$Instance;)Lcom/mojang/datafixers/kinds/App;",
 		at = @At(
@@ -60,5 +60,4 @@ public abstract class NoiseChunkGeneratorMixin extends ChunkGenerator {
 
 		return seed;
 	}
-	 */
 }

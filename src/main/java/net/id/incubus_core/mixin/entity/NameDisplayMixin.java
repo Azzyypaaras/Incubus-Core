@@ -3,6 +3,7 @@ package net.id.incubus_core.mixin.entity;
 import com.mojang.authlib.GameProfile;
 import net.id.incubus_core.misc.WorthinessChecker;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,7 +23,7 @@ public abstract class NameDisplayMixin {
         var profile = getGameProfile();
         var capeType = WorthinessChecker.getCapeType(profile.getId());
         if(capeType != CapeType.NONE) {
-            cir.setReturnValue(Text.of(capeType.prefix + profile.getName()));
+            cir.setReturnValue(new LiteralText(capeType.prefix + profile.getName()));
             cir.cancel();
         }
     }

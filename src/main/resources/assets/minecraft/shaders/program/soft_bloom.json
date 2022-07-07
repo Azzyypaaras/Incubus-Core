@@ -5,7 +5,7 @@
     "dstrgb": "1"
   },
   "vertex": "sobel",
-  "fragment": "bloom",
+  "fragment": "soft_bloom",
   "attributes": [
     "Position"
   ],
@@ -56,22 +56,6 @@
       "count": 2,
       "values": [
         1.0,
-        1.0
-      ]
-    },
-    {
-      "name": "Radius",
-      "type": "float",
-      "count": 1,
-      "values": [
-        1.0
-      ]
-    },
-    {
-      "name": "Divisor",
-      "type": "float",
-      "count": 1,
-      "values": [
         1.0
       ]
     }

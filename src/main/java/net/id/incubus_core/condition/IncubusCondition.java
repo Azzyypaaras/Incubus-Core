@@ -4,7 +4,7 @@ import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.id.incubus_core.IncubusCore;
 import net.id.incubus_core.condition.api.Condition;
@@ -26,6 +26,6 @@ public class IncubusCondition implements EntityComponentInitializer {
     }
 
     public static void init() {
-        CommandRegistrationCallback.EVENT.register(((dispatcher, dedicated, environment) -> ConditionCommand.register(dispatcher)));
+        CommandRegistrationCallback.EVENT.register(((dispatcher, dedicated) -> ConditionCommand.register(dispatcher)));
     }
 }

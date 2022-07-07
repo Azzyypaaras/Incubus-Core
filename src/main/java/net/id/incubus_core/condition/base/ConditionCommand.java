@@ -20,7 +20,7 @@ import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,16 +79,16 @@ public class ConditionCommand {
                     });
 
                     source.sendFeedback(
-                        Text.translatable(
-                            "commands.incubus_core.condition.success.clear.individual",
-                            conditions.size(), entity.getDisplayName()
-                        ),
+                            new TranslatableText(
+                                    "commands.incubus_core.condition.success.clear.individual",
+                                    conditions.size(), entity.getDisplayName()
+                            ),
                             true
                     );
                 }
             }
         });
-        source.sendFeedback(Text.translatable("commands.incubus_core.condition.success.clear"), true);
+        source.sendFeedback(new TranslatableText("commands.incubus_core.condition.success.clear"), true);
         return 1;
     }
 
@@ -103,9 +103,9 @@ public class ConditionCommand {
 
                     if (!condition.isExempt(target)) {
                         // todo: also print who is being queried
-                        source.sendFeedback(Text.translatable("commands.incubus_core.condition.success.query", Text.translatable(ConditionAPI.getTranslationString(condition)), Text.translatable(severity.getTranslationKey()), rawSeverity), false);
+                        source.sendFeedback(new TranslatableText("commands.incubus_core.condition.success.query", new TranslatableText(ConditionAPI.getTranslationString(condition)), new TranslatableText(severity.getTranslationKey()), rawSeverity), false);
                     } else {
-                        source.sendError(Text.translatable("commands.incubus_core.condition.failure.query", Text.translatable(ConditionAPI.getTranslationString(condition))));
+                        source.sendError(new TranslatableText("commands.incubus_core.condition.failure.query", new TranslatableText(ConditionAPI.getTranslationString(condition))));
                     }
                 });
             }
@@ -121,13 +121,13 @@ public class ConditionCommand {
             try {
                 condition = ConditionAPI.getOrThrow(attributeId);
             } catch (NoSuchElementException e) {
-                source.sendError(Text.translatable("commands.incubus_core.condition.failure.get_condition", attributeId));
+                source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_condition", attributeId));
                 return 1;
             }
             try {
                 persistence = Persistence.valueOf(persistenceString);
             } catch (NoSuchElementException e) {
-                source.sendError(Text.translatable("commands.incubus_core.condition.failure.get_persistence", persistenceString));
+                source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_persistence", persistenceString));
                 return 1;
             }
 
@@ -139,11 +139,11 @@ public class ConditionCommand {
                     var severity = Severity.getSeverity(rawSeverity);
 
                     // todo: also print who the condition is being assigned to
-                    source.sendFeedback(Text.translatable("commands.incubus_core.condition.success.assign", Text.translatable(ConditionAPI.getTranslationString(condition)), Text.translatable(severity.getTranslationKey()), rawSeverity), false);
+                    source.sendFeedback(new TranslatableText("commands.incubus_core.condition.success.assign", new TranslatableText(ConditionAPI.getTranslationString(condition)), new TranslatableText(severity.getTranslationKey()), rawSeverity), false);
                     ConditionAPI.trySync(target);
                 }
                 else {
-                    source.sendError(Text.translatable("commands.incubus_core.condition.failure.assign"));
+                    source.sendError(new TranslatableText("commands.incubus_core.condition.failure.assign"));
                 }
             }
         }
@@ -155,7 +155,7 @@ public class ConditionCommand {
             try {
                 entities = List.of(source.getEntityOrThrow());
             } catch (Exception e) {
-                source.sendError(Text.translatable("commands.incubus_core.condition.failure.get_entity"));
+                source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_entity"));
                 entities = List.of();
             }
         }
@@ -168,7 +168,7 @@ public class ConditionCommand {
             try {
                 conditions = List.of(ConditionAPI.getOrThrow(attributeId));
             } catch (NoSuchElementException e) {
-                source.sendError(Text.translatable("commands.incubus_core.condition.failure.get_condition", attributeId));
+                source.sendError(new TranslatableText("commands.incubus_core.condition.failure.get_condition", attributeId));
                 conditions = List.of();
             }
         } else {

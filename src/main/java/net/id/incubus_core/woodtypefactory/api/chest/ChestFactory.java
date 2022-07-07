@@ -47,32 +47,23 @@ public class ChestFactory {
 
     @Environment(EnvType.CLIENT)
     public void registerChestRenderers() {
-        ClientChestFactory.registerChestRenderers(modId, chestName, chest, blockEntityType);
+        BuiltinItemRendererRegistry.INSTANCE.register(chest, (stack, mode, matrices, vertexConsumers, light, overlay)->{
+            var dispatcher = MinecraftClient.getInstance().getBlockEntityRenderDispatcher();
+            dispatcher.renderEntity(ChestBlockEntityAccessor.init(blockEntityType, BlockPos.ORIGIN, chest.getDefaultState()), matrices, vertexConsumers, light, overlay);
+        });
+
+        IncubusChestTexture texture = new IncubusChestTexture(this.modId, this.chestName);
+        BlockEntityRendererRegistry.register(blockEntityType, ctx -> new IncubusChestBlockEntityRenderer(ctx, texture));
+
+        allChestTextures.add(texture);
     }
 
     /**
      * Not for public use.
      */
-    @Environment(EnvType.CLIENT)
     public static void addDefaultTextures(Consumer<SpriteIdentifier> adder){
         for(var texture : allChestTextures){
             texture.textures().forEach(adder);
-        }
-    }
-
-    // This solution works. It's a bit weird, maybe, but it works.
-    @Environment(EnvType.CLIENT)
-    private static class ClientChestFactory {
-        public static void registerChestRenderers(String modId, String chestName, ChestBlock chest, BlockEntityType<ChestBlockEntity> blockEntityType) {
-            BuiltinItemRendererRegistry.INSTANCE.register(chest, (stack, mode, matrices, vertexConsumers, light, overlay)->{
-                var dispatcher = MinecraftClient.getInstance().getBlockEntityRenderDispatcher();
-                dispatcher.renderEntity(ChestBlockEntityAccessor.init(blockEntityType, BlockPos.ORIGIN, chest.getDefaultState()), matrices, vertexConsumers, light, overlay);
-            });
-
-            IncubusChestTexture texture = new IncubusChestTexture(modId, chestName);
-            BlockEntityRendererRegistry.register(blockEntityType, ctx -> new IncubusChestBlockEntityRenderer(ctx, texture));
-
-            allChestTextures.add(texture);
         }
     }
 }

@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
@@ -12,6 +11,7 @@ import net.minecraft.world.tick.OrderedTick;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 
 public class CrustFeature extends Feature<BiFeatureConfig> {
 
@@ -27,7 +27,7 @@ public class CrustFeature extends Feature<BiFeatureConfig> {
 
         BlockPos center = context.getOrigin().down();
         BiFeatureConfig config = context.getConfig();
-        var random = context.getRandom();
+        Random random = context.getRandom();
 
         int radius = config.scale.get(random);
 

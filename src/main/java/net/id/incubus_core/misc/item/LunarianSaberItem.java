@@ -14,6 +14,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -34,7 +35,7 @@ public class LunarianSaberItem extends SwordItem {
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 
         World world = target.world;
-        var random = target.getRandom();
+        Random random = target.getRandom();
 
         if(!WorthinessChecker.isPlayerWorthy(attacker.getUuid())) {
             attacker.damage(DamageSource.GENERIC, 0.1F);
@@ -44,7 +45,7 @@ public class LunarianSaberItem extends SwordItem {
             attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2), attacker);
 
             if(attacker instanceof PlayerEntity) {
-                ((PlayerEntity) attacker).sendMessage(Text.of("You have no right!"), true);
+                ((PlayerEntity) attacker).sendMessage(new LiteralText("You have no right!"), true);
             }
 
             attacker.setStackInHand(attacker.getActiveHand(), ItemStack.EMPTY);
@@ -103,7 +104,7 @@ public class LunarianSaberItem extends SwordItem {
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity target, Hand hand) {
         Box bounds = target.getBoundingBox(target.getPose());
-        var random = target.getRandom();
+        Random random = target.getRandom();
         World world = target.world;
 
         target.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 260, 1));
@@ -123,8 +124,8 @@ public class LunarianSaberItem extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.of("§f§oFor The Worthy"));
-        tooltip.add(Text.of("§b§olook to la luna"));
+        tooltip.add(new LiteralText("§f§oFor The Worthy"));
+        tooltip.add(new LiteralText("§b§olook to la luna"));
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

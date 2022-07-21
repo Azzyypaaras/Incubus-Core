@@ -17,8 +17,6 @@ import net.id.incubus_core.misc.item.IncubusMusicDiscItem;
 import net.id.incubus_core.misc.item.LunarianSaberItem;
 import net.id.incubus_core.potion.ZonkedEffect;
 import net.id.incubus_core.recipe.IncubusRecipes;
-import net.id.incubus_core.render.test.RenderTestBlock;
-import net.id.incubus_core.render.test.RenderTestBlockEntity;
 import net.id.incubus_core.systems.RegistryRegistry;
 import net.id.incubus_core.util.Config;
 import net.minecraft.block.Block;
@@ -46,9 +44,6 @@ public class IncubusCore implements ModInitializer {
 
 	public static final SplittableRandom RANDOM = new SplittableRandom(System.currentTimeMillis());
 
-	public static final Block RENDER_TEST_BLOCK = registerBlock("render_test", new RenderTestBlock(FabricBlockSettings.copyOf(Blocks.AMETHYST_BLOCK).nonOpaque().luminance(5).blockVision((state, world, pos) -> false).allowsSpawning((state, world, pos, type) -> false).suffocates((state, world, pos) -> false).solidBlock((state, world, pos) -> false)));
-	public static final BlockEntityType<RenderTestBlockEntity> RENDER_TEST_BLOCK_ENTITY_TYPE = FabricBlockEntityTypeBuilder.create(RenderTestBlockEntity::new, RENDER_TEST_BLOCK).build();
-
 	public static final SoundEvent DUPED_SHOVELS = registerSoundEvent("duped_shovels");
 
 	@Override
@@ -68,7 +63,6 @@ public class IncubusCore implements ModInitializer {
 		registerItem("hand_piston_advanced", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).fireproof().rarity(Rarity.RARE).maxCount(1), true));
 		registerItem("debug_flame", new DebugFlameItem(new FabricItemSettings().fireproof().rarity(Rarity.EPIC).maxCount(1).equipmentSlot(stack -> EquipmentSlot.HEAD)));
 		registerItem("sacred_disc_1", new IncubusMusicDiscItem(0, DUPED_SHOVELS, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.EPIC)));
-		registerItem("render_test", new BlockItem(RENDER_TEST_BLOCK, new FabricItemSettings()));
 
 		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			IncubusDevel.init();

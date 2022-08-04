@@ -21,8 +21,10 @@ public final class Plugin implements IMixinConfigPlugin {
 	
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		if (mixinClassName.equals("net.id.incubus_core.mixin.client.InterpFixMixin")) {
-			return !FabricLoader.getInstance().isModLoaded("thorium");
+		if(mixinClassName.contains(".devel.")) {
+			return FabricLoader.getInstance().isDevelopmentEnvironment();
+		} else if (mixinClassName.equals("net.id.incubus_core.mixin.client.InterpFixMixin")) {
+			return !FabricLoader.getInstance().isModLoaded("thorium") && !FabricLoader.getInstance().isModLoaded("sodium");
 		} else {
 			return true;
 		}

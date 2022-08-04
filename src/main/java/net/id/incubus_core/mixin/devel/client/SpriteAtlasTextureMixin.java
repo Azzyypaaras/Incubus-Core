@@ -15,9 +15,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Queue;
 
+// the unmapped mixin targets break in prod
 @Environment(EnvType.CLIENT)
 @Mixin(SpriteAtlasTexture.class)
-public abstract class SpriteAtlasTextureMixin{
+public abstract class SpriteAtlasTextureMixin {
     @Inject(
             method = "method_18160",
             at = @At(

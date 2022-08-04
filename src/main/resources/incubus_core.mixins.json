@@ -30,7 +30,6 @@
     "client.Sprite$AnimationAccessor",
     "client.Sprite$AnimationFrameAccessor",
     "client.SpriteAccessor",
-    "devel.client.SpriteAtlasTextureMixin",
     "devel.client.TranslationStorageMixin",
     "woodtypefactory.client.TexturedRenderLayersMixin"
   ],

@@ -18,17 +18,13 @@
     "woodtypefactory.sign.BlockEntityTypeMixin",
     "woodtypefactory.sign.SignTypeAccessor",
     "world.BiomeAccessor",
-    "world.ServerTickMixin",
-    "world.gen.GeneratorOptionsMixin",
-    "world.gen.chunk.NoiseChunkGeneratorMixin"
+    "world.ServerTickMixin"
   ],
   "client": [
     "blocklikeentities.client.ClientPlayerEntityMixin",
     "blocklikeentities.client.ClientWorldMixin",
     "client.CapeMixin",
     "client.InterpFixMixin",
-    "client.Sprite$AnimationAccessor",
-    "client.Sprite$AnimationFrameAccessor",
     "client.SpriteAccessor",
     "devel.client.TranslationStorageMixin",
     "woodtypefactory.client.TexturedRenderLayersMixin"

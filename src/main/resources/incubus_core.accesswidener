@@ -4,3 +4,9 @@ accessWidener	v1	named
 
 accessible  class   net/minecraft/client/texture/Sprite$Animation
 accessible  class   net/minecraft/client/texture/Sprite$AnimationFrame
+
+#If you are reading this, remind me to stab Dafuqs
+
+accessible  class net/minecraft/client/render/RenderLayer$MultiPhase
+accessible  class net/minecraft/client/render/RenderLayer$MultiPhaseParameters
+

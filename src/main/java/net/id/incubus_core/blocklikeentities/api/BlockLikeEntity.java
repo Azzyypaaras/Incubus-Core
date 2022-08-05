@@ -200,7 +200,7 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
 
         List<Entity> otherEntities = this.world.getOtherEntities(this, getBoundingBox().union(getBoundingBox().offset(0, 0.5, 0)));
         for (var entity : otherEntities) {
-            if (!(entity instanceof BlockLikeEntity) && !entity.noClip && this.collides()) {
+            if (!(entity instanceof BlockLikeEntity) && !entity.noClip && collides) {
                 entity.move(MovementType.SHULKER_BOX, this.getVelocity());
                 entity.setOnGround(true);
 
@@ -428,14 +428,14 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
         this.dataTracker.startTracking(ORIGIN, BlockPos.ORIGIN);
     }
 
-    @Override
-    public boolean collides() {
-        return !this.isRemoved() && this.collides;
-    }
+    //@Override
+    //public boolean collides() {
+    //    return !this.isRemoved() && this.collides;
+    //}
 
     @Override
     public boolean isCollidable() {
-        return this.collides();
+        return collides;
     }
 
     @Override

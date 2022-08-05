@@ -25,6 +25,7 @@
   "client": [
     "blocklikeentities.client.ClientPlayerEntityMixin",
     "blocklikeentities.client.ClientWorldMixin",
+    "client.RenderLayerAccessor",
     "client.CapeMixin",
     "client.InterpFixMixin",
     "client.Sprite$AnimationAccessor",

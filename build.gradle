@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.11.+'
+	id 'fabric-loom' version '0.12.+'
 	id 'maven-publish'
 }
 
@@ -55,7 +55,6 @@ dependencies {
 
 	modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-	modImplementation(include("io.github.ladysnake:satin:${project.satin_version}"))
 //	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 }
 

@@ -1,5 +1,6 @@
 package net.id.incubus_core.mixin.woodtypefactory.sign;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import org.spongepowered.asm.mixin.Final;
@@ -20,8 +21,14 @@ public class BlockEntityTypeMixin {
     @Final
     private Set<Block> blocks;
 
+    /**
+     * Makes the set of blocks in the BlockEntityTypes mutable, so that they can be modified.
+     * Only do this once the set has been created (made immutable).
+     */
     @Inject(method = "<init>", at = @At("RETURN"))
     private void makeBlocksMutable(CallbackInfo ci) {
-        this.blocks = new HashSet<>(this.blocks);
+        if (this.blocks instanceof ImmutableSet<Block>) {
+            this.blocks = new HashSet<>(this.blocks);
+        }
     }
 }

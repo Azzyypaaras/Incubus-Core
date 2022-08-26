@@ -1,7 +1,5 @@
 package net.id.incubus_core.mixin.world.gen.chunk;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.PrimitiveCodec;
 import net.id.incubus_core.util.SeedSupplier;
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.registry.Registry;
@@ -9,12 +7,8 @@ import net.minecraft.util.registry.RegistryEntryList;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.Optional;
 

@@ -1,6 +1,5 @@
 package net.id.incubus_core.systems;
 
-import net.id.incubus_core.mixin.world.BiomeAccessor;
 import net.id.incubus_core.util.RandomShim;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

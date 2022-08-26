@@ -14,17 +14,16 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 public class LunarianSaberItem extends SwordItem {
 
@@ -110,8 +109,8 @@ public class LunarianSaberItem extends SwordItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(new LiteralText("§f§oFor The Worthy"));
-        tooltip.add(new LiteralText("§b§olook to la luna"));
+        tooltip.add(Text.literal("§f§oFor The Worthy"));
+        tooltip.add(Text.literal("§b§olook to la luna"));
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

@@ -25,6 +25,8 @@
     "blocklikeentities.client.ClientWorldMixin",
     "client.CapeMixin",
     "client.InterpFixMixin",
+    "client.Sprite$AnimationAccessor",
+    "client.Sprite$AnimationFrameAccessor",
     "client.SpriteAccessor",
     "devel.client.TranslationStorageMixin",
     "woodtypefactory.client.TexturedRenderLayersMixin"

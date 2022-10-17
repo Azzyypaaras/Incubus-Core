@@ -41,13 +41,9 @@ import java.util.stream.Collectors;
 public abstract class Condition {
 
     /**
-     * @deprecated
-     * This field will become private in a later version. <br>
      * A tag containing all {@code EntityType}s which cannot get this condition.
      */
-    @Deprecated(since = "1.7.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval
-    public final TagKey<EntityType<?>> exempt;
+    private final TagKey<EntityType<?>> exempt;
     /**
      * The maximum value for the {@code Temporary} {@link Persistence}.
      */
@@ -98,18 +94,6 @@ public abstract class Condition {
      */
     public final Identifier getId(){
         return IncubusCondition.CONDITION_REGISTRY.getId(this);
-    }
-
-    /**
-     * @deprecated
-     * Use {@link #isApplicableTo(LivingEntity)}
-     * @param entity A {@code LivingEntity} to be tested.
-     * @return Whether the provided {@code LivingEntity} is exempt from the condition
-     */
-    @Deprecated(since = "1.7.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval
-    public final boolean isExempt(LivingEntity entity) {
-        return !isApplicableTo(entity);
     }
 
     /**

@@ -35,7 +35,7 @@ public class BoatFactory {
         Registry.register(Registry.ITEM, new Identifier(modId, boatName + "_boat"), this.item);
     
         this.chestItem = new BoatItem(true, this.boatType, itemSettings);
-        Registry.register(Registry.ITEM, new Identifier(modId, boatName + "_boat_with_chest"), this.chestItem);
+        Registry.register(Registry.ITEM, new Identifier(modId, boatName + "_chest_boat"), this.chestItem);
 
         BOAT_FACTORIES.add(this);
     }

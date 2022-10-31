@@ -17,6 +17,7 @@ import net.id.incubus_core.misc.item.IncubusMusicDiscItem;
 import net.id.incubus_core.misc.item.LunarianSaberItem;
 import net.id.incubus_core.potion.ZonkedEffect;
 import net.id.incubus_core.recipe.IncubusRecipes;
+import net.id.incubus_core.recipe.matchbook.IncubusMatches;
 import net.id.incubus_core.systems.RegistryRegistry;
 import net.id.incubus_core.util.Config;
 import net.minecraft.block.Block;
@@ -55,6 +56,7 @@ public class IncubusCore implements ModInitializer {
 
 		WorthinessChecker.init();
 		RegistryRegistry.init();
+		IncubusMatches.init();
 		IncubusCondition.init();
 		IncubusRecipes.init();
 

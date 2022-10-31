@@ -1,5 +1,6 @@
 package net.id.incubus_core.recipe;
 
+import net.id.incubus_core.recipe.matchbook.Matchbook;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
@@ -15,28 +16,30 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused")
 public final class IngredientStack {
 
-    public static final IngredientStack EMPTY = new IngredientStack(Ingredient.EMPTY, 0);
+    public static final IngredientStack EMPTY = new IngredientStack(Ingredient.EMPTY, Matchbook.empty(), 0);
     private final Ingredient ingredient;
+    private final Matchbook matchbook;
     private final int count;
 
-    private IngredientStack(Ingredient ingredient, int count) {
+    private IngredientStack(Ingredient ingredient, Matchbook matchbook, int count) {
         this.ingredient = ingredient;
+        this.matchbook = matchbook;
         this.count = count;
     }
 
-    public static IngredientStack of(Ingredient ingredient, int count) {
+    public static IngredientStack of(Ingredient ingredient, Matchbook matchbook, int count) {
         if(ingredient.isEmpty()) {
             return EMPTY;
         }
-        return new IngredientStack(ingredient, count);
+        return new IngredientStack(ingredient, matchbook, count);
     }
 
     public static IngredientStack of(Ingredient ingredient) {
-        return of(ingredient, 1);
+        return of(ingredient, null, 1);
     }
 
     public boolean test(ItemStack stack) {
-        return ingredient.test(stack) && stack.getCount() >= count;
+        return ingredient.test(stack) && stack.getCount() >= count && matchbook.test(stack);
     }
 
     public boolean testStrict(ItemStack stack) {
@@ -45,11 +48,12 @@ public final class IngredientStack {
 
     public void write(PacketByteBuf buf) {
         ingredient.write(buf);
+        matchbook.write(buf);
         buf.writeInt(count);
     }
 
     public static IngredientStack fromByteBuf(PacketByteBuf buf) {
-        return new IngredientStack(Ingredient.fromPacket(buf), buf.readInt());
+        return new IngredientStack(Ingredient.fromPacket(buf), Matchbook.fromByteBuf(buf), buf.readInt());
     }
 
     public static List<IngredientStack> decodeByteBuf(PacketByteBuf buf, int size) {

@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.MalformedJsonException;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.id.incubus_core.IncubusCore;
 import net.id.incubus_core.recipe.IngredientStack;
 //import net.id.incubus_core.recipe.OptionalStack;
@@ -15,6 +16,8 @@ import net.id.incubus_core.util.RegistryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtHelper;
 import net.minecraft.recipe.Ingredient;
 //import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.TagKey;
@@ -45,6 +48,7 @@ public class JsonUtils {
     public static IngredientStack ingredientFromJson(JsonObject json) {
         Ingredient ingredient = Ingredient.fromJson(json.get("ingredient"));
         var matchbook = Matchbook.empty();
+        NbtCompound recipeViewNbt = null;
         int count = json.has("count") ? json.get("count").getAsInt() : 1;
 
         if (json.has("matchbook")) {
@@ -55,7 +59,15 @@ public class JsonUtils {
             }
         }
 
-        return IngredientStack.of(ingredient, matchbook, count);
+        if (json.has("recipeViewNbt")) {
+            try {
+                recipeViewNbt = NbtHelper.fromNbtProviderString(json.get("recipeViewNbt").getAsString());
+            } catch (CommandSyntaxException e) {
+                IncubusCore.LOG.error("RELAYED EXCEPTION. " + e);
+            }
+        }
+
+        return IngredientStack.of(ingredient, matchbook, recipeViewNbt, count);
     }
 
     public static List<IngredientStack> ingredientsFromJson(JsonArray array, int size) {

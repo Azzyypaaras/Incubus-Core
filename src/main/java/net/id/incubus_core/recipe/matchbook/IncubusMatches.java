@@ -4,8 +4,8 @@ public class IncubusMatches {
 
     public static void init() {
         MatchRegistry.registerInternal("int", new IntMatch.Factory());
-        MatchRegistry.registerInternal("intRange", new IntMatch.Factory());
-        MatchRegistry.registerInternal("float", new IntMatch.Factory());
-        MatchRegistry.registerInternal("string", new IntMatch.Factory());
+        MatchRegistry.registerInternal("intRange", new IntRangeMatch.Factory());
+        MatchRegistry.registerInternal("float", new FloatMatch.Factory());
+        MatchRegistry.registerInternal("string", new StringMatch.Factory());
     }
 }

@@ -50,7 +50,7 @@ public class StringMatch extends Match {
             var match = new StringMatch(name, key);
             match.configure(object);
 
-            return super.create(key, object);
+            return match;
         }
 
         @Override
@@ -58,7 +58,7 @@ public class StringMatch extends Match {
             var match = new StringMatch(name, buf.readString());
             match.configure(buf);
 
-            return super.fromPacket(buf);
+            return match;
         }
     }
 

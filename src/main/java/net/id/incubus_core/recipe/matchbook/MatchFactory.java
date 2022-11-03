@@ -7,7 +7,7 @@ import net.minecraft.network.PacketByteBuf;
  * A factory, tasked with both creating and configuring Matches, and also building them from packets.
  * Ensure the name matches the registry id.
  */
-public class MatchFactory<T extends Match> {
+public abstract class MatchFactory<T extends Match> {
 
     protected final String name;
 
@@ -15,13 +15,9 @@ public class MatchFactory<T extends Match> {
         this.name = name;
     }
 
-    public T create(String key, JsonObject object) {
-        return null;
-    }
+    public abstract T create(String key, JsonObject object);
 
-    public T fromPacket(PacketByteBuf buf) {
-        return null;
-    }
+    public abstract T fromPacket(PacketByteBuf buf);
 
     public static MatchFactory<?> getForPacket(String name) {
         return MatchRegistry.getOptional(name).get();

@@ -58,7 +58,7 @@ public class FloatMatch extends Match {
             var match = new FloatMatch(name, key);
             match.configure(object);
 
-            return super.create(key, object);
+            return match;
         }
 
         @Override
@@ -66,7 +66,7 @@ public class FloatMatch extends Match {
             var match = new FloatMatch(name, buf.readString());
             match.configure(buf);
 
-            return super.fromPacket(buf);
+            return match;
         }
     }
 

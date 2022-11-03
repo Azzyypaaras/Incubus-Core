@@ -4,11 +4,11 @@ import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 
-public class IntMatch extends Match {
+public class ShortMatch extends Match {
 
-    private int targetInt;
+    private short targetShort;
 
-    public IntMatch(String name, String key) {
+    public ShortMatch(String name, String key) {
         super(name, key);
     }
 
@@ -17,7 +17,7 @@ public class IntMatch extends Match {
         var nbt = stack.getOrCreateNbt();
 
         if(nbt.contains(key)) {
-            return nbt.getInt(key) == targetInt;
+            return nbt.getShort(key) == targetShort;
         }
 
         return false;
@@ -25,36 +25,36 @@ public class IntMatch extends Match {
 
     @Override
     void configure(JsonObject json) {
-        targetInt = json.get("target").getAsInt();
+        targetShort = json.get("target").getAsShort();
     }
 
     @Override
     void configure(PacketByteBuf buf) {
-        targetInt = buf.readInt();
+        targetShort = buf.readShort();
     }
 
     @Override
     void write(PacketByteBuf buf) {
-        buf.writeInt(targetInt);
+        buf.writeShort(targetShort);
     }
 
-    public static class Factory extends MatchFactory<IntMatch> {
+    public static class Factory extends MatchFactory<ShortMatch> {
 
         public Factory() {
-            super("int");
+            super("short");
         }
 
         @Override
-        public IntMatch create(String key, JsonObject object) {
-            var match = new IntMatch(name, key);
+        public ShortMatch create(String key, JsonObject object) {
+            var match = new ShortMatch(name, key);
             match.configure(object);
 
             return match;
         }
 
         @Override
-        public IntMatch fromPacket(PacketByteBuf buf) {
-            var match = new IntMatch(name, buf.readString());
+        public ShortMatch fromPacket(PacketByteBuf buf) {
+            var match = new ShortMatch(name, buf.readString());
             match.configure(buf);
 
             return match;

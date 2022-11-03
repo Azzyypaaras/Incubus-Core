@@ -4,11 +4,11 @@ import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 
-public class IntMatch extends Match {
+public class BooleanMatch extends Match {
 
-    private int targetInt;
+    private boolean booleanValue;
 
-    public IntMatch(String name, String key) {
+    public BooleanMatch(String name, String key) {
         super(name, key);
     }
 
@@ -17,7 +17,7 @@ public class IntMatch extends Match {
         var nbt = stack.getOrCreateNbt();
 
         if(nbt.contains(key)) {
-            return nbt.getInt(key) == targetInt;
+            return nbt.getBoolean(key) == booleanValue;
         }
 
         return false;
@@ -25,36 +25,36 @@ public class IntMatch extends Match {
 
     @Override
     void configure(JsonObject json) {
-        targetInt = json.get("target").getAsInt();
+        booleanValue = json.get("value").getAsBoolean();
     }
 
     @Override
     void configure(PacketByteBuf buf) {
-        targetInt = buf.readInt();
+        booleanValue = buf.readBoolean();
     }
 
     @Override
     void write(PacketByteBuf buf) {
-        buf.writeInt(targetInt);
+        buf.writeBoolean(booleanValue);
     }
 
-    public static class Factory extends MatchFactory<IntMatch> {
+    public static class Factory extends MatchFactory<BooleanMatch> {
 
         public Factory() {
-            super("int");
+            super("boolean");
         }
 
         @Override
-        public IntMatch create(String key, JsonObject object) {
-            var match = new IntMatch(name, key);
+        public BooleanMatch create(String key, JsonObject object) {
+            var match = new BooleanMatch(name, key);
             match.configure(object);
 
             return match;
         }
 
         @Override
-        public IntMatch fromPacket(PacketByteBuf buf) {
-            var match = new IntMatch(name, buf.readString());
+        public BooleanMatch fromPacket(PacketByteBuf buf) {
+            var match = new BooleanMatch(name, buf.readString());
             match.configure(buf);
 
             return match;

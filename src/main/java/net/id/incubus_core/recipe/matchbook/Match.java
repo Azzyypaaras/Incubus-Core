@@ -29,6 +29,7 @@ public abstract class Match {
 
     public void writeInternal(PacketByteBuf buf) {
         buf.writeString(name);
+        buf.writeString(key);
         write(buf);
     }
 

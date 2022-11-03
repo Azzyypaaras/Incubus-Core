@@ -42,7 +42,6 @@ public class IntRangeMatch extends Match {
 
     @Override
     void write(PacketByteBuf buf) {
-        buf.writeString(key);
         buf.writeInt(min);
         buf.writeInt(max);
     }

@@ -4,11 +4,11 @@ import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 
-public class IntMatch extends Match {
+public class LongMatch extends Match {
 
-    private int targetInt;
+    private long targetLong;
 
-    public IntMatch(String name, String key) {
+    public LongMatch(String name, String key) {
         super(name, key);
     }
 
@@ -17,7 +17,7 @@ public class IntMatch extends Match {
         var nbt = stack.getOrCreateNbt();
 
         if(nbt.contains(key)) {
-            return nbt.getInt(key) == targetInt;
+            return nbt.getLong(key) == targetLong;
         }
 
         return false;
@@ -25,36 +25,36 @@ public class IntMatch extends Match {
 
     @Override
     void configure(JsonObject json) {
-        targetInt = json.get("target").getAsInt();
+        targetLong = json.get("target").getAsLong();
     }
 
     @Override
     void configure(PacketByteBuf buf) {
-        targetInt = buf.readInt();
+        targetLong = buf.readLong();
     }
 
     @Override
     void write(PacketByteBuf buf) {
-        buf.writeInt(targetInt);
+        buf.writeLong(targetLong);
     }
 
-    public static class Factory extends MatchFactory<IntMatch> {
+    public static class Factory extends MatchFactory<LongMatch> {
 
         public Factory() {
-            super("int");
+            super("long");
         }
 
         @Override
-        public IntMatch create(String key, JsonObject object) {
-            var match = new IntMatch(name, key);
+        public LongMatch create(String key, JsonObject object) {
+            var match = new LongMatch(name, key);
             match.configure(object);
 
             return match;
         }
 
         @Override
-        public IntMatch fromPacket(PacketByteBuf buf) {
-            var match = new IntMatch(name, buf.readString());
+        public LongMatch fromPacket(PacketByteBuf buf) {
+            var match = new LongMatch(name, buf.readString());
             match.configure(buf);
 
             return match;

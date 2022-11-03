@@ -42,7 +42,6 @@ public class FloatMatch extends Match {
 
     @Override
     void write(PacketByteBuf buf) {
-        buf.writeString(key);
         buf.writeFloat(min);
         buf.writeFloat(max);
     }

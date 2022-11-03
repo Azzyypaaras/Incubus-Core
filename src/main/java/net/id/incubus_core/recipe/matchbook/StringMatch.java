@@ -35,7 +35,6 @@ public class StringMatch extends Match {
 
     @Override
     void write(PacketByteBuf buf) {
-        buf.writeString(key);
         buf.writeString(targetString);
     }
 

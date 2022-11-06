@@ -2,8 +2,22 @@ package net.id.incubus_core.misc;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.IncubusCore;
+import net.id.incubus_core.misc.playerdata.PlayerData;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Box;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
@@ -16,8 +30,9 @@ public class WorthinessChecker {
 
     private static final HashMap<UUID, Entry> PLAYER_MAP = new HashMap<>();
 
-    public static boolean isPlayerWorthy(UUID uuid) {
-        return Optional.ofNullable(PLAYER_MAP.get(uuid)).map(entry -> entry.worthy).orElse(bypassWorthiness);
+    public static boolean isPlayerWorthy(UUID uuid, Optional<PlayerEntity> player) {
+        return player.map(IncubusPlayerData::get).map(PlayerData::isDeemedWorthy).orElse(false)
+                || Optional.ofNullable(PLAYER_MAP.get(uuid)).map(entry -> entry.worthy).orElse(bypassWorthiness);
     }
 
     public static CapeType getCapeType(UUID uuid) {
@@ -32,6 +47,39 @@ public class WorthinessChecker {
         PLAYER_MAP.put(id, new Entry(id, cape, worthy));
     }
 
+    public static void smite(LivingEntity entity) {
+        var world = entity.getWorld();
+        var random = entity.getRandom();
+        var stack = entity.getStackInHand(entity.getActiveHand());
+
+        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 60, 1), entity);
+        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2), entity);
+
+        entity.setStackInHand(entity.getActiveHand(), ItemStack.EMPTY);
+
+        if (entity instanceof PlayerEntity) {
+            ((PlayerEntity) entity).sendMessage(new LiteralText("You have no right!"), true);
+            entity.dropStack(stack);
+        }
+
+        world.playSoundFromEntity(null, entity, IncubusSounds.DRIP, SoundCategory.PLAYERS, 2F, 2F);
+
+        if (entity.getHealth() < 5F) {
+            entity.damage(IncubusDamageSources.UNWORTHY, 10000F);
+        }
+        else {
+            entity.damage(IncubusDamageSources.UNWORTHY, 0.1F);
+            entity.setHealth(0.01F);
+        }
+
+        if (!world.isClient()) {
+            Box bounds = entity.getBoundingBox(entity.getPose());
+            for (int i = 0; i < Math.pow(bounds.getAverageSideLength() * 4, 2); i++) {
+                ((ServerWorld) world).spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, entity.getX() + (random.nextDouble() * bounds.getXLength() - bounds.getXLength() / 2), entity.getY() + (random.nextDouble() * bounds.getYLength()), entity.getZ() + (random.nextDouble() * bounds.getZLength() - bounds.getZLength() / 2), random.nextInt(4), 0, 0, 0, 0.9);
+            }
+        }
+    }
+
     public record Entry(UUID playerId, CapeType capeType, boolean worthy) {}
 
     public static void init(){
@@ -44,7 +92,7 @@ public class WorthinessChecker {
 
     public enum CapeType {
         IMMORTAL(locate("textures/capes/immortal.png"), true),
-        LUNAR(locate("textures/capes/lunarian.png"), "High incubus | ", true),
+        LUNAR(locate("textures/capes/lunarian.png"), "Incubus | ", true),
         V1(locate("textures/capes/v1.png"), "ULTRASHILL | ", true),
         UNDERGROUND_ASTRONOMY(locate("textures/capes/underground_astronomy.png"), true),
         GUDY(locate("textures/capes/gudy.png"), true),

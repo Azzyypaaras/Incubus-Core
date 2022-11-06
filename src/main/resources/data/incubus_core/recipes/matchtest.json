@@ -1,0 +1,19 @@
+{
+  "type": "incubus_core:test_recipe_type",
+  "input": {
+    "item": "minecraft:snowball",
+    "matchbook": {
+      "mode": "AND",
+      "matches": [
+        {
+          "type": "enchantment",
+          "key": "Enchantments",
+          "minLevel": 5,
+          "maxLevel": 5,
+          "enchantmentId": "minecraft:sharpness"
+        }
+      ]
+    }
+  },
+  "output": "minecraft:ice"
+}

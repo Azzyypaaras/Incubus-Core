@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class LunarianSaberItem extends SwordItem {
@@ -37,28 +38,8 @@ public class LunarianSaberItem extends SwordItem {
         World world = target.world;
         Random random = target.getRandom();
 
-        if(!WorthinessChecker.isPlayerWorthy(attacker.getUuid())) {
-            attacker.damage(DamageSource.GENERIC, 0.1F);
-            attacker.setHealth(0.01F);
-
-            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 60, 1), attacker);
-            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2), attacker);
-
-            if(attacker instanceof PlayerEntity) {
-                ((PlayerEntity) attacker).sendMessage(new LiteralText("You have no right!"), true);
-            }
-
-            attacker.setStackInHand(attacker.getActiveHand(), ItemStack.EMPTY);
-            world.playSoundFromEntity(null, attacker, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, SoundCategory.PLAYERS, 2F, 2F);
-
-            if(!world.isClient()) {
-                Box bounds = target.getBoundingBox(target.getPose());
-                for (int i = 0; i < Math.pow(bounds.getAverageSideLength() * 2, 2); i++) {
-                    ((ServerWorld) world).spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, attacker.getX() + (random.nextDouble() * bounds.getXLength() - bounds.getXLength() / 2), attacker.getY() + (random.nextDouble() * bounds.getYLength()), attacker.getZ() + (random.nextDouble() * bounds.getZLength() - bounds.getZLength() / 2), random.nextInt(4), 0, 0, 0, 0.9);
-                }
-            }
-
-            return false;
+        if(!WorthinessChecker.isPlayerWorthy(attacker.getUuid(), attacker instanceof PlayerEntity player ? Optional.of(player) : Optional.empty())) {
+            WorthinessChecker.smite(attacker);
         }
 
         if(target.isUndead()) {
@@ -107,9 +88,9 @@ public class LunarianSaberItem extends SwordItem {
         Random random = target.getRandom();
         World world = target.world;
 
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 260, 1));
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 2400, 0));
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 2400, 4));
+        target.clearStatusEffects();
+
+        target.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, 0));
 
         if(!world.isClient()) {
             for (int i = 0; i < Math.pow(bounds.getAverageSideLength() * 2, 1.5); i++) {
@@ -120,6 +101,11 @@ public class LunarianSaberItem extends SwordItem {
         world.playSoundFromEntity(null, target, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.PLAYERS, 1.5F, 2F);
 
         return ActionResult.success(user.world.isClient());
+    }
+
+    @Override
+    public boolean hasGlint(ItemStack stack) {
+        return false;
     }
 
     @Override

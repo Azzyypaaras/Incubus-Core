@@ -8,7 +8,8 @@ import net.minecraft.util.Lazy;
 import java.util.function.Supplier;
 
 public enum IncubusToolMaterials implements ToolMaterial {
-    LUNARIAN(12, 2031, 12.0F, 4.0F, 50, () -> Ingredient.ofItems(Items.GLASS));
+    LUNARIAN(12, 2031, 12.0F, 4.0F, 50, () -> Ingredient.ofItems(Items.GLASS)),
+    MILD_STEEL(12, 4096, 11.0F, 5.0F, 10, () -> Ingredient.ofItems(Items.IRON_INGOT));
 
     private final int miningLevel;
     private final int itemDurability;

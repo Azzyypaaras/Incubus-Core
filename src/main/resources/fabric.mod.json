@@ -30,7 +30,8 @@
       "net.id.incubus_core.IncubusCoreClient"
     ],
     "cardinal-components": [
-      "net.id.incubus_core.condition.IncubusCondition"
+      "net.id.incubus_core.condition.IncubusCondition",
+      "net.id.incubus_core.misc.IncubusPlayerData"
     ]
   },
   "mixins": [
@@ -44,7 +45,8 @@
   },
   "custom": {
     "cardinal-components": [
-      "incubus_core:condition_manager"
+      "incubus_core:condition_manager",
+      "incubus_core:player_data"
     ],
     "modmenu": {
       "links": {

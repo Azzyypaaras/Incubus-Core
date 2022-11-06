@@ -62,8 +62,8 @@ public class Matchbook {
         for (int i = 0; i < size; i++) {
             var name = buf.readString();
 
-            var factory = MatchFactory.getForPacket(name);
-            list.add(factory.fromPacket(buf));
+            var factoryOptional = MatchFactory.getForPacket(name);
+            factoryOptional.ifPresent(factory -> list.add(factory.fromPacket(buf)));
         }
 
         return new Matchbook(list, mode);

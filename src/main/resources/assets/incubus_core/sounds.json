@@ -4,5 +4,84 @@
     "sounds": [
       "incubus_core:duped_shovels"
     ]
+  },
+  "ahh": {
+    "subtitle": "incubus_core.subtitles.ahh",
+    "sounds": [
+      "incubus_core:ahh"
+    ]
+  },
+  "weak": {
+    "subtitle": "incubus_core.subtitles.weak",
+    "sounds": [
+      "incubus_core:weak"
+    ]
+  },
+  "blast": {
+    "subtitle": "incubus_core.subtitles.blast",
+    "sounds": [
+      "incubus_core:blast"
+    ]
+  },
+  "parry": {
+    "subtitle": "incubus_core.subtitles.parry",
+    "sounds": [
+      "incubus_core:parry"
+    ]
+  },
+  "slam": {
+    "subtitle": "incubus_core.subtitles.slam",
+    "sounds": [
+      "incubus_core:slam_1",
+      "incubus_core:slam_2"
+    ]
+  },
+  "apyr": {
+    "subtitle": "incubus_core.subtitles.apyr",
+    "sounds": [
+      "incubus_core:apyr"
+    ]
+  },
+  "bone": {
+    "subtitle": "incubus_core.subtitles.bone",
+    "sounds": [
+      "incubus_core:bone"
+    ]
+  },
+  "cosmic_ocean": {
+    "subtitle": "incubus_core.subtitles.cosmic_ocena",
+    "sounds": [
+      "incubus_core:cosmic_ocean"
+    ]
+  },
+  "decline": {
+    "subtitle": "incubus_core.subtitles.decline",
+    "sounds": [
+      "incubus_core:decline"
+    ]
+  },
+  "drip": {
+    "subtitle": "incubus_core.subtitles.drip",
+    "sounds": [
+      "incubus_core:drip"
+    ]
+  },
+  "drip_long": {
+    "subtitle": "incubus_core.subtitles.drip_long",
+    "sounds": [
+      "incubus_core:drip_long"
+    ]
+  },
+  "trash_isaac": {
+    "subtitle": "incubus_core.subtitles.trash_isaac",
+    "sounds": [
+      "incubus_core:trash_isaac"
+    ]
+  },
+  "vinesus": {
+    "subtitle": "incubus_core.subtitles.vinesus",
+    "sounds": [
+      "incubus_core:vinesus"
+    ]
   }
 }

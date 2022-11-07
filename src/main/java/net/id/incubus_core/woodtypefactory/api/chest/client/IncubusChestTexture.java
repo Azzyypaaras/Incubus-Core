@@ -9,6 +9,7 @@ import net.minecraft.util.Identifier;
 import java.util.Set;
 
 import static net.minecraft.client.render.TexturedRenderLayers.CHEST_ATLAS_TEXTURE;
+import static net.minecraft.client.texture.SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE;
 
 @Environment(EnvType.CLIENT)
 public class IncubusChestTexture {
@@ -24,9 +25,9 @@ public class IncubusChestTexture {
             case CHRISTMAS -> IncubusHoliday.CHRISTMAS;
             default -> IncubusHoliday.NONE;
         }).getName();
-        single = new SpriteIdentifier(CHEST_ATLAS_TEXTURE, new Identifier(modId, "entity/chest/" + name + '/' + prefix));
-        left = new SpriteIdentifier(CHEST_ATLAS_TEXTURE, new Identifier(modId, "entity/chest/" + name + '/' + prefix + "_left"));
-        right = new SpriteIdentifier(CHEST_ATLAS_TEXTURE, new Identifier(modId, "entity/chest/" + name + '/' + prefix + "_right"));
+        single = new SpriteIdentifier(BLOCK_ATLAS_TEXTURE, new Identifier(modId, "entity/chest/" + name + '/' + prefix));
+        left = new SpriteIdentifier(BLOCK_ATLAS_TEXTURE, new Identifier(modId, "entity/chest/" + name + '/' + prefix + "_left"));
+        right = new SpriteIdentifier(BLOCK_ATLAS_TEXTURE, new Identifier(modId, "entity/chest/" + name + '/' + prefix + "_right"));
     }
 
     public Set<SpriteIdentifier> textures(){

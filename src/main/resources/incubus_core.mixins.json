@@ -28,6 +28,7 @@
     "blocklikeentities.client.ClientPlayerEntityMixin",
     "blocklikeentities.client.ClientWorldMixin",
     "client.CapeMixin",
+    "client.InGameHudMixin",
     "client.InterpFixMixin",
     "client.PlayerRendererMixin",
     "client.Sprite$AnimationAccessor",

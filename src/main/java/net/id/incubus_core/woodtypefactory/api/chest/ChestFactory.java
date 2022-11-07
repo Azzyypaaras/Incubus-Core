@@ -14,7 +14,6 @@ import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.util.Identifier;
@@ -31,8 +30,6 @@ import static net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlock
  * Give me the chest deets, and I'll take care of the rest.
  */
 public class ChestFactory {
-    @Environment(EnvType.CLIENT)
-    private static final Set<IncubusChestTexture> allChestTextures = new HashSet<>();
 
     private BlockEntityType<ChestBlockEntity> blockEntityType;
     public final ChestBlock chest;
@@ -53,16 +50,6 @@ public class ChestFactory {
         ClientChestFactory.registerChestRenderers(modId, chestName, chest, blockEntityType);
     }
 
-    /**
-     * Not for public use.
-     */
-    @Environment(EnvType.CLIENT)
-    public static void addDefaultTextures(Consumer<SpriteIdentifier> adder){
-        for(var texture : allChestTextures){
-            texture.textures().forEach(adder);
-        }
-    }
-
     // This solution works. It's a bit weird, maybe, but it works.
     @Environment(EnvType.CLIENT)
     private static class ClientChestFactory {
@@ -75,7 +62,6 @@ public class ChestFactory {
             IncubusChestTexture texture = new IncubusChestTexture(modId, chestName);
             BlockEntityRendererRegistry.register(blockEntityType, ctx -> new IncubusChestBlockEntityRenderer(ctx, texture));
 
-            allChestTextures.add(texture);
             ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
                 texture.textures().forEach(spriteIdentifier -> registry.register(spriteIdentifier.getTextureId()));
             });

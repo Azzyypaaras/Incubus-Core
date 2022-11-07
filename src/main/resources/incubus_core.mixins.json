@@ -35,8 +35,7 @@
     "client.Sprite$AnimationFrameAccessor",
     "client.SpriteAccessor",
     "client.WorldRendererMixin",
-    "devel.client.TranslationStorageMixin",
-    "woodtypefactory.client.TexturedRenderLayersMixin"
+    "devel.client.TranslationStorageMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.id.incubus_core.mixin.woodtypefactory.chest.ChestBlockEntityAccessor;
 import net.id.incubus_core.woodtypefactory.access.IncubusChestBlock;
 import net.id.incubus_core.woodtypefactory.api.chest.client.IncubusChestBlockEntityRenderer;
@@ -13,6 +14,8 @@ import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.TexturedRenderLayers;
+import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -73,6 +76,10 @@ public class ChestFactory {
             BlockEntityRendererRegistry.register(blockEntityType, ctx -> new IncubusChestBlockEntityRenderer(ctx, texture));
 
             allChestTextures.add(texture);
+            ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register((atlasTexture, registry) -> {
+                texture.textures().forEach(spriteIdentifier -> registry.register(spriteIdentifier.getTextureId()));
+            });
         }
     }
+
 }

@@ -370,6 +370,11 @@ public class AzzysFlagItem extends HoeItem {
                         world.playSoundFromEntity(null, target, IncubusSounds.TRASH_ISAAC, SoundCategory.PLAYERS, 0.5F, 1F);
 
                     }
+
+                    if (!world.isClient()) {
+                        IncubusPlayerData.PLAYER_DATA_KEY.sync(player);
+                    }
+
                     return ActionResult.success(world.isClient());
 
                 }

@@ -8,7 +8,6 @@ import net.minecraft.util.Identifier;
 
 import java.util.Set;
 
-import static net.minecraft.client.render.TexturedRenderLayers.CHEST_ATLAS_TEXTURE;
 import static net.minecraft.client.texture.SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE;
 
 @Environment(EnvType.CLIENT)

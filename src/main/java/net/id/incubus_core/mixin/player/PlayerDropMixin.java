@@ -27,13 +27,12 @@ public abstract class PlayerDropMixin extends LivingEntity {
     }
 
     @Inject(method = "dropInventory", at = @At("HEAD"))
-    public void dropEggs(CallbackInfo ci) {
+    public void incubusCore$dropInventory(CallbackInfo ci) {
         var uuid = getUuid();
         if(uuid.equals(AZZY)) {
-            dropItem(new ItemStack(Items.SWEET_BERRIES), false, false);
-        }
-        else if(uuid.equals(DAF)) {
-            dropItem(new ItemStack(Items.AMETHYST_SHARD), false, false);
+            dropItem(Items.SWEET_BERRIES.getDefaultStack(), false, false);
+        } else if(uuid.equals(DAF)) {
+            dropItem(Items.AMETHYST_SHARD.getDefaultStack(), false, false);
         }
     }
 }

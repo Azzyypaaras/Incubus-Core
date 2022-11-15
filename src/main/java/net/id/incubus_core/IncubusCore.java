@@ -15,7 +15,7 @@ import net.id.incubus_core.misc.item.IncubusMusicDiscItem;
 import net.id.incubus_core.misc.item.LunarianSaberItem;
 import net.id.incubus_core.misc.item.IncubusCoreItems;
 import net.id.incubus_core.potion.ZonkedEffect;
-import net.id.incubus_core.recipe.IncubusRecipes;
+import net.id.incubus_core.recipe.IncubusRecipeTypes;
 import net.id.incubus_core.recipe.matchbook.IncubusMatches;
 import net.id.incubus_core.resource_conditions.IncubusCoreResourceConditions;
 import net.id.incubus_core.systems.RegistryRegistry;
@@ -40,8 +40,6 @@ public class IncubusCore implements ModInitializer {
 
 	public static final SplittableRandom RANDOM = new SplittableRandom(System.currentTimeMillis());
 
-	public static final SoundEvent DUPED_SHOVELS = registerSoundEvent("duped_shovels");
-
 	@Override
 	public void onInitialize() {
 		var tempRandom = new Random(System.currentTimeMillis());
@@ -60,6 +58,7 @@ public class IncubusCore implements ModInitializer {
 		registerItem("hand_piston_advanced", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).fireproof().rarity(Rarity.RARE).maxCount(1), true));
 		registerItem("debug_flame", new DebugFlameItem(new FabricItemSettings().fireproof().rarity(Rarity.EPIC).maxCount(1).equipmentSlot(stack -> EquipmentSlot.HEAD)));
 		registerItem("sacred_disc_1", new IncubusMusicDiscItem(0, DUPED_SHOVELS, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.EPIC), 642));
+		IncubusRecipeTypes.init();
 		IncubusPlayerData.init();
 		IncubusCoreResourceConditions.init();
 

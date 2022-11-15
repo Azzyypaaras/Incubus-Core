@@ -20,8 +20,7 @@
     "woodtypefactory.chest.ChestBlockEntityAccessor",
     "woodtypefactory.sign.BlockEntityTypeMixin",
     "woodtypefactory.sign.SignTypeAccessor",
-    "world.BiomeAccessor",
-    "world.ServerTickMixin"
+    "world.BiomeAccessor"
   ],
   "client": [
     "blocklikeentities.client.ClientPlayerEntityMixin",

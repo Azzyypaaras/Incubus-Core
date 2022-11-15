@@ -1,6 +1,5 @@
 package net.id.incubus_core.mixin.player;
 
-import net.id.incubus_core.misc.Players;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.MessageType;
 import net.minecraft.server.PlayerManager;
@@ -12,11 +11,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
-import java.lang.annotation.Target;
 import java.util.UUID;
 
 import static net.id.incubus_core.misc.Players.AZZY;

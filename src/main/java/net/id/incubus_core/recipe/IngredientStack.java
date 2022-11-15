@@ -9,7 +9,6 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +32,7 @@ public final class IngredientStack {
         this.count = count;
     }
 
-    public static IngredientStack of(@NotNull Ingredient ingredient, @NotNull Matchbook matchbook, @Nullable NbtCompound recipeViewNbt, int count) {
+    public static IngredientStack of(@NotNull Ingredient ingredient, @NotNull Matchbook matchbook, NbtCompound recipeViewNbt, int count) {
         if(ingredient.isEmpty()) {
             return EMPTY;
         }

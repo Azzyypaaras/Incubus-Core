@@ -6,6 +6,6 @@ import net.minecraft.entity.effect.StatusEffectCategory;
 public class ZonkedEffect extends StatusEffect {
 
     public ZonkedEffect() {
-        super(StatusEffectCategory.BENEFICIAL, 0xffa6a7);
+        super(StatusEffectCategory.HARMFUL, 0xffa6a7);
     }
 }

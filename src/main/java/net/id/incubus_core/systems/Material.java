@@ -3,7 +3,6 @@ package net.id.incubus_core.systems;
 import net.id.incubus_core.util.TagSuperset;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.DefaultedRegistry;
 import net.minecraft.util.registry.Registry;
 
 

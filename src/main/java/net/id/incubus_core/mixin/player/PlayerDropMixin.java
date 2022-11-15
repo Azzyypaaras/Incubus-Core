@@ -1,6 +1,5 @@
 package net.id.incubus_core.mixin.player;
 
-import net.id.incubus_core.misc.IncubusPlayerData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -14,8 +13,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.UUID;
 
 import static net.id.incubus_core.misc.Players.AZZY;
 import static net.id.incubus_core.misc.Players.DAF;

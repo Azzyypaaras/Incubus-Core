@@ -1,55 +1,67 @@
 package net.id.incubus_core.recipe;
 
+import net.id.incubus_core.recipe.matchbook.Matchbook;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.collection.DefaultedList;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public final class IngredientStack {
 
-    public static final IngredientStack EMPTY = new IngredientStack(Ingredient.EMPTY, 0);
+    public static final IngredientStack EMPTY = new IngredientStack(Ingredient.EMPTY, Matchbook.empty(), Optional.empty(), 0);
     private final Ingredient ingredient;
+    private final Matchbook matchbook;
+    private final Optional<NbtCompound> recipeViewNbt;
     private final int count;
 
-    private IngredientStack(Ingredient ingredient, int count) {
+    private IngredientStack(@NotNull Ingredient ingredient, @NotNull Matchbook matchbook, Optional<NbtCompound> recipeViewNbt, int count) {
         this.ingredient = ingredient;
+        this.matchbook = matchbook;
+        this.recipeViewNbt = recipeViewNbt;
         this.count = count;
     }
 
-    public static IngredientStack of(Ingredient ingredient, int count) {
+    public static IngredientStack of(@NotNull Ingredient ingredient, @NotNull Matchbook matchbook, @Nullable NbtCompound recipeViewNbt, int count) {
         if(ingredient.isEmpty()) {
             return EMPTY;
         }
-        return new IngredientStack(ingredient, count);
+        return new IngredientStack(ingredient, matchbook, Optional.ofNullable(recipeViewNbt), count);
     }
 
     public static IngredientStack of(Ingredient ingredient) {
-        return of(ingredient, 1);
+        return of(ingredient, Matchbook.empty(), null, 1);
     }
 
     public boolean test(ItemStack stack) {
-        return ingredient.test(stack) && stack.getCount() >= count;
+        return ingredient.test(stack) && stack.getCount() >= count && matchbook.test(stack);
     }
 
     public boolean testStrict(ItemStack stack) {
-        return ingredient.test(stack) && stack.getCount() == count;
+        return ingredient.test(stack) && stack.getCount() == count && matchbook.test(stack);
     }
 
     public void write(PacketByteBuf buf) {
         ingredient.write(buf);
+        matchbook.write(buf);
+        buf.writeBoolean(recipeViewNbt.isPresent());
+        recipeViewNbt.ifPresent(buf::writeNbt);
         buf.writeInt(count);
     }
 
     public static IngredientStack fromByteBuf(PacketByteBuf buf) {
-        return new IngredientStack(Ingredient.fromPacket(buf), buf.readInt());
+        return new IngredientStack(Ingredient.fromPacket(buf), Matchbook.fromByteBuf(buf), buf.readBoolean() ? Optional.ofNullable(buf.readNbt()) : Optional.empty(), buf.readInt());
     }
 
     public static List<IngredientStack> decodeByteBuf(PacketByteBuf buf, int size) {
@@ -65,6 +77,7 @@ public final class IngredientStack {
         return Arrays.stream(((MatchingStackAccessor) (Object) ingredient)
                 .getMatchingStacks())
                 .peek(stack -> stack.setCount(count))
+                .peek(stack -> recipeViewNbt.ifPresent(nbt -> stack.setNbt(nbt)))
                 .collect(Collectors.toList());
     }
 

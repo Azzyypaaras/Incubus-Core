@@ -9,14 +9,13 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.condition.IncubusCondition;
 import net.id.incubus_core.dev.DevInit;
 import net.id.incubus_core.devel.IncubusDevel;
+import net.id.incubus_core.misc.IncubusPlayerData;
 import net.id.incubus_core.misc.IncubusToolMaterials;
 import net.id.incubus_core.misc.WorthinessChecker;
-import net.id.incubus_core.misc.item.DebugFlameItem;
-import net.id.incubus_core.misc.item.HandPistonItem;
-import net.id.incubus_core.misc.item.IncubusMusicDiscItem;
-import net.id.incubus_core.misc.item.LunarianSaberItem;
+import net.id.incubus_core.misc.item.*;
 import net.id.incubus_core.potion.ZonkedEffect;
 import net.id.incubus_core.recipe.IncubusRecipes;
+import net.id.incubus_core.recipe.matchbook.IncubusMatches;
 import net.id.incubus_core.systems.RegistryRegistry;
 import net.id.incubus_core.util.Config;
 import net.minecraft.block.Block;
@@ -44,8 +43,6 @@ public class IncubusCore implements ModInitializer {
 
 	public static final SplittableRandom RANDOM = new SplittableRandom(System.currentTimeMillis());
 
-	public static final SoundEvent DUPED_SHOVELS = registerSoundEvent("duped_shovels");
-
 	@Override
 	public void onInitialize() {
 		var tempRandom = new Random(System.currentTimeMillis());
@@ -54,14 +51,11 @@ public class IncubusCore implements ModInitializer {
 
 		WorthinessChecker.init();
 		RegistryRegistry.init();
+		IncubusCoreItems.init();
+		IncubusMatches.init();
 		IncubusCondition.init();
 		IncubusRecipes.init();
-
-		registerItem("lunarian_saber", new LunarianSaberItem(IncubusToolMaterials.LUNARIAN, 1, 0F, new FabricItemSettings()));
-		registerItem("hand_piston", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).maxCount(1), false));
-		registerItem("hand_piston_advanced", new HandPistonItem(new FabricItemSettings().group(ItemGroup.TOOLS).fireproof().rarity(Rarity.RARE).maxCount(1), true));
-		registerItem("debug_flame", new DebugFlameItem(new FabricItemSettings().fireproof().rarity(Rarity.EPIC).maxCount(1).equipmentSlot(stack -> EquipmentSlot.HEAD)));
-		registerItem("sacred_disc_1", new IncubusMusicDiscItem(0, DUPED_SHOVELS, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.EPIC)));
+		IncubusPlayerData.init();
 
 		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			IncubusDevel.init();

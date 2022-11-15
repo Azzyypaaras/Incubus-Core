@@ -10,7 +10,7 @@ import net.id.incubus_core.misc.IncubusPlayerData;
 import net.id.incubus_core.misc.WorthinessChecker;
 import net.id.incubus_core.misc.item.IncubusCoreItems;
 import net.id.incubus_core.potion.ZonkedEffect;
-import net.id.incubus_core.recipe.IncubusRecipes;
+import net.id.incubus_core.recipe.IncubusRecipeTypes;
 import net.id.incubus_core.recipe.matchbook.IncubusMatches;
 import net.id.incubus_core.resource_conditions.IncubusCoreResourceConditions;
 import net.id.incubus_core.systems.RegistryRegistry;
@@ -46,7 +46,7 @@ public class IncubusCore implements ModInitializer {
 		IncubusCoreItems.init();
 		IncubusMatches.init();
 		IncubusCondition.init();
-		IncubusRecipes.init();
+		IncubusRecipeTypes.init();
 		IncubusPlayerData.init();
 		IncubusCoreResourceConditions.init();
 

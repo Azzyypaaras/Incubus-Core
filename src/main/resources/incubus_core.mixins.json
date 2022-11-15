@@ -15,7 +15,6 @@
     "player.PlayerDropMixin",
     "player.PlayerEntityMixin",
     "player.PlayerManagerMixin",
-    "recipe.RecipeManagerMixin",
     "woodtypefactory.boat.BoatEntityMixin",
     "woodtypefactory.boat.BoatEntityTypeMixin",
     "woodtypefactory.chest.ChestBlockEntityAccessor",

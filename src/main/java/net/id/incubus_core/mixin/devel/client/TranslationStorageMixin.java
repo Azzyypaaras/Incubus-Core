@@ -35,4 +35,5 @@ public abstract class TranslationStorageMixin{
             cir.setReturnValue(translation);
         }
     }
+    
 }

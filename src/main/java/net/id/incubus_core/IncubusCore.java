@@ -14,7 +14,7 @@ import net.id.incubus_core.misc.item.HandPistonItem;
 import net.id.incubus_core.misc.item.IncubusMusicDiscItem;
 import net.id.incubus_core.misc.item.LunarianSaberItem;
 import net.id.incubus_core.misc.item.IncubusCoreItems;
-import net.id.incubus_core.potion.ZonkedEffect;
+import net.id.incubus_core.status_effects.ZonkedEffect;
 import net.id.incubus_core.recipe.IncubusRecipeTypes;
 import net.id.incubus_core.recipe.matchbook.IncubusMatches;
 import net.id.incubus_core.resource_conditions.IncubusCoreResourceConditions;

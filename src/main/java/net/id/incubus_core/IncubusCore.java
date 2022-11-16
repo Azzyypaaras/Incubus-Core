@@ -9,7 +9,7 @@ import net.id.incubus_core.devel.IncubusDevel;
 import net.id.incubus_core.misc.IncubusPlayerData;
 import net.id.incubus_core.misc.WorthinessChecker;
 import net.id.incubus_core.misc.item.IncubusCoreItems;
-import net.id.incubus_core.potion.ZonkedEffect;
+import net.id.incubus_core.status_effects.ZonkedEffect;
 import net.id.incubus_core.recipe.IncubusRecipeTypes;
 import net.id.incubus_core.recipe.matchbook.IncubusMatches;
 import net.id.incubus_core.resource_conditions.IncubusCoreResourceConditions;

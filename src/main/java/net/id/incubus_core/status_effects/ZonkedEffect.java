@@ -1,4 +1,4 @@
-package net.id.incubus_core.potion;
+package net.id.incubus_core.status_effects;
 
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;

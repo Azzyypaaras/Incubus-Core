@@ -56,7 +56,6 @@ dependencies {
 
 	modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-	modImplementation(include("io.github.ladysnake:satin:${project.satin_version}"))
 	modImplementation "io.wispforest:owo-lib:${project.owo_version}+1.18"
 	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 }

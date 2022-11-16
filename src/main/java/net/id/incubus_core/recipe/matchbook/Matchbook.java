@@ -40,14 +40,17 @@ public class Matchbook {
     }
 
     public void write(PacketByteBuf buf) {
-        buf.writeBoolean(isEmpty());
-        buf.writeInt(mode.ordinal());
-        buf.writeInt(matches.size());
-        matches.forEach(match -> match.writeInternal(buf));
+        if(isEmpty()) {
+            buf.writeBoolean(true);
+        } else {
+            buf.writeBoolean(false);
+            buf.writeInt(mode.ordinal());
+            buf.writeInt(matches.size());
+            matches.forEach(match -> match.writeInternal(buf));
+        }
     }
 
     public static Matchbook fromByteBuf(PacketByteBuf buf) {
-
         if(buf.readBoolean()) {
             return empty();
         }

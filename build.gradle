@@ -32,9 +32,6 @@ repositories {
 		name = "Ladysnake Libs"
 		url = "https://ladysnake.jfrog.io/artifactory/mods"
 	}
-//	maven {
-//		url = "https://maven.shedaniel.me/"
-//	}
 }
 
 dependencies {
@@ -54,8 +51,6 @@ dependencies {
 	modImplementation(include("dev.emi:trinkets:${project.trinkets_version}"))
 
 	modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
-
-//	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 }
 
 loom {

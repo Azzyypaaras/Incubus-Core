@@ -35,7 +35,8 @@ repositories {
 	maven {
 		url = "https://maven.shedaniel.me/"
 	}
-	maven { url 'https://maven.wispforest.io/' } // owo lib
+	maven { url 'https://maven.wispforest.io/' }
+	mavenCentral() // owo lib
 }
 
 dependencies {
@@ -58,6 +59,8 @@ dependencies {
 
 	modImplementation "io.wispforest:owo-lib:${project.owo_version}+1.18"
 	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+
+	testImplementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
 
 loom {

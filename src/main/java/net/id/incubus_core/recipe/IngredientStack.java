@@ -27,7 +27,7 @@ public final class IngredientStack {
     private final Optional<NbtCompound> recipeViewNbt;
     private final int count;
 
-    private IngredientStack(@NotNull Ingredient ingredient, @NotNull Matchbook matchbook, @Nullable Optional<NbtCompound> recipeViewNbt, int count) {
+    private IngredientStack(@NotNull Ingredient ingredient, @NotNull Matchbook matchbook, Optional<NbtCompound> recipeViewNbt, int count) {
         this.ingredient = ingredient;
         this.matchbook = matchbook;
         this.recipeViewNbt = recipeViewNbt;

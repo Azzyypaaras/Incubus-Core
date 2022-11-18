@@ -4,19 +4,14 @@ import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.id.incubus_core.IncubusCore;
-import net.id.incubus_core.condition.base.ConditionCommand;
 import net.id.incubus_core.misc.item.IncubusCoreItems;
 import net.id.incubus_core.misc.playerdata.PlayerData;
 import net.id.incubus_core.misc.playerdata.SpawnItemRegistry;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.UUID;
 
 import static net.id.incubus_core.misc.Players.AZZY;
 import static net.id.incubus_core.misc.Players.PIE;

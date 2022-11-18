@@ -15,5 +15,10 @@
       ]
     }
   },
-  "output": "minecraft:ice"
+  "output": "minecraft:ice",
+  "fabric:load_conditions": [
+    {
+      "condition": "incubus_core:is_dev_env"
+    }
+  ]
 }

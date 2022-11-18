@@ -9,7 +9,8 @@ import net.minecraft.util.Identifier;
 import java.nio.file.Path;
 
 import static net.id.incubus_core.IncubusCore.locate;
-import static net.id.incubus_core.devel.Devel.*;
+import static net.id.incubus_core.devel.Devel.BAD_FEATURES;
+import static net.id.incubus_core.devel.Devel.ClientDevel;
 import static net.id.incubus_core.devel.Devel.ClientDevel.*;
 
 /**

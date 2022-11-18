@@ -2,33 +2,25 @@ package net.id.incubus_core;
 
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.condition.IncubusCondition;
 import net.id.incubus_core.dev.DevInit;
 import net.id.incubus_core.devel.IncubusDevel;
 import net.id.incubus_core.misc.IncubusPlayerData;
-import net.id.incubus_core.misc.IncubusToolMaterials;
 import net.id.incubus_core.misc.WorthinessChecker;
-import net.id.incubus_core.misc.item.*;
-import net.id.incubus_core.potion.ZonkedEffect;
-import net.id.incubus_core.recipe.IncubusRecipes;
+import net.id.incubus_core.misc.item.IncubusCoreItems;
+import net.id.incubus_core.status_effects.ZonkedEffect;
+import net.id.incubus_core.recipe.IncubusRecipeTypes;
 import net.id.incubus_core.recipe.matchbook.IncubusMatches;
+import net.id.incubus_core.resource_conditions.IncubusCoreResourceConditions;
 import net.id.incubus_core.systems.RegistryRegistry;
 import net.id.incubus_core.util.Config;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 
@@ -54,8 +46,9 @@ public class IncubusCore implements ModInitializer {
 		IncubusCoreItems.init();
 		IncubusMatches.init();
 		IncubusCondition.init();
-		IncubusRecipes.init();
+		IncubusRecipeTypes.init();
 		IncubusPlayerData.init();
+		IncubusCoreResourceConditions.init();
 
 		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			IncubusDevel.init();

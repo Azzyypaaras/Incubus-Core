@@ -8,9 +8,9 @@ import java.lang.annotation.RetentionPolicy;
 
 @Nonnull
 @TypeQualifierDefault({
-        ElementType.FIELD,
-        ElementType.METHOD,
-        ElementType.PARAMETER})
+		ElementType.FIELD,
+		ElementType.METHOD,
+		ElementType.PARAMETER})
 @Retention(RetentionPolicy.CLASS)
 public @interface NonnullByDefault {
 

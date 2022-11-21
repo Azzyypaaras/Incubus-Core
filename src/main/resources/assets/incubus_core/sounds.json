@@ -1,10 +1,4 @@
 {
-  "duped_shovels": {
-    "subtitle": "incubus_core.subtitles.duped_shovels",
-    "sounds": [
-      "incubus_core:duped_shovels"
-    ]
-  },
   "ahh": {
     "subtitle": "incubus_core.subtitles.ahh",
     "sounds": [
@@ -48,18 +42,6 @@
       "incubus_core:bone"
     ]
   },
-  "cosmic_ocean": {
-    "subtitle": "incubus_core.subtitles.cosmic_ocena",
-    "sounds": [
-      "incubus_core:cosmic_ocean"
-    ]
-  },
-  "decline": {
-    "subtitle": "incubus_core.subtitles.decline",
-    "sounds": [
-      "incubus_core:decline"
-    ]
-  },
   "drip": {
     "subtitle": "incubus_core.subtitles.drip",
     "sounds": [
@@ -70,18 +52,6 @@
     "subtitle": "incubus_core.subtitles.drip_long",
     "sounds": [
       "incubus_core:drip_long"
-    ]
-  },
-  "trash_isaac": {
-    "subtitle": "incubus_core.subtitles.trash_isaac",
-    "sounds": [
-      "incubus_core:trash_isaac"
-    ]
-  },
-  "vinesus": {
-    "subtitle": "incubus_core.subtitles.vinesus",
-    "sounds": [
-      "incubus_core:vinesus"
     ]
   }
 }

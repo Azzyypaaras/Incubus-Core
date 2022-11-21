@@ -19,12 +19,7 @@ public class IncubusCoreItems {
 
     public static final FoxEffigyItem FOX_EFFIGY = new FoxEffigyItem(new FabricItemSettings().maxCount(1));
     public static final BerryBranchItem BERRY_BRANCH = new BerryBranchItem(new FabricItemSettings().maxCount(1).food(IncubusFoodComponents.BERRY_BRANCH));
-
-    public static final IncubusMusicDiscItem DUPED_SHOVELS = new IncubusMusicDiscItem(0, IncubusSounds.DUPED_SHOVELS, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.RARE), 0);
-    public static final IncubusMusicDiscItem VINESUS = new IncubusMusicDiscItem(0, IncubusSounds.VINESUS, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.RARE), 0);
-    public static final IncubusMusicDiscItem DECLINE = new IncubusMusicDiscItem(0, IncubusSounds.DECLINE, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.EPIC), 0);
-    public static final IncubusMusicDiscItem RIPPLE = new IncubusMusicDiscItem(0, IncubusSounds.COSMIC_OCEAN, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.EPIC), 0);
-
+    
     public static final Item MOBILK_1 = new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).food(IncubusFoodComponents.MOBILK_1));
     public static final Item LEAN = new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).food(IncubusFoodComponents.LEAN));
     public static final Item RAT_POISON = new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).food(IncubusFoodComponents.RAT_POISON));
@@ -38,13 +33,8 @@ public class IncubusCoreItems {
         registerItem("fox_effigy", FOX_EFFIGY);
         registerItem("everfruiting_berry_branch", BERRY_BRANCH);
         registerItem("debug_flame", DEBUG_FLAME_ITEM);
-        registerItem("sacred_disc_1", DUPED_SHOVELS);
-        registerItem("sacred_disc_2", VINESUS);
-        registerItem("legend_1", DECLINE);
-        registerItem("legend_2", RIPPLE);
         registerItem("mobilk-1", MOBILK_1);
         registerItem("lean", LEAN);
         registerItem("rat_poison", RAT_POISON);
-
     }
 }

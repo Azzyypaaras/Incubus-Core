@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @SuppressWarnings("ConstantConditions")
 @Environment(EnvType.CLIENT)
 @Mixin(AbstractClientPlayerEntity.class)
-public class CapeMixin {
+public abstract class CapeMixin {
     @Inject(
             method = "getCapeTexture",
             at = @At("HEAD"),

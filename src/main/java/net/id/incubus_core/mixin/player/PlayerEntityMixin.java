@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
-public class PlayerEntityMixin {
+public abstract class PlayerEntityMixin {
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     public void parry(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {

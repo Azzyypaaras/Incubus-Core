@@ -19,7 +19,7 @@ import java.util.UUID;
 import static net.id.incubus_core.misc.Players.AZZY;
 
 @Mixin(PlayerManager.class)
-public class PlayerManagerMixin {
+public abstract class PlayerManagerMixin {
 
     @Unique
     private final MutableText MARKER = (MutableText) Text.of("");

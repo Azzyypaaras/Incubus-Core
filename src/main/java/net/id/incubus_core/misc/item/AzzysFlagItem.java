@@ -21,7 +21,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -29,10 +28,14 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 public class AzzysFlagItem extends HoeItem {
 
@@ -154,9 +157,9 @@ public class AzzysFlagItem extends HoeItem {
         }
         else {
             var cap = lowRollRandom(random, 5) + 1;
-            target.sendMessage(new LiteralText("You have been graced with gifts!").styled(style -> style.withColor(0xffb0b3)), true);
+            target.sendMessage(Text.translatable("You have been graced with gifts!").styled(style -> style.withColor(0xffb0b3)), true);
             for (int i = 0; i < cap; i++) {
-                float roll = random.nextFloat(100);
+                float roll = random.nextInt(100);
 
                 if (roll > 99) {
                     grantStack(target, random.nextBoolean() ? IncubusCoreItems.RIPPLE : IncubusCoreItems.DECLINE, 1);
@@ -360,12 +363,12 @@ public class AzzysFlagItem extends HoeItem {
                     playerData.deemWorthy(!playerData.isDeemedWorthy());
 
                     if (!worthy) {
-                        player.sendMessage(new LiteralText("You have been deemed worthy"), true);
+                        player.sendMessage(Text.translatable("You have been deemed worthy"), true);
                         world.playSoundFromEntity(null, target, IncubusSounds.DRIP_LONG, SoundCategory.PLAYERS, 0.5F, 1F);
 
                     }
                     else {
-                        player.sendMessage(new LiteralText("You have no right!"), true);
+                        player.sendMessage(Text.translatable("You have no right!"), true);
                         world.playSoundFromEntity(null, target, IncubusSounds.TRASH_ISAAC, SoundCategory.PLAYERS, 0.5F, 1F);
 
                     }
@@ -492,8 +495,8 @@ public class AzzysFlagItem extends HoeItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(new LiteralText("§f§oFor The Worthy"));
-        tooltip.add(new LiteralText("§olady azzy's blushing staff").styled(style -> style.withColor(0xffb0b3)));
+        tooltip.add(Text.translatable("§f§oFor The Worthy"));
+        tooltip.add(Text.translatable("§olady azzy's blushing staff").styled(style -> style.withColor(0xffb0b3)));
         tooltip.add(getMode(stack).name);
         super.appendTooltip(stack, world, tooltip, context);
     }
@@ -528,7 +531,7 @@ public class AzzysFlagItem extends HoeItem {
         public final Text name;
 
         Mode(String name, int color) {
-            this.name = new LiteralText(name).styled(style -> style.withColor(color).withItalic(true));
+            this.name = Text.literal(name).styled(style -> style.withColor(color).withItalic(true));
 
         }
 

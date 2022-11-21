@@ -5,6 +5,7 @@ import net.id.incubus_core.misc.IncubusSounds;
 import net.id.incubus_core.misc.IncubusToolMaterials;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.Rarity;
 
 import static net.id.incubus_core.IncubusCore.registerItem;
@@ -19,10 +20,10 @@ public class IncubusCoreItems {
     public static final FoxEffigyItem FOX_EFFIGY = new FoxEffigyItem(new FabricItemSettings().maxCount(1));
     public static final BerryBranchItem BERRY_BRANCH = new BerryBranchItem(new FabricItemSettings().maxCount(1).food(IncubusFoodComponents.BERRY_BRANCH));
 
-    public static final IncubusMusicDiscItem DUPED_SHOVELS = new IncubusMusicDiscItem(0, IncubusSounds.DUPED_SHOVELS, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.RARE));
-    public static final IncubusMusicDiscItem VINESUS = new IncubusMusicDiscItem(0, IncubusSounds.VINESUS, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.RARE));
-    public static final IncubusMusicDiscItem DECLINE = new IncubusMusicDiscItem(0, IncubusSounds.DECLINE, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.EPIC));
-    public static final IncubusMusicDiscItem RIPPLE = new IncubusMusicDiscItem(0, IncubusSounds.COSMIC_OCEAN, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.EPIC));
+    public static final IncubusMusicDiscItem DUPED_SHOVELS = new IncubusMusicDiscItem(0, IncubusSounds.DUPED_SHOVELS, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.RARE), 0);
+    public static final IncubusMusicDiscItem VINESUS = new IncubusMusicDiscItem(0, IncubusSounds.VINESUS, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.RARE), 0);
+    public static final IncubusMusicDiscItem DECLINE = new IncubusMusicDiscItem(0, IncubusSounds.DECLINE, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.EPIC), 0);
+    public static final IncubusMusicDiscItem RIPPLE = new IncubusMusicDiscItem(0, IncubusSounds.COSMIC_OCEAN, new FabricItemSettings().maxCount(1).fireproof().rarity(Rarity.EPIC), 0);
 
     public static final Item MOBILK_1 = new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).food(IncubusFoodComponents.MOBILK_1));
     public static final Item LEAN = new Item(new FabricItemSettings().rarity(Rarity.UNCOMMON).food(IncubusFoodComponents.LEAN));

@@ -12,7 +12,6 @@ import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.Vec3d;
@@ -55,7 +54,7 @@ public class FoxEffigyItem extends Item {
 
         fox.heal(300F);
 
-        fox.setCustomName(new LiteralText("Divine Fox").styled(style -> style.withColor(0xedf6ff)));
+        fox.setCustomName(Text.translatable("Divine Fox").styled(style -> style.withColor(0xedf6ff)));
         world.spawnEntity(fox);
 
         fox.playSound(IncubusSounds.AHH, 0.5F, 2);
@@ -76,15 +75,15 @@ public class FoxEffigyItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(new LiteralText("§f§oFor The Worthy"));
-        tooltip.add(new LiteralText("§oa thieving spirit").styled(style -> style.withColor(0xedf6ff)));
-        tooltip.add(new LiteralText("§ocast from the sacred grove").styled(style -> style.withColor(0xedf6ff)));
-        tooltip.add(new LiteralText("§otook a sprig of the foxthorn").styled(style -> style.withColor(0xedf6ff)));
-        tooltip.add(new LiteralText("§ovenerable mother of all berries").styled(style -> style.withColor(0xedf6ff)));
-        tooltip.add(new LiteralText("§oa relic is not given up easily").styled(style -> style.withColor(0xedf6ff)));
-        tooltip.add(new LiteralText("§oan equal trade may be accepted").styled(style -> style.withColor(0xedf6ff)));
-        tooltip.add(new LiteralText("§osomething magical").styled(style -> style.withColor(0xedf6ff)));
-        tooltip.add(new LiteralText("§oshattering the chains of life").styled(style -> style.withColor(0xedf6ff)));
+        tooltip.add(Text.translatable("§f§oFor The Worthy"));
+        tooltip.add(Text.translatable("§oa thieving spirit").styled(style -> style.withColor(0xedf6ff)));
+        tooltip.add(Text.translatable("§ocast from the sacred grove").styled(style -> style.withColor(0xedf6ff)));
+        tooltip.add(Text.translatable("§otook a sprig of the foxthorn").styled(style -> style.withColor(0xedf6ff)));
+        tooltip.add(Text.translatable("§ovenerable mother of all berries").styled(style -> style.withColor(0xedf6ff)));
+        tooltip.add(Text.translatable("§oa relic is not given up easily").styled(style -> style.withColor(0xedf6ff)));
+        tooltip.add(Text.translatable("§oan equal trade may be accepted").styled(style -> style.withColor(0xedf6ff)));
+        tooltip.add(Text.translatable("§osomething magical").styled(style -> style.withColor(0xedf6ff)));
+        tooltip.add(Text.translatable("§oshattering the chains of life").styled(style -> style.withColor(0xedf6ff)));
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

@@ -15,14 +15,11 @@
     "player.PlayerDropMixin",
     "player.PlayerEntityMixin",
     "player.PlayerManagerMixin",
-    "recipe.RecipeManagerMixin",
     "woodtypefactory.boat.BoatEntityMixin",
     "woodtypefactory.boat.BoatEntityTypeMixin",
     "woodtypefactory.chest.ChestBlockEntityAccessor",
     "woodtypefactory.sign.BlockEntityTypeMixin",
     "woodtypefactory.sign.SignTypeAccessor",
-    "world.BiomeAccessor",
-    "world.ServerTickMixin"
   ],
   "client": [
     "blocklikeentities.client.ClientPlayerEntityMixin",

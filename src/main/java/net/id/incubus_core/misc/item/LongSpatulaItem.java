@@ -16,7 +16,6 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -51,7 +50,7 @@ public class LongSpatulaItem extends ShovelItem {
             return ActionResult.FAIL;
 
         if (!WorthinessChecker.isPlayerWorthy(user.getUuid(), Optional.of(user)))
-            user.sendMessage(new LiteralText("you'll never be grillin").styled(style -> style.withColor(0xffc591)), true);
+            user.sendMessage(Text.translatable("you'll never be grillin").styled(style -> style.withColor(0xffc591)), true);
 
         if (!entity.isOnGround() && entity.hasStatusEffect(StatusEffects.WEAKNESS)) {
             applyRiposteEffects(entity, user);
@@ -76,7 +75,7 @@ public class LongSpatulaItem extends ShovelItem {
         var random = entity.getRandom();
 
         entity.clearStatusEffects();
-        entity.addVelocity(0, -5 + random.nextFloat(5), 0);
+        entity.addVelocity(0, -5 + random.nextFloat() * 5, 0);
 
         entity.damage(IncubusDamageSources.grillin(attacker), WorthinessChecker.isPlayerWorthy(attacker.getUuid(), Optional.of(attacker)) ? entity.getMaxHealth() / 3F + 15F : 10F);
 
@@ -139,8 +138,8 @@ public class LongSpatulaItem extends ShovelItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(new LiteralText("§f§oFor The Worthy"));
-        tooltip.add(new LiteralText("§ojust wanna grill, man").styled(style -> style.withColor(0xffc591)));
+        tooltip.add(Text.literal("§f§oFor The Worthy"));
+        tooltip.add(Text.literal("§ojust wanna grill, man").styled(style -> style.withColor(0xffc591)));
         super.appendTooltip(stack, world, tooltip, context);
     }
 

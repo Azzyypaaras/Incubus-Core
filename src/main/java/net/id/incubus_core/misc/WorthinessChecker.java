@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 
@@ -55,7 +55,7 @@ public class WorthinessChecker {
         entity.setStackInHand(entity.getActiveHand(), ItemStack.EMPTY);
 
         if (entity instanceof PlayerEntity) {
-            ((PlayerEntity) entity).sendMessage(new LiteralText("You have no right!"), true);
+            ((PlayerEntity) entity).sendMessage(Text.translatable("You have no right!"), true);
             entity.dropStack(stack);
         }
 

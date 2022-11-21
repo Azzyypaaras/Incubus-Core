@@ -13,7 +13,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -32,7 +31,7 @@ public class BerryBranchItem extends Item {
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
         if (!WorthinessChecker.isPlayerWorthy(user.getUuid(), Optional.of(user))) {
-            user.sendMessage(new LiteralText("the sacred grove's magic heeds not your will").styled(style -> style.withColor(0xff6b97)), true);
+            user.sendMessage(Text.translatable("the sacred grove's magic heeds not your will").styled(style -> style.withColor(0xff6b97)), true);
             return ActionResult.PASS;
         }
 
@@ -47,7 +46,7 @@ public class BerryBranchItem extends Item {
 
             fox.heal(300F);
 
-            fox.setCustomName(new LiteralText("Sagacious Fox").styled(style -> style.withColor(0xedf6ff)));
+            fox.setCustomName(Text.translatable("Sagacious Fox").styled(style -> style.withColor(0xedf6ff)));
 
             if (user.isSneaking()) {
                 var color = duck.getFoxColor();
@@ -86,9 +85,9 @@ public class BerryBranchItem extends Item {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(new LiteralText("§f§oFor The Worthy"));
-        tooltip.add(new LiteralText("§osprig of endless nourishment").styled(style -> style.withColor(0xff6b97)));
-        tooltip.add(new LiteralText("§ofoxes love it!").styled(style -> style.withColor(0xff6b97)));
+        tooltip.add(Text.literal("§f§oFor The Worthy"));
+        tooltip.add(Text.literal("§osprig of endless nourishment").styled(style -> style.withColor(0xff6b97)));
+        tooltip.add(Text.literal("§ofoxes love it!").styled(style -> style.withColor(0xff6b97)));
         super.appendTooltip(stack, world, tooltip, context);
     }
 

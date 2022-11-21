@@ -37,7 +37,6 @@
   "mixins": [
     "incubus_core.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.12.12",
     "fabric": "*",

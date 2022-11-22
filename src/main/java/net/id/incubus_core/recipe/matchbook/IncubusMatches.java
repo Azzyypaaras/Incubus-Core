@@ -11,5 +11,6 @@ public class IncubusMatches {
         MatchRegistry.registerInternal("byte", new ByteMatch.Factory());
         MatchRegistry.registerInternal("string", new StringMatch.Factory());
         MatchRegistry.registerInternal("boolean", new BooleanMatch.Factory());
+        MatchRegistry.registerInternal("enchantment", new EnchantmentMatch.Factory());
     }
 }

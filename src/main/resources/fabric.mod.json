@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Incubus Core",
-  "description": "Bring your own lube.",
+  "description": "Inaba of the cum.",
   "authors": [
     "Immortal Devs - Parent Organization",
     "Azazelthedemonlord - Author and lead incubus",
@@ -30,13 +30,13 @@
       "net.id.incubus_core.IncubusCoreClient"
     ],
     "cardinal-components": [
-      "net.id.incubus_core.condition.IncubusCondition"
+      "net.id.incubus_core.condition.IncubusCondition",
+      "net.id.incubus_core.misc.IncubusPlayerData"
     ]
   },
   "mixins": [
     "incubus_core.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.12.12",
     "fabric": "*",
@@ -44,7 +44,8 @@
   },
   "custom": {
     "cardinal-components": [
-      "incubus_core:condition_manager"
+      "incubus_core:condition_manager",
+      "incubus_core:player_data"
     ],
     "modmenu": {
       "links": {

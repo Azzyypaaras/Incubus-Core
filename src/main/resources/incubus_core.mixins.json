@@ -10,30 +10,29 @@
     "devel.server.ChunkRegionMixin",
     "entity.BlockEntityMixin",
     "entity.EntityDamageSourceMixin",
+    "entity.FoxEditorMixin",
     "entity.NameDisplayMixin",
-    "recipe.RecipeManagerMixin",
+    "player.PlayerDropMixin",
+    "player.PlayerEntityMixin",
+    "player.PlayerManagerMixin",
     "woodtypefactory.boat.BoatEntityMixin",
     "woodtypefactory.boat.BoatEntityTypeMixin",
     "woodtypefactory.chest.ChestBlockEntityAccessor",
     "woodtypefactory.sign.BlockEntityTypeMixin",
     "woodtypefactory.sign.SignTypeAccessor",
-    "world.BiomeAccessor",
-    "world.ServerTickMixin",
-    "world.gen.GeneratorOptionsMixin",
-    "world.gen.chunk.NoiseChunkGeneratorMixin"
   ],
   "client": [
     "blocklikeentities.client.ClientPlayerEntityMixin",
     "blocklikeentities.client.ClientWorldMixin",
-    "client.RenderLayerAccessor",
     "client.CapeMixin",
+    "client.InGameHudMixin",
     "client.InterpFixMixin",
+    "client.PlayerRendererMixin",
     "client.Sprite$AnimationAccessor",
     "client.Sprite$AnimationFrameAccessor",
     "client.SpriteAccessor",
-    "devel.client.SpriteAtlasTextureMixin",
-    "devel.client.TranslationStorageMixin",
-    "woodtypefactory.client.TexturedRenderLayersMixin"
+    "client.WorldRendererMixin",
+    "devel.client.TranslationStorageMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -18,11 +18,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Random;
+import java.util.Optional;
 
 public class LunarianSaberItem extends SwordItem {
 
@@ -34,30 +35,10 @@ public class LunarianSaberItem extends SwordItem {
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 
         World world = target.world;
-        var random = target.getRandom();
+        Random random = target.getRandom();
 
-        if(!WorthinessChecker.isPlayerWorthy(attacker.getUuid())) {
-            attacker.damage(DamageSource.GENERIC, 0.1F);
-            attacker.setHealth(0.01F);
-
-            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 60, 1), attacker);
-            attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 2), attacker);
-
-            if(attacker instanceof PlayerEntity) {
-                ((PlayerEntity) attacker).sendMessage(Text.of("You have no right!"), true);
-            }
-
-            attacker.setStackInHand(attacker.getActiveHand(), ItemStack.EMPTY);
-            world.playSoundFromEntity(null, attacker, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, SoundCategory.PLAYERS, 2F, 2F);
-
-            if(!world.isClient()) {
-                Box bounds = target.getBoundingBox(target.getPose());
-                for (int i = 0; i < Math.pow(bounds.getAverageSideLength() * 2, 2); i++) {
-                    ((ServerWorld) world).spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, attacker.getX() + (random.nextDouble() * bounds.getXLength() - bounds.getXLength() / 2), attacker.getY() + (random.nextDouble() * bounds.getYLength()), attacker.getZ() + (random.nextDouble() * bounds.getZLength() - bounds.getZLength() / 2), random.nextInt(4), 0, 0, 0, 0.9);
-                }
-            }
-
-            return false;
+        if(!WorthinessChecker.isPlayerWorthy(attacker.getUuid(), attacker instanceof PlayerEntity player ? Optional.of(player) : Optional.empty())) {
+            WorthinessChecker.smite(attacker);
         }
 
         if(target.isUndead()) {
@@ -103,12 +84,12 @@ public class LunarianSaberItem extends SwordItem {
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity target, Hand hand) {
         Box bounds = target.getBoundingBox(target.getPose());
-        var random = target.getRandom();
+        Random random = target.getRandom();
         World world = target.world;
 
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 260, 1));
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 2400, 0));
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 2400, 4));
+        target.clearStatusEffects();
+
+        target.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 100, 0));
 
         if(!world.isClient()) {
             for (int i = 0; i < Math.pow(bounds.getAverageSideLength() * 2, 1.5); i++) {
@@ -122,9 +103,14 @@ public class LunarianSaberItem extends SwordItem {
     }
 
     @Override
+    public boolean hasGlint(ItemStack stack) {
+        return false;
+    }
+
+    @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add(Text.of("§f§oFor The Worthy"));
-        tooltip.add(Text.of("§b§olook to la luna"));
+        tooltip.add(Text.literal("§f§oFor The Worthy"));
+        tooltip.add(Text.literal("§b§olook to la luna"));
         super.appendTooltip(stack, world, tooltip, context);
     }
 }

@@ -1,8 +1,57 @@
 {
-  "duped_shovels": {
-    "subtitle": "incubus_core.subtitles.duped_shovels",
+  "ahh": {
+    "subtitle": "incubus_core.subtitles.ahh",
     "sounds": [
-      "incubus_core:duped_shovels"
+      "incubus_core:ahh"
+    ]
+  },
+  "weak": {
+    "subtitle": "incubus_core.subtitles.weak",
+    "sounds": [
+      "incubus_core:weak"
+    ]
+  },
+  "blast": {
+    "subtitle": "incubus_core.subtitles.blast",
+    "sounds": [
+      "incubus_core:blast"
+    ]
+  },
+  "parry": {
+    "subtitle": "incubus_core.subtitles.parry",
+    "sounds": [
+      "incubus_core:parry"
+    ]
+  },
+  "slam": {
+    "subtitle": "incubus_core.subtitles.slam",
+    "sounds": [
+      "incubus_core:slam_1",
+      "incubus_core:slam_2"
+    ]
+  },
+  "apyr": {
+    "subtitle": "incubus_core.subtitles.apyr",
+    "sounds": [
+      "incubus_core:apyr"
+    ]
+  },
+  "bone": {
+    "subtitle": "incubus_core.subtitles.bone",
+    "sounds": [
+      "incubus_core:bone"
+    ]
+  },
+  "drip": {
+    "subtitle": "incubus_core.subtitles.drip",
+    "sounds": [
+      "incubus_core:drip"
+    ]
+  },
+  "drip_long": {
+    "subtitle": "incubus_core.subtitles.drip_long",
+    "sounds": [
+      "incubus_core:drip_long"
     ]
   }
 }

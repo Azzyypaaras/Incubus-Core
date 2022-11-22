@@ -12,12 +12,10 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldEvents;
-import net.minecraft.world.WorldView;
+import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -58,9 +56,11 @@ public class TallCropBlock extends CropBlock {
             newAge = maxAge;
         }
 
-        world.setBlockState(pos, this.withAge(newAge), Block.NOTIFY_LISTENERS);
         if (newAge > this.lastSingleBlockAge && canGrowUp(world, pos, state, newAge)) {
+            world.setBlockState(pos, this.withAge(newAge), Block.NOTIFY_LISTENERS);
             world.setBlockState(pos.up(), this.withAgeAndHalf(newAge, DoubleBlockHalf.UPPER), Block.NOTIFY_LISTENERS);
+        } else {
+            world.setBlockState(pos, this.withAge(Math.min(newAge, lastSingleBlockAge)), Block.NOTIFY_LISTENERS);
         }
     }
 
@@ -106,7 +106,7 @@ public class TallCropBlock extends CropBlock {
     public BlockState withAge(int age) {
         return this.withAgeAndHalf(age, DoubleBlockHalf.LOWER);
     }
-
+    
     public BlockState withAgeAndHalf(int age, DoubleBlockHalf half) {
         return this.getDefaultState().with(this.getAgeProperty(), age).with(HALF, half);
     }
@@ -151,6 +151,15 @@ public class TallCropBlock extends CropBlock {
         return state.contains(Properties.WATERLOGGED) ? state.with(Properties.WATERLOGGED, world.isWater(pos)) : state;
     }
 
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        DoubleBlockHalf doubleBlockHalf = state.get(HALF);
+        if (direction.getAxis() == Direction.Axis.Y && doubleBlockHalf == DoubleBlockHalf.LOWER == (direction == Direction.UP)) {
+            return (state.get(AGE) <= lastSingleBlockAge || neighborState.isOf(this) && neighborState.get(HALF) != doubleBlockHalf) ? state : Blocks.AIR.getDefaultState();
+        } else {
+            return doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !state.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+        }
+    }
+
     @Override
     @Nullable
     public BlockState getPlacementState(ItemPlacementContext ctx) {
@@ -187,8 +196,9 @@ public class TallCropBlock extends CropBlock {
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!world.isClient) {
-            onBreakInCreative(world, pos, state, player);
-            if (!player.isCreative()) {
+            if (player.isCreative()) {
+                onBreakInCreative(world, pos, state, player);
+            } else {
                 dropStacks(state, world, pos, null, player, player.getMainHandStack());
             }
         }

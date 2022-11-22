@@ -12,7 +12,6 @@ import net.minecraft.util.math.Direction;
 import static net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings.of;
 import static net.minecraft.block.AbstractBlock.Settings.copy;
 import static net.minecraft.block.Blocks.*;
-import static net.minecraft.block.Blocks.OAK_WALL_SIGN;
 
 /**
  * Takes tree colours and produces various block settings for that tree to ease the creation of wooden block sets

@@ -2,6 +2,7 @@ package net.id.incubus_core.recipe;
 
 import net.id.incubus_core.recipe.matchbook.Matchbook;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
@@ -42,6 +43,22 @@ public final class IngredientStack {
 
     public static IngredientStack of(Ingredient ingredient) {
         return of(ingredient, Matchbook.empty(), null, 1);
+    }
+
+    public static IngredientStack ofItems(ItemConvertible... items) {
+        return of(Ingredient.ofItems(items), Matchbook.empty(), null, 1);
+    }
+
+    public static IngredientStack ofItems(int count, ItemConvertible... items) {
+        return of(Ingredient.ofItems(items), Matchbook.empty(), null, count);
+    }
+
+    public static IngredientStack ofStacks(ItemStack... stacks) {
+        return of(Ingredient.ofStacks(stacks), Matchbook.empty(), null, 1);
+    }
+
+    public static IngredientStack ofStacks(int count, ItemStack... stacks) {
+        return of(Ingredient.ofStacks(stacks), Matchbook.empty(), null, count);
     }
 
     public boolean test(ItemStack stack) {

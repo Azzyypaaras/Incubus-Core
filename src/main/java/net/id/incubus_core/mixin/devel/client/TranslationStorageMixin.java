@@ -16,15 +16,6 @@ import java.util.Map;
 @Environment(EnvType.CLIENT)
 @Mixin(TranslationStorage.class)
 public abstract class TranslationStorageMixin{
-    /*
-        public String get(String key) {
-        return (String)this.translations.getOrDefault(key, key);
-    }
-
-    public boolean hasTranslation(String key) {
-        return this.translations.containsKey(key);
-    }
-     */
 
     @Shadow @Final private Map<String, String> translations;
 
@@ -44,4 +35,5 @@ public abstract class TranslationStorageMixin{
             cir.setReturnValue(translation);
         }
     }
+    
 }

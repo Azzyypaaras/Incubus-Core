@@ -53,7 +53,7 @@ dependencies {
 	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_version}"))
 
 	// Implement Trinkets for parachutes, rings etc.
-	modImplementation(include("dev.emi:trinkets:${project.trinkets_version}"))
+	modImplementation("dev.emi:trinkets:${project.trinkets_version}")
 
 	modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 

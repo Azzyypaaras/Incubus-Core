@@ -5,8 +5,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.id.incubus_core.condition.IncubusCondition;
 import net.id.incubus_core.dev.DevInit;
-import net.id.incubus_core.devel.IncubusDevel;
 import net.id.incubus_core.misc.IncubusPlayerData;
+import net.id.incubus_core.misc.IncubusSounds;
 import net.id.incubus_core.misc.WorthinessChecker;
 import net.id.incubus_core.misc.item.IncubusCoreItems;
 import net.id.incubus_core.recipe.IncubusRecipeTypes;
@@ -42,6 +42,7 @@ public class IncubusCore implements ModInitializer {
 
 		WorthinessChecker.init();
 		RegistryRegistry.init();
+		IncubusSounds.init();
 		IncubusCoreItems.init();
 		IncubusMatches.init();
 		IncubusCondition.init();
@@ -50,7 +51,6 @@ public class IncubusCore implements ModInitializer {
 		IncubusCoreResourceConditions.init();
 
 		if(FabricLoader.getInstance().isDevelopmentEnvironment()) {
-			IncubusDevel.init();
 			if (Config.getBoolean(locate("devtools"), true)) {
 				DevInit.commonInit();
 			}

@@ -75,13 +75,15 @@ public class AzzysFlagItem extends HoeItem {
 				var players = new ArrayList<>(world.getPlayers());
 				players.remove(user);
 				
-				if (players.isEmpty())
-					return TypedActionResult.fail(flagStaff);
+				if (players.isEmpty()) {
+					handleGifting(null, random, user, sneaking, true);
+					return TypedActionResult.success(flagStaff, world.isClient());
+				}
 				
 				Collections.shuffle(players);
 				var target = players.get(0);
 				
-				handleGifting(target, random, user, sneaking);
+				handleGifting(target, random, user, sneaking, false);
 				world.playSoundFromEntity(null, sneaking ? user : target, random.nextFloat() < 0.015F ? IncubusSounds.APYR : IncubusSounds.BAD_TO_THE_BONE, SoundCategory.PLAYERS, 1, random.nextFloat() * 2);
 				
 				return TypedActionResult.success(flagStaff, world.isClient());
@@ -141,12 +143,12 @@ public class AzzysFlagItem extends HoeItem {
 		return TypedActionResult.fail(flagStaff);
 	}
 	
-	private void handleGifting(PlayerEntity target, Random random, PlayerEntity user, boolean sneaking) {
+	private void handleGifting(PlayerEntity target, Random random, PlayerEntity user, boolean sneaking, boolean hardFail) {
 		if (user.world.isClient())
 			return;
 		
 		if (sneaking) {
-			int roll = random.nextInt(5);
+			int roll = random.nextInt(7);
 			switch (roll) {
 				case 0:
 					user.giveItemStack(new ItemStack(Items.SWEET_BERRIES));
@@ -154,8 +156,17 @@ public class AzzysFlagItem extends HoeItem {
 					user.giveItemStack(new ItemStack(Items.ROSE_BUSH));
 				case 2:
 					user.giveItemStack(new ItemStack(Items.VINE));
+				case 3:
+					user.giveItemStack(new ItemStack(Items.DARK_OAK_SAPLING));
+				case 4:
+					user.giveItemStack(new ItemStack(Items.SPRUCE_SAPLING));
+				case 5:
+					user.giveItemStack(new ItemStack(IncubusCoreItems.LONG_SPATULA));
+				case 6:
+					user.giveItemStack(new ItemStack(IncubusCoreItems.FOX_EFFIGY));
 			}
-		} else {
+
+		} else if(!hardFail) {
 			var cap = lowRollRandom(random, 5) + 1;
 			target.sendMessage(Text.translatable("You have been graced with gifts!").styled(style -> style.withColor(0xffb0b3)), true);
 			for (int i = 0; i < cap; i++) {
@@ -163,6 +174,10 @@ public class AzzysFlagItem extends HoeItem {
 				
 				if (roll > 98) {
 					grantStack(target, IncubusCoreItems.DEBUG_FLAME_ITEM, random.nextInt(65));
+				} else if (roll > 95) {
+					grantStack(target, IncubusCoreItems.FOX_EFFIGY, 1);
+				} else if (roll > 90) {
+					grantStack(target, IncubusCoreItems.LONG_SPATULA, 1);
 				} else if (roll > 80) {
 					grantStack(target, IncubusCoreItems.MOBILK_1, lowRollRandom(random, 9));
 				} else if (roll > 70) {
@@ -269,7 +284,7 @@ public class AzzysFlagItem extends HoeItem {
 		if (target instanceof PlayerEntity player) {
 			switch (mode) {
 				case GIFT: {
-					handleGifting(player, random, user, false);
+					handleGifting(player, random, user, false, false);
 					return ActionResult.success(world.isClient());
 				}
 				case BLESS: {

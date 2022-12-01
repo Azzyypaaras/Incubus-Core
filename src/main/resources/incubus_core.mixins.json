@@ -7,11 +7,9 @@
   "mixins": [
     "IngredientMixin",
     "blocklikeentities.ServerWorldMixin",
-    "devel.server.ChunkRegionMixin",
     "entity.BlockEntityMixin",
     "entity.EntityDamageSourceMixin",
     "entity.FoxEditorMixin",
-    "entity.NameDisplayMixin",
     "player.PlayerDropMixin",
     "player.PlayerEntityMixin",
     "player.PlayerManagerMixin",
@@ -19,7 +17,7 @@
     "woodtypefactory.boat.BoatEntityTypeMixin",
     "woodtypefactory.chest.ChestBlockEntityAccessor",
     "woodtypefactory.sign.BlockEntityTypeMixin",
-    "woodtypefactory.sign.SignTypeAccessor",
+    "woodtypefactory.sign.SignTypeAccessor"
   ],
   "client": [
     "blocklikeentities.client.ClientPlayerEntityMixin",
@@ -30,9 +28,7 @@
     "client.PlayerRendererMixin",
     "client.Sprite$AnimationAccessor",
     "client.Sprite$AnimationFrameAccessor",
-    "client.SpriteAccessor",
-    "client.WorldRendererMixin",
-    "devel.client.TranslationStorageMixin"
+    "client.SpriteAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

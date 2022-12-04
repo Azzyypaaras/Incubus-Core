@@ -13,6 +13,7 @@ import net.id.incubus_core.dev.block.TestFurnaceBlock;
 import net.id.incubus_core.dev.block.TestFurnaceBlockEntity;
 import net.id.incubus_core.dev.item.EntityDeathMessageTestItem;
 import net.id.incubus_core.dev.recipe.TestRecipeType;
+import net.id.incubus_core.util.Config;
 import net.id.incubus_core.woodtypefactory.api.WoodSettingsFactory;
 import net.id.incubus_core.woodtypefactory.api.WoodTypeFactory;
 import net.minecraft.block.Block;

@@ -13,6 +13,7 @@ import net.id.incubus_core.dev.block.TestFurnaceBlock;
 import net.id.incubus_core.dev.block.TestFurnaceBlockEntity;
 import net.id.incubus_core.dev.item.EntityDeathMessageTestItem;
 import net.id.incubus_core.dev.recipe.TestRecipeType;
+import net.id.incubus_core.util.Config;
 import net.id.incubus_core.woodtypefactory.api.WoodSettingsFactory;
 import net.id.incubus_core.woodtypefactory.api.WoodTypeFactory;
 import net.minecraft.block.Block;
@@ -91,8 +92,11 @@ public final class DevInit {
 
     public static void commonInit() {
         // This should catch any mixin errors that occur later in runtime.
-        LOG.info("Running mixin audit because we are in debug mode...");
-        MixinEnvironment.getCurrentEnvironment().audit();
+        // This also requires incubus_core.devtools=true
+        if (Config.getBoolean(locate("mixin_audit"), false)) {
+            LOG.info("Running mixin audit because we are in debug mode...");
+            MixinEnvironment.getCurrentEnvironment().audit();
+        }
     
         registerItem("entity_death_message_item", ENTITY_DEATH_MESSAGE_ITEM);
         registerBlock("test_furnace", TEST_FURNACE_BLOCK);

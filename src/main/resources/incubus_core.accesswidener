@@ -2,8 +2,11 @@ accessWidener	v1	named
 
 #The translucent interpolation fix saga
 
-accessible  class   net/minecraft/client/texture/Sprite$Animation
-accessible  class   net/minecraft/client/texture/Sprite$AnimationFrame
+accessible  class   net/minecraft/client/texture/SpriteContents$Animation
+accessible  class   net/minecraft/client/texture/SpriteContents$AnimationFrame
+accessible  class   net/minecraft/client/texture/SpriteContents$AnimatorImpl
+accessible  class   net/minecraft/client/texture/SpriteContents$Interpolation
+
 
 #If you are reading this, remind me to stab Dafuqs
 

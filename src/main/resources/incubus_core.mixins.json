@@ -25,6 +25,7 @@
     "client.CapeMixin",
     "client.InGameHudMixin",
     "client.InterpFixMixin",
+    "client.ItemRendererMixin",
     "client.PlayerRendererMixin",
     "client.Sprite$AnimationAccessor",
     "client.Sprite$AnimationFrameAccessor",

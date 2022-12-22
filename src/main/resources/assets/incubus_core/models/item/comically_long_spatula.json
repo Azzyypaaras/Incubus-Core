@@ -1,0 +1,6 @@
+{
+  "parent": "incubus_core:item/handheld_oversized",
+  "textures": {
+    "layer0": "incubus_core:item/comically_long_spatula"
+  }
+}

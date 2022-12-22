@@ -1,18 +1,16 @@
 package net.id.incubus_core.misc.item;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.id.incubus_core.misc.IncubusSounds;
+import net.id.incubus_core.item_predicates.IncubusItemPredicates;
 import net.id.incubus_core.misc.IncubusToolMaterials;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.util.Rarity;
 
 import static net.id.incubus_core.IncubusCore.registerItem;
 
 public class IncubusCoreItems {
-
-
+    
     public static final LunarianSaberItem LUNARIAN_SABER_ITEM = new LunarianSaberItem(IncubusToolMaterials.LUNARIAN, 0, -2.25F, new FabricItemSettings().fireproof());
     public static final AzzysFlagItem AZZYS_ELEMENTAL_FLAG_ITEM = new AzzysFlagItem(IncubusToolMaterials.LUNARIAN, -2, -1F, new FabricItemSettings());
     public static final LongSpatulaItem LONG_SPATULA = new LongSpatulaItem(IncubusToolMaterials.MILD_STEEL, 2, -2.5F, new FabricItemSettings().fireproof());
@@ -37,4 +35,9 @@ public class IncubusCoreItems {
         registerItem("lean", LEAN);
         registerItem("rat_poison", RAT_POISON);
     }
+    
+    public static void initClient() {
+        IncubusItemPredicates.registerInWorldItemPredicate(LONG_SPATULA);
+    }
+    
 }

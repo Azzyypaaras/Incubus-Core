@@ -1,6 +1,14 @@
 {
-  "parent": "incubus_core:item/handheld_oversized",
+  "parent": "item/handheld",
   "textures": {
-    "layer0": "incubus_core:item/long_spatula"
-  }
+    "layer0": "incubus_core:item/reasonably_long_spatula"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "incubus_core:in_world": 1.0
+      },
+      "model": "incubus_core:item/comically_long_spatula"
+    }
+  ]
 }

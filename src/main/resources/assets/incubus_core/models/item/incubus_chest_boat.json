@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "incubus_core:item/decline"
+    "layer0": "incubus_core:item/incubus_chest_boat"
   }
 }

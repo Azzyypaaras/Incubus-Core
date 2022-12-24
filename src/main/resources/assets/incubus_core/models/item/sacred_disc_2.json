@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "incubus_core:item/sacred_disc_2"
-  }
-}

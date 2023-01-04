@@ -2,7 +2,6 @@ package net.id.incubus_core.recipe.matchbook;
 
 import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
 public class StringMatch extends Match {
@@ -15,9 +14,9 @@ public class StringMatch extends Match {
 
     @Override
     boolean matches(ItemStack stack) {
-        var nbt = stack.getOrCreateNbt();
+        var nbt = stack.getNbt();
 
-        if(nbt.contains(key)) {
+        if(nbt != null && nbt.contains(key)) {
             return nbt.getString(key).equals(targetString);
         }
 

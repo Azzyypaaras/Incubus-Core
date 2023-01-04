@@ -18,9 +18,9 @@ public class FloatMatch extends Match {
 
     @Override
     boolean matches(ItemStack stack) {
-        var nbt = stack.getOrCreateNbt();
+        var nbt = stack.getNbt();
 
-        if(nbt.contains(key)) {
+        if(nbt != null && nbt.contains(key)) {
             var testFloat = nbt.getFloat(key);
             return max > testFloat && testFloat > min;
         }

@@ -14,9 +14,9 @@ public class ShortMatch extends Match {
 
     @Override
     boolean matches(ItemStack stack) {
-        var nbt = stack.getOrCreateNbt();
+        var nbt = stack.getNbt();
 
-        if(nbt.contains(key)) {
+        if(nbt != null && nbt.contains(key)) {
             return nbt.getShort(key) == targetShort;
         }
 

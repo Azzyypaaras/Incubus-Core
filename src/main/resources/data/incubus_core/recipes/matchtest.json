@@ -15,7 +15,11 @@
       ]
     }
   },
-  "output": "minecraft:ice",
+  "output": {
+    "item": "minecraft:ice",
+    "count": 2,
+    "nbt": "{Enchantments: [{id: \"minecraft:sharpness\", lvl: 1s}]}"
+  },
   "fabric:load_conditions": [
     {
       "condition": "incubus_core:is_dev_env"

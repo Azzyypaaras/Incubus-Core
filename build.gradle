@@ -35,8 +35,6 @@ repositories {
 	maven {
 		url = "https://maven.shedaniel.me/"
 	}
-	maven { url 'https://maven.wispforest.io/' }
-	mavenCentral() // owo lib
 }
 
 dependencies {
@@ -56,8 +54,6 @@ dependencies {
 	modImplementation("dev.emi:trinkets:${project.trinkets_version}")
 
 	modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
-
-	modImplementation "io.wispforest:owo-lib:${project.owo_version}+1.18"
 	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'

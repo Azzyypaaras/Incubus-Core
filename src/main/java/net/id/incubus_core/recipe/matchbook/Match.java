@@ -1,8 +1,8 @@
 package net.id.incubus_core.recipe.matchbook;
 
-import com.google.gson.JsonObject;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
+import com.google.gson.*;
+import net.minecraft.nbt.*;
+import net.minecraft.network.*;
 
 /**
  * Tests ItemStack nbt against a set of rules. Defined by json, must be able to be loaded from a bytebuf.
@@ -21,7 +21,7 @@ public abstract class Match {
         return name;
     }
 
-    abstract boolean matches(ItemStack stack);
+    abstract boolean matches(NbtCompound nbt);
 
     abstract void configure(JsonObject json);
 

@@ -1,8 +1,8 @@
 package net.id.incubus_core.recipe.matchbook;
 
-import com.google.gson.JsonObject;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
+import com.google.gson.*;
+import net.minecraft.nbt.*;
+import net.minecraft.network.*;
 
 public class ByteMatch extends Match {
 
@@ -13,9 +13,7 @@ public class ByteMatch extends Match {
     }
 
     @Override
-    boolean matches(ItemStack stack) {
-        var nbt = stack.getNbt();
-
+    boolean matches(NbtCompound nbt) {
         if(nbt != null && nbt.contains(key)) {
             return nbt.getByte(key) == targetByte;
         }

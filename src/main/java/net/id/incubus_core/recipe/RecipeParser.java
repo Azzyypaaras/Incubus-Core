@@ -141,26 +141,28 @@ public class RecipeParser {
         Item item = ShapedRecipe.getItem(json);
         if (json.has("data")) {
             throw new JsonParseException("Disallowed data tag found");
-        } else {
-            int count = JsonHelper.getInt(json, "count", 1);
-            if (count < 1) {
-                throw new JsonSyntaxException("Invalid output count: " + count);
-            } else {
-                ItemStack stack = new ItemStack(item, count);
-                String nbt = JsonHelper.getString(json, "nbt", "");
-                if (!nbt.isEmpty()) {
-                    try {
-                        NbtCompound compound = NbtHelper.fromNbtProviderString(nbt);
-                        compound.remove("palette");
-                        stack.setNbt(compound);
-                    } catch (CommandSyntaxException e) {
-                        throw new JsonSyntaxException("Invalid output nbt: " + nbt);
-                    }
-                }
-
-                return stack;
-            }
         }
+
+        int count = JsonHelper.getInt(json, "count", 1);
+        if (count < 1) {
+            throw new JsonSyntaxException("Invalid output count: " + count);
+        }
+
+        ItemStack stack = new ItemStack(item, count);
+        String nbt = JsonHelper.getString(json, "nbt", "");
+        if(nbt.isEmpty()) {
+            return stack;
+        }
+
+        try {
+            NbtCompound compound = NbtHelper.fromNbtProviderString(nbt);
+            compound.remove("palette");
+            stack.setNbt(compound);
+        } catch (CommandSyntaxException e) {
+            throw new JsonSyntaxException("Invalid output nbt: " + nbt);
+        }
+
+        return stack;
     }
 
 }

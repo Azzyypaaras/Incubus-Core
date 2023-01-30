@@ -1,36 +1,21 @@
-package net.id.incubus_core.json;
+package net.id.incubus_core.recipe;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.MalformedJsonException;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.id.incubus_core.IncubusCore;
-import net.id.incubus_core.recipe.IngredientStack;
-import net.id.incubus_core.recipe.OptionalStack;
-import net.id.incubus_core.recipe.matchbook.MatchFactory;
-import net.id.incubus_core.recipe.matchbook.MatchRegistry;
-import net.id.incubus_core.recipe.matchbook.Matchbook;
-import net.id.incubus_core.recipe.matchbook.Matchbook.Builder;
-import net.id.incubus_core.recipe.matchbook.Matchbook.Mode;
-import net.id.incubus_core.util.RegistryHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.google.gson.*;
+import com.google.gson.stream.*;
+import com.mojang.brigadier.exceptions.*;
+import net.id.incubus_core.*;
+import net.id.incubus_core.recipe.matchbook.*;
+import net.id.incubus_core.util.*;
+import net.minecraft.item.*;
+import net.minecraft.nbt.*;
+import net.minecraft.recipe.*;
+import net.minecraft.registry.*;
+import net.minecraft.registry.tag.*;
+import net.minecraft.util.*;
+
+import java.io.*;
+import java.nio.charset.*;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public class RecipeParser {
@@ -144,6 +129,40 @@ public class RecipeParser {
         }
 
         return builder.build(mode);
+    }
+
+    /**
+     * Parses an ItemStack json object with optional NBT data
+     * Can be used in RecipeSerializers to get ItemStacks with NBT as output
+     * @param json The JsonObject to parse
+     * @return An ItemStack with nbt data, like specified in the json
+     */
+    public static ItemStack getItemStackWithNbtFromJson(JsonObject json) {
+        Item item = ShapedRecipe.getItem(json);
+        if (json.has("data")) {
+            throw new JsonParseException("Disallowed data tag found");
+        }
+
+        int count = JsonHelper.getInt(json, "count", 1);
+        if (count < 1) {
+            throw new JsonSyntaxException("Invalid output count: " + count);
+        }
+
+        ItemStack stack = new ItemStack(item, count);
+        String nbt = JsonHelper.getString(json, "nbt", "");
+        if(nbt.isEmpty()) {
+            return stack;
+        }
+
+        try {
+            NbtCompound compound = NbtHelper.fromNbtProviderString(nbt);
+            compound.remove("palette");
+            stack.setNbt(compound);
+        } catch (CommandSyntaxException e) {
+            throw new JsonSyntaxException("Invalid output nbt: " + nbt);
+        }
+
+        return stack;
     }
 
 }

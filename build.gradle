@@ -35,8 +35,6 @@ repositories {
 	maven {
 		url = "https://maven.shedaniel.me/"
 	}
-	maven { url 'https://maven.wispforest.io/' }
-	mavenCentral() // owo lib
 }
 
 dependencies {
@@ -49,15 +47,12 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_version}"))
-
 	modImplementation(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_version}"))
 
 	// Implement Trinkets for parachutes, rings etc.
 	modImplementation("dev.emi:trinkets:${project.trinkets_version}")
 
 	modRuntimeOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
-
-	modImplementation "io.wispforest:owo-lib:${project.owo_version}+1.18"
 	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'

@@ -1,11 +1,10 @@
 package net.id.incubus_core.recipe.matchbook;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.item.*;
+import net.minecraft.nbt.*;
+import net.minecraft.network.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Mode defines how nbt is filtered.
@@ -24,10 +23,15 @@ public class Matchbook {
     }
 
     public boolean test(ItemStack stack) {
+        if(mode == Mode.PASS) { // fast succeed to skip stack.getNbt()
+            return true;
+        }
+
+        NbtCompound nbt = stack.getNbt();
         return switch (mode) {
-            case AND -> matches.stream().allMatch(match -> match.matches(stack));
-            case OR -> matches.stream().anyMatch(match -> match.matches(stack));
-            case PASS -> true;
+            case AND -> matches.stream().allMatch(match -> match.matches(nbt));
+            case OR -> matches.stream().anyMatch(match -> match.matches(nbt));
+            default -> true;
         };
     }
 

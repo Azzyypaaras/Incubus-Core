@@ -1,16 +1,14 @@
 package net.id.incubus_core.dev.recipe;
 
-import com.google.gson.JsonObject;
-import net.id.incubus_core.dev.DevInit;
-import net.id.incubus_core.json.RecipeParser;
-import net.id.incubus_core.recipe.IngredientStack;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.AbstractCookingRecipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
+import com.google.gson.*;
+import net.id.incubus_core.dev.*;
+import net.id.incubus_core.recipe.*;
+import net.minecraft.inventory.*;
+import net.minecraft.item.*;
+import net.minecraft.network.*;
+import net.minecraft.recipe.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
 
 public class TestRecipeType extends AbstractCookingRecipe {
 
@@ -36,7 +34,7 @@ public class TestRecipeType extends AbstractCookingRecipe {
         @Override
         public TestRecipeType read(Identifier id, JsonObject json) {
             var input = RecipeParser.ingredientStackFromJson(json.getAsJsonObject("input"));
-            var output = RecipeParser.stackFromJson(json.getAsJsonObject(), "output");
+            var output = RecipeParser.getItemStackWithNbtFromJson(JsonHelper.getObject(json, "output"));
 
             return new TestRecipeType(id, input, output);
         }

@@ -32,7 +32,6 @@
     "client.Sprite$AnimationAccessor",
     "client.Sprite$AnimationFrameAccessor",
     "client.SpriteAccessor",
-    "client.WorldRendererMixin",
     "devel.client.TranslationStorageMixin"
   ],
   "injectors": {

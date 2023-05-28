@@ -9,7 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.EntityDamageSource;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -43,7 +43,7 @@ public final class EntityDeathMessageTestItem extends Item implements CustomDeat
     }
     
     @Override
-    public Optional<Text> getDeathMessage(EntityDamageSource damageSource, LivingEntity target, ItemStack stack, EntityDamageType type) {
+    public Optional<Text> getDeathMessage(DamageSource damageSource, LivingEntity target, ItemStack stack, EntityDamageType type) {
         return Optional.of(Text.translatable("I hope this works out!"));
     }
     

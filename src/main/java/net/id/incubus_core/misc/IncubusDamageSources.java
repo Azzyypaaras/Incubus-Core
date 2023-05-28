@@ -1,60 +1,24 @@
 package net.id.incubus_core.misc;
 
+import net.id.incubus_core.IncubusCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.EntityDamageSource;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.world.World;
 
 public class IncubusDamageSources {
 
-    public static final DamageSource UNWORTHY = new UnworthyDamageSource("ic_unworthy");
+    public static final RegistryKey<DamageType> UNWORTHY = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, IncubusCore.locate("unworthy"));
+    public static final RegistryKey<DamageType> GRILLIN = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, IncubusCore.locate("grillin"));
 
     public static DamageSource grillin(Entity source) {
-        return new GrillinDamageSource("ic_grillin", source);
+        return new DamageSource(source.getDamageSources().registry.getEntry(GRILLIN).orElseThrow(), source);
     }
 
-
-    private static class UnworthyDamageSource extends DamageSource {
-
-
-        protected UnworthyDamageSource(String name) {
-            super(name);
-        }
-
-        @Override
-        public boolean bypassesArmor() {
-            return true;
-        }
-
-        @Override
-        public boolean isOutOfWorld() {
-            return true;
-        }
-
-        @Override
-        public boolean isNeutral() {
-            return true;
-        }
-
-        @Override
-        public boolean isUnblockable() {
-            return true;
-        }
+    public static DamageSource unworthy(World world) {
+        return new DamageSource(world.getDamageSources().registry.getEntry(UNWORTHY).orElseThrow());
     }
 
-    private static class GrillinDamageSource extends EntityDamageSource {
-
-        public GrillinDamageSource(String name, Entity source) {
-            super(name, source);
-        }
-
-        @Override
-        public boolean bypassesArmor() {
-            return true;
-        }
-
-        @Override
-        public boolean isUnblockable() {
-            return true;
-        }
-    }
 }

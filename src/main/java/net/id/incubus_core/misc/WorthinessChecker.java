@@ -14,8 +14,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
@@ -63,10 +61,10 @@ public class WorthinessChecker {
         world.playSoundFromEntity(null, entity, IncubusSounds.DRIP, SoundCategory.PLAYERS, 2F, 2F);
 
         if (entity.getHealth() < 5F) {
-            entity.damage(IncubusDamageSources.UNWORTHY, 10000F);
+            entity.damage(IncubusDamageSources.unworthy(world), 10000F);
         }
         else {
-            entity.damage(IncubusDamageSources.UNWORTHY, 0.1F);
+            entity.damage(IncubusDamageSources.unworthy(world), 0.1F);
             entity.setHealth(0.01F);
         }
 

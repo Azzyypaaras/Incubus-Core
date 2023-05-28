@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
-import net.minecraft.network.Packet;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.registry.RegistryKeys;
@@ -67,7 +67,7 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
         this.prevX = x;
         this.prevY = y;
         this.prevZ = z;
-        this.setOrigin(new BlockPos(this.getPos()));
+        this.setOrigin(BlockPos.ofFloored(this.getPos()));
     }
 
     public BlockLikeEntity(EntityType<? extends BlockLikeEntity> entityType, World world, BlockPos pos, BlockState blockState, boolean partOfSet) {
@@ -225,7 +225,7 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
         }
 
         boolean flag = this.blockState.isIn(BlockTags.ANVIL);
-        DamageSource damageSource2 = flag ? DamageSource.anvil(damageSource.getAttacker()) : DamageSource.fallingBlock(this);
+        DamageSource damageSource2 = flag ? this.getDamageSources().fallingAnvil(damageSource.getAttacker()) : this.getDamageSources().fallingBlock(this);
         float f = Math.min(MathHelper.floor((float)i * this.fallHurtAmount), this.fallHurtMax);
 
         this.world.getOtherEntities(this, getBoundingBox().union(getBoundingBox().offset(0, 1 + -2 * this.getVelocity().getY(), 0))).forEach(entity -> entity.damage(damageSource2, f));

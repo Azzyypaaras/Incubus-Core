@@ -35,10 +35,10 @@ public class BlockLikeEntityRenderer extends EntityRenderer<BlockLikeEntity> {
         if (blockState.getRenderType() == BlockRenderType.MODEL) {
             World world = entity.getWorldObj();
 
-            if (blockState != world.getBlockState(new BlockPos(entity.getPos())) && blockState.getRenderType() != BlockRenderType.INVISIBLE) {
+            if (blockState != world.getBlockState(BlockPos.ofFloored(entity.getPos())) && blockState.getRenderType() != BlockRenderType.INVISIBLE) {
                 matrices.push();
 
-                BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
+                BlockPos blockpos = BlockPos.ofFloored(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
                 matrices.translate(-0.5, 0.0, -0.5);
                 BlockRenderManager blockRenderManager = MinecraftClient.getInstance().getBlockRenderManager();
                 blockRenderManager.getModelRenderer().render(world, blockRenderManager.getModel(blockState), blockState, blockpos, matrices, vertexConsumers.getBuffer(RenderLayers.getMovingBlockLayer(blockState)), false, random, blockState.getRenderingSeed(entity.getOrigin()), OverlayTexture.DEFAULT_UV);

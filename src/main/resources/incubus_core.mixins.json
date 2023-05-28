@@ -7,7 +7,6 @@
   "mixins": [
     "blocklikeentities.ServerWorldMixin",
     "entity.BlockEntityMixin",
-    "entity.EntityDamageSourceMixin",
     "entity.FoxEditorMixin",
     "player.PlayerDropMixin",
     "player.PlayerEntityMixin",

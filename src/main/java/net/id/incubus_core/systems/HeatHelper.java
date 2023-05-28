@@ -2,12 +2,10 @@ package net.id.incubus_core.systems;
 
 import net.id.incubus_core.util.RandomShim;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
 import java.util.Collections;
-import java.util.List;
 
 public class HeatHelper {
 
@@ -22,13 +20,13 @@ public class HeatHelper {
     public static double simulateAmbientHeating(HeatIo io, World world, BlockPos pos, Simulation simulation) {
         var validExchangeDirs = io.getValidDirections();
 
-        if(!validExchangeDirs.isEmpty()) {
+        if (!validExchangeDirs.isEmpty()) {
             Collections.shuffle(validExchangeDirs, new RandomShim(world.getRandom()));
             var exchangeDir = io.getPreferredDirection().orElse(validExchangeDirs.get(0));
 
-            if(validExchangeDirs.contains(exchangeDir)) {
+            if (validExchangeDirs.contains(exchangeDir)) {
                 double transfer = exchangeHeat(DefaultMaterials.AIR, io.getTemperature(), translateBiomeHeat(pos, world.getBiome(pos).value(), world.isNight(), world.isRaining()), io.getExchangeArea(exchangeDir));
-                if(simulation == Simulation.ACT) {
+                if (simulation == Simulation.ACT) {
                     io.cool(transfer);
                 }
                 return transfer;
@@ -55,21 +53,21 @@ public class HeatHelper {
 
         temp *= 26.25;
 
-        if(night) {
-            if(/*category == Biome.Category.DESERT || category == Biome.Category.MESA*/ false) {
+        if (night) {
+            if (/*category == Biome.Category.DESERT || category == Biome.Category.MESA*/ false) {
                 temp -= temp * 0.75;
-            } else if(biome.getPrecipitation() == Biome.Precipitation.SNOW) {
-                if(/*category == Biome.Category.ICY*/ false && temp < 0)
+            } else if (biome.getPrecipitation(pos) == Biome.Precipitation.SNOW) {
+                if (/*category == Biome.Category.ICY*/ false && temp < 0)
                     temp += temp * 1.25;
                 else
                     temp -= 20;
 
             } else {
-                temp -= (biome.getPrecipitation() == Biome.Precipitation.NONE) ? 12 : 4;
+                temp -= (biome.getPrecipitation(pos) == Biome.Precipitation.NONE) ? 12 : 4;
             }
         }
-        if(rain) {
-            temp -= biome.getPrecipitation() == Biome.Precipitation.SNOW || biome.getPrecipitation() == Biome.Precipitation.RAIN && pos.getY() >= 100 ? 10 : 3;
+        if (rain) {
+            temp -= biome.getPrecipitation(pos) == Biome.Precipitation.SNOW || biome.getPrecipitation(pos) == Biome.Precipitation.RAIN && pos.getY() >= 100 ? 10 : 3;
         }
         return temp;
     }

@@ -4,7 +4,6 @@ import net.id.incubus_core.misc.IncubusDamageSources;
 import net.id.incubus_core.misc.IncubusPlayerData;
 import net.id.incubus_core.misc.IncubusSounds;
 import net.id.incubus_core.misc.WorthinessChecker;
-import net.id.incubus_core.misc.playerdata.PlayerData;
 import net.minecraft.block.*;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
@@ -26,7 +25,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -298,7 +296,7 @@ public class AzzysFlagItem extends HoeItem {
 				}
 				case CURSE: {
 					if (!user.isSneaking()) {
-						target.damage(IncubusDamageSources.UNWORTHY, 10F);
+						target.damage(IncubusDamageSources.unworthy(world), 10F);
 						world.playSoundFromEntity(null, target, IncubusSounds.WEAK, SoundCategory.PLAYERS, 1, 0.9F + random.nextFloat() * 0.2F);
 					} else {
 						if (!world.isClient()) {

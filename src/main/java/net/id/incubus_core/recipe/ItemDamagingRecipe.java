@@ -12,7 +12,7 @@ import net.minecraft.util.collection.DefaultedList;
 public class ItemDamagingRecipe extends ShapelessRecipe {
 
     public ItemDamagingRecipe(ShapelessRecipe parent) {
-        super(parent.getId(), parent.getGroup(), parent.getCategory(), parent.getOutput(), parent.getIngredients());
+        super(parent.getId(), parent.getGroup(), parent.getCategory(), parent.getOutput(null), parent.getIngredients());
     }
 
     @Override

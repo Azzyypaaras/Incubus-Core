@@ -66,7 +66,7 @@ public class LunarianSaberItem extends SwordItem {
 
             attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 20, 4));
 
-            target.damage(DamageSource.GENERIC, target.getMaxHealth() / 10 + 1);
+            target.damage(target.getDamageSources().generic(), target.getMaxHealth() / 10 + 1);
             world.playSoundFromEntity(null, attacker, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE, SoundCategory.PLAYERS, 2F, 2F);
 
             if(!world.isClient()) {

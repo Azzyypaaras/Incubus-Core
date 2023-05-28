@@ -13,6 +13,7 @@ import net.id.incubus_core.recipe.IncubusRecipeTypes;
 import net.id.incubus_core.recipe.matchbook.IncubusMatches;
 import net.id.incubus_core.resource_conditions.IncubusCoreResourceConditions;
 import net.id.incubus_core.status_effects.ZonkedEffect;
+import net.id.incubus_core.systems.DefaultMaterials;
 import net.id.incubus_core.systems.RegistryRegistry;
 import net.id.incubus_core.util.Config;
 import net.minecraft.block.Block;
@@ -42,6 +43,7 @@ public class IncubusCore implements ModInitializer {
 			LOG.info(IncubusCoreInit.HOLY_CONST);
 
 		WorthinessChecker.init();
+		DefaultMaterials.init();
 		RegistryRegistry.init();
 		IncubusSounds.init();
 		IncubusCoreItems.init();

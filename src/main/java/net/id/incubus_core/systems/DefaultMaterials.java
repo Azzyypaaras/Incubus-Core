@@ -4,7 +4,6 @@ import net.id.incubus_core.IncubusCore;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
-@SuppressWarnings("unused")
 public class DefaultMaterials {
 
     public static void init() {}

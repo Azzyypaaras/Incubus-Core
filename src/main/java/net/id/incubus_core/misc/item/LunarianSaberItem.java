@@ -1,29 +1,22 @@
 package net.id.incubus_core.misc.item;
 
-import net.id.incubus_core.misc.WorthinessChecker;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.Box;
+import net.id.incubus_core.misc.*;
+import net.minecraft.client.item.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.effect.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.particle.*;
+import net.minecraft.server.world.*;
+import net.minecraft.sound.*;
+import net.minecraft.text.*;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.*;
+import org.jetbrains.annotations.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class LunarianSaberItem extends SwordItem {
 
@@ -34,7 +27,7 @@ public class LunarianSaberItem extends SwordItem {
     @Override
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 
-        World world = target.world;
+        World world = target.getWorld();
         Random random = target.getRandom();
 
         if(!WorthinessChecker.isPlayerWorthy(attacker.getUuid(), attacker instanceof PlayerEntity player ? Optional.of(player) : Optional.empty())) {
@@ -85,7 +78,7 @@ public class LunarianSaberItem extends SwordItem {
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity target, Hand hand) {
         Box bounds = target.getBoundingBox(target.getPose());
         Random random = target.getRandom();
-        World world = target.world;
+        World world = target.getWorld();
 
         target.clearStatusEffects();
 
@@ -99,7 +92,7 @@ public class LunarianSaberItem extends SwordItem {
 
         world.playSoundFromEntity(null, target, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.PLAYERS, 1.5F, 2F);
 
-        return ActionResult.success(user.world.isClient());
+        return ActionResult.success(user.getWorld().isClient());
     }
 
     @Override

@@ -1,36 +1,29 @@
 package net.id.incubus_core.dev;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.fabricmc.loader.api.FabricLoader;
-import net.id.incubus_core.IncubusCore;
-import net.id.incubus_core.condition.IncubusCondition;
-import net.id.incubus_core.condition.api.Condition;
-import net.id.incubus_core.condition.api.Severity;
-import net.id.incubus_core.dev.block.TestFurnaceBlock;
-import net.id.incubus_core.dev.block.TestFurnaceBlockEntity;
-import net.id.incubus_core.dev.item.EntityDeathMessageTestItem;
-import net.id.incubus_core.dev.recipe.TestRecipeType;
-import net.id.incubus_core.util.Config;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.MixinEnvironment;
+import net.fabricmc.fabric.api.item.v1.*;
+import net.fabricmc.fabric.api.object.builder.v1.block.*;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.*;
+import net.fabricmc.loader.api.*;
+import net.id.incubus_core.*;
+import net.id.incubus_core.condition.*;
+import net.id.incubus_core.condition.api.*;
+import net.id.incubus_core.dev.block.*;
+import net.id.incubus_core.dev.item.*;
+import net.id.incubus_core.dev.recipe.*;
+import net.id.incubus_core.util.*;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.*;
+import net.minecraft.client.world.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.effect.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.recipe.*;
+import net.minecraft.registry.*;
+import net.minecraft.registry.tag.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import org.spongepowered.asm.mixin.*;
 
 import static net.id.incubus_core.IncubusCore.*;
 
@@ -62,7 +55,7 @@ public final class DevInit {
         @Override
         public void tickPlayer(World world, PlayerEntity player, Severity severity, float rawSeverity) {
             if (severity.isAsOrMoreSevere(Severity.MILD)) {
-                player.addStatusEffect(new StatusEffectInstance(ZONKED, 10));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 10));
             }
         }
 

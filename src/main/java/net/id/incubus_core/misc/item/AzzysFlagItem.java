@@ -1,40 +1,25 @@
 package net.id.incubus_core.misc.item;
 
-import net.id.incubus_core.misc.IncubusDamageSources;
-import net.id.incubus_core.misc.IncubusPlayerData;
-import net.id.incubus_core.misc.IncubusSounds;
-import net.id.incubus_core.misc.WorthinessChecker;
+import net.id.incubus_core.misc.*;
 import net.minecraft.block.*;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.client.item.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.effect.*;
 import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.*;
 import net.minecraft.item.*;
-import net.minecraft.particle.DustParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.particle.*;
+import net.minecraft.server.network.*;
+import net.minecraft.server.world.*;
+import net.minecraft.sound.*;
+import net.minecraft.text.*;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import net.minecraft.world.*;
+import org.jetbrains.annotations.*;
+
+import java.util.*;
 
 public class AzzysFlagItem extends HoeItem {
 	
@@ -143,7 +128,7 @@ public class AzzysFlagItem extends HoeItem {
 	}
 	
 	private void handleGifting(PlayerEntity target, Random random, PlayerEntity user, boolean sneaking, boolean hardFail) {
-		if (user.world.isClient())
+		if (user.getWorld().isClient())
 			return;
 		
 		if (sneaking) {

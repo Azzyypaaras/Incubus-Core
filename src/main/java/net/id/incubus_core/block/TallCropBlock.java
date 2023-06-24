@@ -1,22 +1,19 @@
 package net.id.incubus_core.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.block.entity.*;
+import net.minecraft.block.enums.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.server.world.*;
+import net.minecraft.state.*;
+import net.minecraft.state.property.*;
+import net.minecraft.util.math.*;
+import net.minecraft.util.math.random.*;
+import net.minecraft.util.shape.*;
 import net.minecraft.world.*;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 /**
  * A crop block that is two blocks tall.
@@ -65,7 +62,7 @@ public class TallCropBlock extends CropBlock {
     }
 
     private boolean canGrowUp(World world, BlockPos pos, BlockState state, int age) {
-        return world.getBlockState(pos.up()).isOf(this) || world.getBlockState(pos.up()).getMaterial().isReplaceable();
+        return world.getBlockState(pos.up()).isOf(this) || world.getBlockState(pos.up()).isReplaceable();
     }
 
     /**
@@ -87,7 +84,7 @@ public class TallCropBlock extends CropBlock {
                 // More likely if there's more moisture
                 if (random.nextInt((int) (upperBound / moisture) + 1) == 0) {
                     if (age >= Block.NOTIFY_LISTENERS) {
-                        if (world.getBlockState(pos.up()).isOf(this) || world.getBlockState(pos.up()).getMaterial().isReplaceable()) {
+                        if (world.getBlockState(pos.up()).isOf(this) || world.getBlockState(pos.up()).isReplaceable()) {
                             world.setBlockState(pos, this.withAge(age + 1), Block.NOTIFY_LISTENERS);
                             world.setBlockState(pos.up(), this.withAgeAndHalf(age + 1, DoubleBlockHalf.UPPER), Block.NOTIFY_LISTENERS);
                         }

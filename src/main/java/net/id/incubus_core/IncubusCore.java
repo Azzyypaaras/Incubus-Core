@@ -1,33 +1,27 @@
 package net.id.incubus_core;
 
-import com.mojang.logging.LogUtils;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
-import net.id.incubus_core.condition.IncubusCondition;
-import net.id.incubus_core.dev.DevInit;
-import net.id.incubus_core.misc.IncubusPlayerData;
-import net.id.incubus_core.misc.IncubusSounds;
-import net.id.incubus_core.misc.WorthinessChecker;
-import net.id.incubus_core.misc.item.IncubusCoreItems;
-import net.id.incubus_core.recipe.IncubusRecipeTypes;
-import net.id.incubus_core.recipe.matchbook.IncubusMatches;
-import net.id.incubus_core.resource_conditions.IncubusCoreResourceConditions;
-import net.id.incubus_core.status_effects.ZonkedEffect;
-import net.id.incubus_core.systems.DefaultMaterials;
-import net.id.incubus_core.systems.RegistryRegistry;
-import net.id.incubus_core.util.Config;
-import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
+import com.mojang.logging.*;
+import net.fabricmc.api.*;
+import net.fabricmc.loader.api.*;
+import net.id.incubus_core.condition.*;
+import net.id.incubus_core.dev.*;
+import net.id.incubus_core.misc.*;
+import net.id.incubus_core.misc.item.*;
+import net.id.incubus_core.recipe.*;
+import net.id.incubus_core.recipe.matchbook.*;
+import net.id.incubus_core.resource_conditions.*;
+import net.id.incubus_core.systems.*;
+import net.id.incubus_core.util.*;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.*;
+import net.minecraft.entity.effect.*;
+import net.minecraft.item.*;
+import net.minecraft.registry.*;
+import net.minecraft.sound.*;
+import net.minecraft.util.*;
+import org.slf4j.*;
 
-import java.util.Random;
-import java.util.SplittableRandom;
+import java.util.*;
 
 public class IncubusCore implements ModInitializer {
 
@@ -59,9 +53,7 @@ public class IncubusCore implements ModInitializer {
 			}
 		}
 	}
-
-	public static final StatusEffect ZONKED = registerEffect("zonked", new ZonkedEffect());
-
+	
 	public static Item registerItem(String name, Item item) {
 		return Registry.register(Registries.ITEM, locate(name), item);
 	}

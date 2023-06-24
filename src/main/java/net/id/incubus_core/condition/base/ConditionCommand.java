@@ -1,37 +1,25 @@
 package net.id.incubus_core.condition.base;
 
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.FloatArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.suggestion.SuggestionProvider;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import net.id.incubus_core.IncubusCore;
-import net.id.incubus_core.condition.IncubusCondition;
-import net.id.incubus_core.condition.api.Condition;
-import net.id.incubus_core.condition.api.ConditionAPI;
-import net.id.incubus_core.condition.api.Persistence;
-import net.id.incubus_core.condition.api.Severity;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.command.argument.IdentifierArgumentType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
+import com.mojang.brigadier.*;
+import com.mojang.brigadier.arguments.*;
+import com.mojang.brigadier.context.*;
+import com.mojang.brigadier.exceptions.*;
+import com.mojang.brigadier.suggestion.*;
+import net.id.incubus_core.*;
+import net.id.incubus_core.condition.*;
+import net.id.incubus_core.condition.api.*;
+import net.minecraft.command.argument.*;
+import net.minecraft.entity.*;
+import net.minecraft.server.command.*;
+import net.minecraft.text.*;
+import net.minecraft.util.*;
+import org.jetbrains.annotations.*;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.CompletableFuture;
+import java.util.*;
+import java.util.concurrent.*;
 
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
+import static net.minecraft.server.command.CommandManager.*;
 
 public class ConditionCommand {
 
@@ -78,7 +66,7 @@ public class ConditionCommand {
                         ConditionAPI.trySync(target);
                     });
 
-                    source.sendFeedback(
+                    source.sendFeedback(() ->
                         Text.translatable(
                             "commands.incubus_core.condition.success.clear.individual",
                             conditions.size(), entity.getDisplayName()
@@ -88,7 +76,7 @@ public class ConditionCommand {
                 }
             }
         });
-        source.sendFeedback(Text.translatable("commands.incubus_core.condition.success.clear"), true);
+        source.sendFeedback(() -> Text.translatable("commands.incubus_core.condition.success.clear"), true);
         return 1;
     }
 
@@ -103,7 +91,7 @@ public class ConditionCommand {
 
                     if (!condition.isExempt(target)) {
                         // todo: also print who is being queried
-                        source.sendFeedback(Text.translatable("commands.incubus_core.condition.success.query", Text.translatable(ConditionAPI.getTranslationString(condition)), Text.translatable(severity.getTranslationKey()), rawSeverity), false);
+                        source.sendFeedback(() -> Text.translatable("commands.incubus_core.condition.success.query", Text.translatable(ConditionAPI.getTranslationString(condition)), Text.translatable(severity.getTranslationKey()), rawSeverity), false);
                     } else {
                         source.sendError(Text.translatable("commands.incubus_core.condition.failure.query", Text.translatable(ConditionAPI.getTranslationString(condition))));
                     }
@@ -139,7 +127,7 @@ public class ConditionCommand {
                     var severity = Severity.getSeverity(rawSeverity);
 
                     // todo: also print who the condition is being assigned to
-                    source.sendFeedback(Text.translatable("commands.incubus_core.condition.success.assign", Text.translatable(ConditionAPI.getTranslationString(condition)), Text.translatable(severity.getTranslationKey()), rawSeverity), false);
+                    source.sendFeedback(() -> Text.translatable("commands.incubus_core.condition.success.assign", Text.translatable(ConditionAPI.getTranslationString(condition)), Text.translatable(severity.getTranslationKey()), rawSeverity), false);
                     ConditionAPI.trySync(target);
                 }
                 else {

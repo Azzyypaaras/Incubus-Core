@@ -1,9 +1,7 @@
 package net.id.incubus_core.misc.item;
 
-import net.id.incubus_core.IncubusCore;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.FoodComponent;
+import net.minecraft.entity.effect.*;
+import net.minecraft.item.*;
 
 public class IncubusFoodComponents {
 
@@ -33,6 +31,6 @@ public class IncubusFoodComponents {
     public static final FoodComponent RAT_POISON = new FoodComponent.Builder()
             .alwaysEdible().hunger(1).saturationModifier(0F)
             .statusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 1200, 1), 1)
-            .statusEffect(new StatusEffectInstance(IncubusCore.ZONKED, 1200, 0), 1)
+            .statusEffect(new StatusEffectInstance(StatusEffects.POISON, 1200, 0), 1)
             .build();
 }

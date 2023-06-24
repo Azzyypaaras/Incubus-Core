@@ -1,24 +1,21 @@
 package net.id.incubus_core.condition.base;
 
-import dev.emi.trinkets.api.TrinketsApi;
-import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
-import dev.onyxstudios.cca.api.v3.entity.PlayerComponent;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import dev.emi.trinkets.api.*;
+import dev.onyxstudios.cca.api.v3.component.sync.*;
+import dev.onyxstudios.cca.api.v3.component.tick.*;
+import dev.onyxstudios.cca.api.v3.entity.*;
+import net.fabricmc.api.*;
 import net.id.incubus_core.condition.api.*;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.client.world.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.nbt.*;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
+import org.jetbrains.annotations.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.*;
 
 // TODO finish docs
 @SuppressWarnings("unused")
@@ -42,10 +39,10 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
             var severity = Severity.getSeverity(rawSeverity);
 
             if(target instanceof PlayerEntity player) {
-                condition.tickPlayer(player.world, player, severity, rawSeverity);
+                condition.tickPlayer(player.getWorld(), player, severity, rawSeverity);
             }
             else {
-                condition.tick(target.world, target, severity, rawSeverity);
+                condition.tick(target.getWorld(), target, severity, rawSeverity);
             }
 
             tracker.remove(Persistence.TEMPORARY, getScaledDecay(Persistence.TEMPORARY, condition));
@@ -63,7 +60,7 @@ public class ConditionManager implements AutoSyncedComponent, CommonTickingCompo
             float rawSeverity = getScaledSeverity(condition);
             var severity = Severity.getSeverity(rawSeverity);
 
-            condition.clientTick((ClientWorld) target.world, target, severity, rawSeverity);
+            condition.clientTick((ClientWorld) target.getWorld(), target, severity, rawSeverity);
         });
     }
 

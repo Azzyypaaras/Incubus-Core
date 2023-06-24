@@ -1,21 +1,16 @@
 package net.id.incubus_core.recipe;
-import net.id.incubus_core.IncubusCore;
-import net.id.incubus_core.util.RegistryHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.TagKey;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import net.id.incubus_core.*;
+import net.id.incubus_core.util.*;
+import net.minecraft.item.*;
+import net.minecraft.network.*;
+import net.minecraft.registry.*;
+import net.minecraft.registry.entry.*;
+import net.minecraft.registry.tag.*;
+import org.jetbrains.annotations.*;
+
+import java.util.*;
+import java.util.stream.*;
 
 @SuppressWarnings("unused")
 public class OptionalStack {
@@ -108,7 +103,7 @@ public class OptionalStack {
             return false;
         }
         else
-            return cachedStacks.stream().anyMatch(testStack -> testStack.isItemEqual(stack));
+            return cachedStacks.stream().anyMatch(testStack -> ItemStack.areItemsEqual(testStack, stack));
     }
 
     public boolean contains(ItemStack stack) {
@@ -118,6 +113,6 @@ public class OptionalStack {
             return false;
         }
         else
-            return cachedStacks.stream().anyMatch(testStack -> testStack.isItemEqual(stack) && stack.getCount() >= testStack.getCount());
+            return cachedStacks.stream().anyMatch(testStack -> ItemStack.areItemsEqual(testStack, stack) && stack.getCount() >= testStack.getCount());
     }
 }

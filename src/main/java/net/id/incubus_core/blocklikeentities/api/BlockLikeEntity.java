@@ -1,41 +1,28 @@
 package net.id.incubus_core.blocklikeentities.api;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.id.incubus_core.blocklikeentities.util.PostTickEntity;
+import net.fabricmc.api.*;
+import net.id.incubus_core.blocklikeentities.util.*;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MovementType;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.AutomaticItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtHelper;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.FluidTags;
+import net.minecraft.block.entity.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.damage.*;
+import net.minecraft.entity.data.*;
+import net.minecraft.fluid.*;
+import net.minecraft.item.*;
+import net.minecraft.nbt.*;
+import net.minecraft.network.listener.*;
+import net.minecraft.network.packet.*;
+import net.minecraft.network.packet.s2c.play.*;
+import net.minecraft.registry.*;
+import net.minecraft.registry.tag.*;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.crash.CrashReportSection;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.crash.*;
+import net.minecraft.util.hit.*;
 import net.minecraft.util.math.*;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.RaycastContext;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldEvents;
+import net.minecraft.util.shape.*;
+import net.minecraft.world.*;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * An entity that resembles a block.
@@ -88,10 +75,10 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
             return super.calculateBoundingBox();
         }
         BlockPos origin = this.dataTracker.get(ORIGIN);
-        VoxelShape shape = this.blockState.getCollisionShape(world, origin);
+        VoxelShape shape = this.blockState.getCollisionShape(getWorld(), origin);
         if (shape.isEmpty()) {
             this.collides = false;
-            shape = this.blockState.getOutlineShape(world, origin);
+            shape = this.blockState.getOutlineShape(getWorld(), origin);
             if (shape.isEmpty()) {
                 return super.calculateBoundingBox();
             }
@@ -123,7 +110,7 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
      */
     public void postTickEntityCollision(Entity entity) {
         if (!(entity instanceof BlockLikeEntity ble && ble.partOfSet)) {
-            this.blockState.onEntityCollision(world, this.getBlockPos(), entity);
+            this.blockState.onEntityCollision(getWorld(), this.getBlockPos(), entity);
         }
     }
 
@@ -131,32 +118,32 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
      * @return Whether this entity should cease and return to being a block in the world.
      */
     public boolean shouldCease() {
-        if (this.world.isClient) return false;
+        if (this.getWorld().isClient) return false;
 
         BlockPos blockPos = this.getBlockPos();
         boolean isConcrete = this.blockState.getBlock() instanceof ConcretePowderBlock;
 
-        if (isConcrete && this.world.getFluidState(blockPos).isIn(FluidTags.WATER)) {
+        if (isConcrete && this.getWorld().getFluidState(blockPos).isIn(FluidTags.WATER)) {
             return true;
         }
 
         double speed = this.getVelocity().lengthSquared();
 
         if (isConcrete && speed > 1.0D) {
-            BlockHitResult blockHitResult = this.world.raycast(new RaycastContext(
+            BlockHitResult blockHitResult = this.getWorld().raycast(new RaycastContext(
                     new Vec3d(this.prevX, this.prevY, this.prevZ),
                     new Vec3d(this.getX(), this.getY(), this.getZ()),
                     RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.SOURCE_ONLY, this)
             );
 
             if (blockHitResult.getType() != HitResult.Type.MISS
-                    && this.world.getFluidState(blockHitResult.getBlockPos()).isIn(FluidTags.WATER)) {
+                    && this.getWorld().getFluidState(blockHitResult.getBlockPos()).isIn(FluidTags.WATER)) {
                 return true;
             }
         }
 
-        // Check if it is outside of the world
-        return this.moveTime > 100 && (blockPos.getY() < this.world.getBottomY() || blockPos.getY() > this.world.getTopY());
+        // Check if it is outside the world
+        return this.moveTime > 100 && (blockPos.getY() < this.getWorld().getBottomY() || blockPos.getY() > this.getWorld().getTopY());
     }
 
     /**
@@ -178,9 +165,9 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
         if (this.moveTime++ == 0) {
             BlockPos blockPos = this.getBlockPos();
             Block block = this.blockState.getBlock();
-            if (this.world.getBlockState(blockPos).isOf(block)) {
-                this.world.removeBlock(blockPos, false);
-            } else if (!this.world.isClient && !this.partOfSet) {
+            if (this.getWorld().getBlockState(blockPos).isOf(block)) {
+                this.getWorld().removeBlock(blockPos, false);
+            } else if (!this.getWorld().isClient && !this.partOfSet) {
                 this.discard();
                 return;
             }
@@ -200,7 +187,7 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
     public void postTickMoveEntities() {
         if (FallingBlock.canFallThrough(this.blockState)) return;
 
-        List<Entity> otherEntities = this.world.getOtherEntities(this, getBoundingBox().union(getBoundingBox().offset(0, 0.5, 0)));
+        List<Entity> otherEntities = this.getWorld().getOtherEntities(this, getBoundingBox().union(getBoundingBox().offset(0, 0.5, 0)));
         for (var entity : otherEntities) {
             if (!(entity instanceof BlockLikeEntity) && !entity.noClip && collides) {
                 entity.move(MovementType.SHULKER_BOX, this.getVelocity());
@@ -228,7 +215,7 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
         DamageSource damageSource2 = flag ? this.getDamageSources().fallingAnvil(damageSource.getAttacker()) : this.getDamageSources().fallingBlock(this);
         float f = Math.min(MathHelper.floor((float)i * this.fallHurtAmount), this.fallHurtMax);
 
-        this.world.getOtherEntities(this, getBoundingBox().union(getBoundingBox().offset(0, 1 + -2 * this.getVelocity().getY(), 0))).forEach(entity -> entity.damage(damageSource2, f));
+        this.getWorld().getOtherEntities(this, getBoundingBox().union(getBoundingBox().offset(0, 1 + -2 * this.getVelocity().getY(), 0))).forEach(entity -> entity.damage(damageSource2, f));
 
         if (flag && f > 0.0F && this.random.nextFloat() < 0.05F + i * 0.05F) {
             BlockState blockstate = AnvilBlock.getLandingState(this.blockState);
@@ -254,7 +241,7 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
 
     @Override
     protected void readCustomDataFromNbt(NbtCompound compound) {
-        this.blockState = NbtHelper.toBlockState(this.world.createCommandRegistryWrapper(RegistryKeys.BLOCK), compound.getCompound("BlockState"));
+        this.blockState = NbtHelper.toBlockState(this.getWorld().createCommandRegistryWrapper(RegistryKeys.BLOCK), compound.getCompound("BlockState"));
         this.moveTime = compound.getInt("Time");
         if (compound.contains("HurtEntities", 99)) {
             this.hurtEntities = compound.getBoolean("HurtEntities");
@@ -269,11 +256,6 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
         if (compound.contains("TileEntityData", 10)) this.blockEntityData = compound.getCompound("TileEntityData");
 
         if (this.blockState.isAir()) this.blockState = Blocks.STONE.getDefaultState();
-    }
-
-    @Environment(EnvType.CLIENT)
-    public World getWorldObj() {
-        return this.world;
     }
 
     @Override
@@ -303,7 +285,7 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
             return;
         }
         BlockPos pos = this.getBlockPos();
-        BlockState state = this.world.getBlockState(pos);
+        BlockState state = this.getWorld().getBlockState(pos);
         // I don't like this
         if (state.isOf(Blocks.MOVING_PISTON)) {
             this.setVelocity(this.getVelocity().multiply(0.7, 0.5, 0.7));
@@ -320,21 +302,21 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
      */
     public boolean trySetBlock() {
         BlockPos blockPos = this.getBlockPos();
-        BlockState blockState = this.world.getBlockState(blockPos);
-        boolean canReplace = blockState.canReplace(new AutomaticItemPlacementContext(this.world, blockPos, Direction.UP, ItemStack.EMPTY, Direction.DOWN));
-        boolean canPlace = this.blockState.canPlaceAt(this.world, blockPos);
+        BlockState blockState = this.getWorld().getBlockState(blockPos);
+        boolean canReplace = blockState.canReplace(new AutomaticItemPlacementContext(this.getWorld(), blockPos, Direction.UP, ItemStack.EMPTY, Direction.DOWN));
+        boolean canPlace = this.blockState.canPlaceAt(this.getWorld(), blockPos);
 
         if (!this.canSetBlock || !canPlace || !canReplace)
             return false;
 
-        if (this.blockState.contains(Properties.WATERLOGGED) && this.world.getFluidState(blockPos).getFluid() == Fluids.WATER) {
+        if (this.blockState.contains(Properties.WATERLOGGED) && this.getWorld().getFluidState(blockPos).getFluid() == Fluids.WATER) {
             this.blockState = this.blockState.with(Properties.WATERLOGGED, true);
         }
 
-        if (this.world.setBlockState(blockPos, this.blockState, Block.NOTIFY_ALL)) {
+        if (this.getWorld().setBlockState(blockPos, this.blockState, Block.NOTIFY_ALL)) {
             this.discard();
             if (this.blockEntityData != null && this.blockState.hasBlockEntity()) {
-                BlockEntity blockEntity = this.world.getBlockEntity(blockPos);
+                BlockEntity blockEntity = this.getWorld().getBlockEntity(blockPos);
                 if (blockEntity != null) {
                     NbtCompound compoundTag = blockEntity.createNbt();
                     for (String keyName : this.blockEntityData.getKeys()) {
@@ -362,11 +344,11 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
         if (this.isRemoved()) return;
 
         this.discard();
-        if (this.dropItem && this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
-            Block.dropStacks(this.blockState, this.world, this.getBlockPos());
+        if (this.dropItem && this.getWorld().getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
+            Block.dropStacks(this.blockState, this.getWorld(), this.getBlockPos());
         }
         // spawn break particles
-        world.syncWorldEvent(null, WorldEvents.BLOCK_BROKEN, this.getBlockPos(), Block.getRawIdFromState(blockState));
+        getWorld().syncWorldEvent(null, WorldEvents.BLOCK_BROKEN, this.getBlockPos(), Block.getRawIdFromState(blockState));
     }
 
     @Override
@@ -429,11 +411,6 @@ public abstract class BlockLikeEntity extends Entity implements PostTickEntity {
     protected void initDataTracker() {
         this.dataTracker.startTracking(ORIGIN, BlockPos.ORIGIN);
     }
-
-    //@Override
-    //public boolean collides() {
-    //    return !this.isRemoved() && this.collides;
-    //}
 
     @Override
     public boolean isCollidable() {

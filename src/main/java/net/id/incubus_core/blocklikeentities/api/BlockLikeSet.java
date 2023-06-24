@@ -1,13 +1,12 @@
 package net.id.incubus_core.blocklikeentities.api;
 
-import net.id.incubus_core.blocklikeentities.util.PostTickEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.World;
+import net.id.incubus_core.blocklikeentities.util.*;
+import net.minecraft.block.*;
+import net.minecraft.util.math.*;
+import net.minecraft.world.*;
 
 import java.util.*;
-import java.util.function.Predicate;
+import java.util.function.*;
 
 /**
  * An object designed to hold {@link BlockLikeEntity}s together.
@@ -73,7 +72,7 @@ public class BlockLikeSet {
         for (BlockLikeEntity block : entries.values()) {
             if (block.isRemoved()) {
                 // If one block ceases, the rest must as well.
-                World world = block.world;
+                World world = block.getWorld();
                 BlockState state = block.getBlockState();
                 boolean success = world.getBlockState(block.getBlockPos()).isOf(state.getBlock());
                 this.land(block, success);
@@ -90,7 +89,7 @@ public class BlockLikeSet {
                 if (success) {
                     block.cease();
                 } else {
-                    World world = block.world;
+                    World world = block.getWorld();
                     BlockState state = block.getBlockState();
                     BlockPos pos = block.getBlockPos();
 

@@ -1,10 +1,9 @@
 package net.id.incubus_core.util;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.entity.player.*;
+import net.minecraft.inventory.*;
+import net.minecraft.item.*;
+import net.minecraft.util.collection.*;
 
 /**
  * A simple {@code Inventory} implementation with only default methods + an item list getter.
@@ -66,7 +65,7 @@ public interface InventoryWrapper extends Inventory {
         DefaultedList<ItemStack> inv = getItems();
         for (int i = 0; i < inv.size(); i++) {
             ItemStack item = inv.get(i);
-            if (item.getMaxCount() > item.getCount() && item.isItemEqual(stack)) {
+            if (item.getMaxCount() > item.getCount() && ItemStack.areItemsEqual(item, stack)) {
                 return i;
             }
         }

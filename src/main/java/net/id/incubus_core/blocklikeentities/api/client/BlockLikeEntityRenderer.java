@@ -1,23 +1,18 @@
 package net.id.incubus_core.blocklikeentities.api.client;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.id.incubus_core.blocklikeentities.api.BlockLikeEntity;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.block.BlockRenderManager;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
+import net.fabricmc.api.*;
+import net.id.incubus_core.blocklikeentities.api.*;
+import net.minecraft.block.*;
+import net.minecraft.client.*;
+import net.minecraft.client.render.*;
+import net.minecraft.client.render.block.*;
+import net.minecraft.client.render.entity.*;
+import net.minecraft.client.texture.*;
+import net.minecraft.client.util.math.*;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
+import net.minecraft.util.math.random.*;
+import net.minecraft.world.*;
 
 @Environment(EnvType.CLIENT)
 public class BlockLikeEntityRenderer extends EntityRenderer<BlockLikeEntity> {
@@ -33,7 +28,7 @@ public class BlockLikeEntityRenderer extends EntityRenderer<BlockLikeEntity> {
         BlockState blockState = entity.getBlockState();
 
         if (blockState.getRenderType() == BlockRenderType.MODEL) {
-            World world = entity.getWorldObj();
+            World world = entity.getWorld();
 
             if (blockState != world.getBlockState(BlockPos.ofFloored(entity.getPos())) && blockState.getRenderType() != BlockRenderType.INVISIBLE) {
                 matrices.push();

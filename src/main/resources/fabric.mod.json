@@ -9,7 +9,9 @@
     "Immortal Devs - Parent Organization",
     "Azazelthedemonlord - Author and lead incubus",
     "Jack Papel",
-    "gudenau"
+    "gudenau",
+    "Noaaan",
+    "DaFuqs"
   ],
   "contact": {
     "homepage": "https://github.com/devs-immortal/Incubus-Core",
@@ -38,9 +40,9 @@
     "incubus_core.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.12.12",
-    "fabric": "*",
-    "minecraft": "*"
+    "minecraft": ">=1.20.0",
+    "fabricloader": "*",
+    "fabric": "*"
   },
   "custom": {
     "cardinal-components": [

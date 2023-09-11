@@ -68,7 +68,7 @@ public class IncubusCoreInit {
             "dddddddddddddddmMMMmNMNddsssssssyyhhhhhhddddddymdhddmhs/------::::://+oyhmmNNmmNNNmyo///shmNNNmdhyyddhy+yhddsosyyhhddsohhNMNhs+oohdNNNNNNNNNNNNmdhhdmN\n" +
             "dddddddddddddddNMMmdMMNdhooooooosyhhhhhhdddddyhdmdNdds+---------:+oydNNNNmys+//+ydNNhs/+hdNhy/:---:osoo/syhhyosyhddddoyhmMmhs++oyhmNNNNNNNNNNNmhyydmMm\n" +
             "hhhhhhhhhhhhhhhmMmddMMNdyooooooosyyyhhhhhhhhysddNNNmyo----------+ydNmho//o+//:::/shmNds+shmys:----:://+ossyososyyhhhyoddMmho/+ooyhNNNNNNNNNNmdysshmNNm\n" +
-            "hhhhhhhhhhhhhhhmmdddMMNdhoooooooosyyyyyyyyhy+shmMMMhs/----------/shNhs/---++//::::+ydNhs+yhds+---:::/oso/+sssysyyhhhohhNmhs/+ooshdNNNNNNNNNmdsoshdNNmd\n" +
+            "hhhhhhhhhhhhhhhmmdddMMNdhoooooooosyyyyyyyyhy+shmMඞMhs/----------/shNhs/---++//::::+ydNhs+yhds+---:::/oso/+sssysyyhhhohhNmhs/+ooshdNNNNNNNNNmdsoshdNNmd\n" +
             "hhhhhhhhhhhhhhhhhhhhNMMmdsooooooosyyyyhhhhho+yhNMMNyo:-----------:oymmyo:--/+//::::/shmhs+ydys:-:::+o+////oyydyyyhhhydmNhs/++ooyhmNNNNNNNNmdhsshdNNmdh\n" +
             "hhhhhhhhhhhhhhhhhhhhdMMMmdsoooooosyyhhhhhhyo+yhmMNms+--------------:ohmds+--:++/////+hddy++yhso:::/+//::///yyddhhdddmmNhy//+ooshdNNNNNNNNNddyshdNNmddh\n" +
             "hhhhhhhhhhhhhhhhhhhhhdMMMmdyoooooosyyhhhhhoo/hdhmhss/:::-------------:oydhs/--/++/+oydNNmyoyhsy/:/:::::////+shmNddddmNdy+/+oooyhmNNNNNNNNmdyshdNNmddhh\n" +

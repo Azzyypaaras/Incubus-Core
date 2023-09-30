@@ -122,7 +122,6 @@ public class WorthinessChecker {
         putPlayer(UUID.fromString("f791d11d-5415-4c28-99e7-ac6a0b2fec28"), CapeType.PALE_ASTRONOMY, false); // opl
         putPlayer(UUID.fromString("a1732122-e22e-4edf-883c-09673eb55de8"), CapeType.PALE_ASTRONOMY, false); // maya
         putPlayer(UUID.fromString("5a4c901c-2477-436b-a5b3-3b753fad43a5")); //reo
-        putPlayer(UUID.fromString("c31a8cfa-ecd7-4ec2-8976-cb86c8c651e2")); //prof
         putPlayer(UUID.fromString("004679d7-3163-4e06-a36f-8c6c531d7681")); //solly
         putPlayer(UUID.fromString("73c30c75-e6d7-4141-9c14-06019b6888c1")); //ash
     }

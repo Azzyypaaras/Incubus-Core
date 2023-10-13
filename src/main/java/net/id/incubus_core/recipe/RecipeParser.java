@@ -22,6 +22,7 @@ public class RecipeParser {
     public static final String TARGET = "target";
     public static final String COUNT = "count";
     public static final String ITEM = "item";
+    public static final String MATCHBOOK = "matchbook";
 
     public static JsonObject fromInputStream(InputStream in) {
         return JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
@@ -43,9 +44,9 @@ public class RecipeParser {
         NbtCompound recipeViewNbt = null;
         int count = json.has(COUNT) ? json.get(COUNT).getAsInt() : 1;
 
-        if (json.has("matchbook")) {
+        if (json.has(MATCHBOOK)) {
             try {
-                matchbook = matchbookFromJson(json.getAsJsonObject("matchbook"));
+                matchbook = matchbookFromJson(json.getAsJsonObject(MATCHBOOK));
             } catch (MalformedJsonException e) {
                 IncubusCore.LOG.error("RELAYED EXCEPTION. " + e);
             }

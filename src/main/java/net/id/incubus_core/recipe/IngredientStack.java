@@ -87,8 +87,8 @@ public final class IngredientStack {
     public JsonElement toJson() {
         JsonObject main = new JsonObject();
         main.add("ingredient", this.ingredient.toJson());
-        if (this.count > 1) main.add("count", new JsonPrimitive(this.count));
-        if (!this.matchbook.isEmpty()) main.add("matchbook", this.matchbook.toJson());
+        if (this.count > 1) main.add(RecipeParser.COUNT, new JsonPrimitive(this.count));
+        if (!this.matchbook.isEmpty()) main.add(RecipeParser.MATCHBOOK, this.matchbook.toJson());
         if (this.recipeViewNbt.isPresent()) main.add("recipeViewNbt", RecipeParser.asJson(recipeViewNbt.get()));
         return main;
     }

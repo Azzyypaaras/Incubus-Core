@@ -31,6 +31,7 @@ public class RecipeParser {
     public static final String TYPE = "type";
     public static final String KEY = "key";
     public static final String MIN = "min";
+    public static final String MAX = "max";
 
     public static JsonObject fromInputStream(InputStream in) {
         return JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();

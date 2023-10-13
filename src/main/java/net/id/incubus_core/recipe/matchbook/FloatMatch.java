@@ -44,6 +44,7 @@ public class FloatMatch extends Match {
     JsonObject toJson() {
         JsonObject main = new JsonObject();
         main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
+        main.add(RecipeParser.KEY, new JsonPrimitive(this.name));
         main.add("min", new JsonPrimitive(min));
         main.add("max", new JsonPrimitive(max));
         return main;

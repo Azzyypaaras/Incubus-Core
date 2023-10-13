@@ -22,8 +22,6 @@ public class RecipeParser {
     public static final String TARGET = "target";
     public static final String COUNT = "count";
 
-    private static final JsonParser PARSER = new JsonParser();
-
     public static JsonObject fromInputStream(InputStream in) {
         return JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
     }

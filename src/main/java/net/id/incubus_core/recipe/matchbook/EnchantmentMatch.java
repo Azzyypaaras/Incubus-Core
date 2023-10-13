@@ -72,6 +72,7 @@ public class EnchantmentMatch extends Match {
     JsonObject toJson() {
         JsonObject main = new JsonObject();
         main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
+        main.add(RecipeParser.KEY, new JsonPrimitive(this.name));
         main.add("singular", new JsonPrimitive(singular));
         main.add("minLevel", new JsonPrimitive(minLevel));
         main.add("maxLevel", new JsonPrimitive(maxLevel));

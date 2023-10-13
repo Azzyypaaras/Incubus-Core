@@ -24,6 +24,7 @@ public class RecipeParser {
     public static final String ITEM = "item";
     public static final String MATCHBOOK = "matchbook";
     public static final String TYPE = "type";
+    public static final String KEY = "key";
 
     public static JsonObject fromInputStream(InputStream in) {
         return JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
@@ -119,7 +120,7 @@ public class RecipeParser {
         for (int i = 0; i < matchArray.size(); i++) {
             var entry = matchArray.get(i).getAsJsonObject();
             var id = entry.get(TYPE).getAsString();
-            var key = entry.get("key").getAsString();
+            var key = entry.get(KEY).getAsString();
 
             var optional = MatchRegistry.getOptional(id);
             if(optional.isEmpty()) {

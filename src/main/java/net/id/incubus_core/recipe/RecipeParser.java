@@ -23,7 +23,7 @@ public class RecipeParser {
     private static final JsonParser PARSER = new JsonParser();
 
     public static JsonObject fromInputStream(InputStream in) {
-        return PARSER.parse(new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8))).getAsJsonObject();
+        return JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
     }
 
     public static ItemStack stackFromJson(JsonObject json, String elementName) {

@@ -36,7 +36,7 @@ public class IntMatch extends Match {
     @Override
     JsonObject toJson() {
         JsonObject main = new JsonObject();
-        main.add("type", new JsonPrimitive(TYPE));
+        main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
         main.add(RecipeParser.TARGET, new JsonPrimitive(targetInt));
         return main;
     }

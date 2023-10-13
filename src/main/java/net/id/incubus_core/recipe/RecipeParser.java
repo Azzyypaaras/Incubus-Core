@@ -19,6 +19,7 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class RecipeParser {
+    public static final String COUNT = "count";
 
     private static final JsonParser PARSER = new JsonParser();
 
@@ -28,7 +29,7 @@ public class RecipeParser {
 
     public static ItemStack stackFromJson(JsonObject json, String elementName) {
         Item item = Registry.ITEM.get(Identifier.tryParse(json.get(elementName).getAsString()));
-        int count = json.has("count") ? json.get("count").getAsInt() : 1;
+        int count = json.has(COUNT) ? json.get(COUNT).getAsInt() : 1;
         return item != Items.AIR ? new ItemStack(item, count) : ItemStack.EMPTY;
     }
 
@@ -40,7 +41,7 @@ public class RecipeParser {
         Ingredient ingredient = json.has("ingredient") ? Ingredient.fromJson(json.getAsJsonObject("ingredient")) : Ingredient.fromJson(json);
         var matchbook = Matchbook.empty();
         NbtCompound recipeViewNbt = null;
-        int count = json.has("count") ? json.get("count").getAsInt() : 1;
+        int count = json.has(COUNT) ? json.get(COUNT).getAsInt() : 1;
 
         if (json.has("matchbook")) {
             try {
@@ -77,7 +78,7 @@ public class RecipeParser {
     }
 
     public static OptionalStack optionalStackFromJson(JsonObject json) throws MalformedJsonException {
-        int count = json.has("count") ? json.get("count").getAsInt() : 1;
+        int count = json.has(COUNT) ? json.get(COUNT).getAsInt() : 1;
         if(json.has("item")) {
             Item item = Registry.ITEM.get(Identifier.tryParse(json.get("item").getAsString()));
             return item != Items.AIR ? new OptionalStack(new ItemStack(item, count), count) : OptionalStack.EMPTY;
@@ -143,7 +144,7 @@ public class RecipeParser {
             throw new JsonParseException("Disallowed data tag found");
         }
 
-        int count = JsonHelper.getInt(json, "count", 1);
+        int count = JsonHelper.getInt(json, COUNT, 1);
         if (count < 1) {
             throw new JsonSyntaxException("Invalid output count: " + count);
         }

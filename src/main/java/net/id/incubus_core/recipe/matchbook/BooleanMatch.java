@@ -37,6 +37,7 @@ public class BooleanMatch extends Match {
     JsonObject toJson() {
         JsonObject main = new JsonObject();
         main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
+        main.add(RecipeParser.KEY, new JsonPrimitive(this.name));
         main.add("value", new JsonPrimitive(this.booleanValue));
         return main;
     }

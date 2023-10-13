@@ -37,6 +37,7 @@ public class StringMatch extends Match {
     JsonObject toJson() {
         JsonObject main = new JsonObject();
         main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
+        main.add(RecipeParser.KEY, new JsonPrimitive(this.name));
         main.add(RecipeParser.TARGET, new JsonPrimitive(targetString));
         return main;
     }

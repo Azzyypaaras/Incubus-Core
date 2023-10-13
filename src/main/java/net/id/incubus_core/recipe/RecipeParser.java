@@ -41,7 +41,7 @@ public class RecipeParser {
     }
 
     public static ItemStack stackFromJson(JsonObject json) {
-        return stackFromJson(json, "item");
+        return stackFromJson(json, ITEM);
     }
 
     public static IngredientStack ingredientStackFromJson(JsonObject json) {

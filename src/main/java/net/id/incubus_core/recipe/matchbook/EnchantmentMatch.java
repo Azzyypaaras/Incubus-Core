@@ -5,6 +5,7 @@ import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
 public class EnchantmentMatch extends Match {
+    public static final String TYPE = "enchantment";
 
     private boolean singular;
     private int minLevel;
@@ -67,6 +68,17 @@ public class EnchantmentMatch extends Match {
     }
 
     @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add("type", new JsonPrimitive(TYPE));
+        main.add("singular", new JsonPrimitive(singular));
+        main.add("minLevel", new JsonPrimitive(minLevel));
+        main.add("maxLevel", new JsonPrimitive(maxLevel));
+        main.add("enchantmentId", new JsonPrimitive(enchantmentId));
+        return main;
+    }
+
+    @Override
     void write(PacketByteBuf buf) {
         buf.writeBoolean(singular);
         buf.writeInt(minLevel);
@@ -77,7 +89,7 @@ public class EnchantmentMatch extends Match {
     public static class Factory extends MatchFactory<EnchantmentMatch> {
 
         public Factory() {
-            super("enchantment");
+            super(TYPE);
         }
 
         @Override

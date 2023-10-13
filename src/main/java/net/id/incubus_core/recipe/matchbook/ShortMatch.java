@@ -5,6 +5,7 @@ import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
 public class ShortMatch extends Match {
+    public static final String TYPE = "short";
 
     private short targetShort;
 
@@ -32,6 +33,14 @@ public class ShortMatch extends Match {
     }
 
     @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add("type", new JsonPrimitive(TYPE));
+        main.add("target", new JsonPrimitive(targetShort));
+        return main;
+    }
+
+    @Override
     void write(PacketByteBuf buf) {
         buf.writeShort(targetShort);
     }
@@ -39,7 +48,7 @@ public class ShortMatch extends Match {
     public static class Factory extends MatchFactory<ShortMatch> {
 
         public Factory() {
-            super("short");
+            super(TYPE);
         }
 
         @Override

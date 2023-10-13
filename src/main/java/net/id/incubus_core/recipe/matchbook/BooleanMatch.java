@@ -5,6 +5,7 @@ import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
 public class BooleanMatch extends Match {
+    public static final String TYPE = "boolean";
 
     private boolean booleanValue;
 
@@ -32,6 +33,14 @@ public class BooleanMatch extends Match {
     }
 
     @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add("type", new JsonPrimitive(TYPE));
+        main.add("value", new JsonPrimitive(this.booleanValue));
+        return main;
+    }
+
+    @Override
     void write(PacketByteBuf buf) {
         buf.writeBoolean(booleanValue);
     }
@@ -39,7 +48,7 @@ public class BooleanMatch extends Match {
     public static class Factory extends MatchFactory<BooleanMatch> {
 
         public Factory() {
-            super("boolean");
+            super(TYPE);
         }
 
         @Override

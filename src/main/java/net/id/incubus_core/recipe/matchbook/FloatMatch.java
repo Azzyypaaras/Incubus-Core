@@ -8,6 +8,7 @@ import net.minecraft.network.*;
  * Exclusive.
  */
 public class FloatMatch extends Match {
+    public static final String TYPE = "float";
 
     private float min;
     private float max;
@@ -39,6 +40,15 @@ public class FloatMatch extends Match {
     }
 
     @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add("type", new JsonPrimitive(TYPE));
+        main.add("min", new JsonPrimitive(min));
+        main.add("max", new JsonPrimitive(max));
+        return main;
+    }
+
+    @Override
     void write(PacketByteBuf buf) {
         buf.writeFloat(min);
         buf.writeFloat(max);
@@ -47,7 +57,7 @@ public class FloatMatch extends Match {
     public static class Factory extends MatchFactory<FloatMatch> {
 
         public Factory() {
-            super("float");
+            super(TYPE);
         }
 
         @Override

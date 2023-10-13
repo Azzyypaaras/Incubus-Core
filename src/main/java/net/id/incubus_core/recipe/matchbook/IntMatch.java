@@ -5,6 +5,7 @@ import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
 public class IntMatch extends Match {
+    public static final String TYPE = "int";
 
     private int targetInt;
 
@@ -32,6 +33,14 @@ public class IntMatch extends Match {
     }
 
     @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add("type", new JsonPrimitive(TYPE));
+        main.add("target", new JsonPrimitive(targetInt));
+        return main;
+    }
+
+    @Override
     void write(PacketByteBuf buf) {
         buf.writeInt(targetInt);
     }
@@ -39,7 +48,7 @@ public class IntMatch extends Match {
     public static class Factory extends MatchFactory<IntMatch> {
 
         public Factory() {
-            super("int");
+            super(TYPE);
         }
 
         @Override

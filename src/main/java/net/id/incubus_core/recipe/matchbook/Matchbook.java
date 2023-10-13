@@ -1,5 +1,9 @@
 package net.id.incubus_core.recipe.matchbook;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
@@ -71,6 +75,15 @@ public class Matchbook {
         }
 
         return new Matchbook(list, mode);
+    }
+
+    public JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        JsonArray matches = new JsonArray();
+        this.matches.forEach(match -> matches.add(match.toJson()));
+        main.add("matches", matches);
+        main.add("mode", new JsonPrimitive(this.mode.name().toLowerCase()));
+        return main;
     }
 
     public static class Builder {

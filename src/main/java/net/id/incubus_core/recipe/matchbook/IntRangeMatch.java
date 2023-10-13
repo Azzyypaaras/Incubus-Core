@@ -8,6 +8,7 @@ import net.minecraft.network.*;
  * Inclusive.
  */
 public class IntRangeMatch extends Match {
+    public static final String TYPE = "intRange";
 
     private int min;
     private int max;
@@ -39,6 +40,15 @@ public class IntRangeMatch extends Match {
     }
 
     @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add("type", new JsonPrimitive(TYPE));
+        main.add("min", new JsonPrimitive(min));
+        main.add("max", new JsonPrimitive(max));
+        return main;
+    }
+
+    @Override
     void write(PacketByteBuf buf) {
         buf.writeInt(min);
         buf.writeInt(max);
@@ -47,7 +57,7 @@ public class IntRangeMatch extends Match {
     public static class Factory extends MatchFactory<IntRangeMatch> {
 
         public Factory() {
-            super("intRange");
+            super(TYPE);
         }
 
         @Override

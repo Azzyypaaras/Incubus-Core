@@ -19,14 +19,14 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class RecipeParser {
-    public static final String TARGET = "target";
     public static final String COUNT = "count";
     public static final String ITEM = "item";
-    public static final String MATCHBOOK = "matchbook";
-    public static final String TYPE = "type";
     public static final String KEY = "key";
-    public static final String MIN = "min";
+    public static final String MATCHBOOK = "matchbook";
     public static final String MAX = "max";
+    public static final String MIN = "min";
+    public static final String TARGET = "target";
+    public static final String TYPE = "type";
 
     public static JsonObject fromInputStream(InputStream in) {
         return JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();

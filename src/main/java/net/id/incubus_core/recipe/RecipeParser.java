@@ -21,8 +21,7 @@ import java.util.*;
 public class RecipeParser {
     public static final String TARGET = "target";
     public static final String COUNT = "count";
-
-    private static final JsonParser PARSER = new JsonParser();
+    public static final String ITEM = "item";
 
     public static JsonObject fromInputStream(InputStream in) {
         return JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
@@ -35,7 +34,7 @@ public class RecipeParser {
     }
 
     public static ItemStack stackFromJson(JsonObject json) {
-        return stackFromJson(json, "item");
+        return stackFromJson(json, ITEM);
     }
 
     public static IngredientStack ingredientStackFromJson(JsonObject json) {
@@ -80,7 +79,7 @@ public class RecipeParser {
 
     public static OptionalStack optionalStackFromJson(JsonObject json) throws MalformedJsonException {
         int count = json.has(COUNT) ? json.get(COUNT).getAsInt() : 1;
-        if(json.has("item")) {
+        if(json.has(ITEM)) {
             Item item = Registries.ITEM.get(Identifier.tryParse(json.get("item").getAsString()));
             return item != Items.AIR ? new OptionalStack(new ItemStack(item, count), count) : OptionalStack.EMPTY;
         }

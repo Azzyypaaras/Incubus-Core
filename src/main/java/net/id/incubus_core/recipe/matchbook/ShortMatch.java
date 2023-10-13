@@ -1,6 +1,7 @@
 package net.id.incubus_core.recipe.matchbook;
 
 import com.google.gson.*;
+import net.id.incubus_core.recipe.RecipeParser;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
@@ -24,7 +25,7 @@ public class ShortMatch extends Match {
 
     @Override
     void configure(JsonObject json) {
-        targetShort = json.get("target").getAsShort();
+        targetShort = json.get(RecipeParser.TARGET).getAsShort();
     }
 
     @Override
@@ -36,7 +37,7 @@ public class ShortMatch extends Match {
     JsonObject toJson() {
         JsonObject main = new JsonObject();
         main.add("type", new JsonPrimitive(TYPE));
-        main.add("target", new JsonPrimitive(targetShort));
+        main.add(RecipeParser.TARGET, new JsonPrimitive(targetShort));
         return main;
     }
 

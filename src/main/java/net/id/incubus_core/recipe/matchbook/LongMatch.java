@@ -1,6 +1,7 @@
 package net.id.incubus_core.recipe.matchbook;
 
 import com.google.gson.*;
+import net.id.incubus_core.recipe.RecipeParser;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
@@ -24,7 +25,7 @@ public class LongMatch extends Match {
 
     @Override
     void configure(JsonObject json) {
-        targetLong = json.get("target").getAsLong();
+        targetLong = json.get(RecipeParser.TARGET).getAsLong();
     }
 
     @Override
@@ -36,7 +37,7 @@ public class LongMatch extends Match {
     JsonObject toJson() {
         JsonObject main = new JsonObject();
         main.add("type", new JsonPrimitive(TYPE));
-        main.add("target", new JsonPrimitive(targetLong));
+        main.add(RecipeParser.TARGET, new JsonPrimitive(targetLong));
         return main;
     }
 

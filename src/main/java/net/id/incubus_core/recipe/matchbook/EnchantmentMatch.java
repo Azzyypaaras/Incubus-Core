@@ -1,7 +1,6 @@
 package net.id.incubus_core.recipe.matchbook;
 
 import com.google.gson.*;
-import net.id.incubus_core.recipe.RecipeParser;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
@@ -71,8 +70,7 @@ public class EnchantmentMatch extends Match {
     @Override
     JsonObject toJson() {
         JsonObject main = new JsonObject();
-        main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
-        main.add(RecipeParser.KEY, new JsonPrimitive(this.name));
+        main.add("type", new JsonPrimitive(TYPE));
         main.add("singular", new JsonPrimitive(singular));
         main.add("minLevel", new JsonPrimitive(minLevel));
         main.add("maxLevel", new JsonPrimitive(maxLevel));

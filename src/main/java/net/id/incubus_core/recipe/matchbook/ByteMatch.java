@@ -1,7 +1,6 @@
 package net.id.incubus_core.recipe.matchbook;
 
 import com.google.gson.*;
-import net.id.incubus_core.recipe.RecipeParser;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
@@ -25,7 +24,7 @@ public class ByteMatch extends Match {
 
     @Override
     void configure(JsonObject json) {
-        targetByte = json.get(RecipeParser.TARGET).getAsByte();
+        targetByte = json.get("target").getAsByte();
     }
 
     @Override
@@ -36,9 +35,8 @@ public class ByteMatch extends Match {
     @Override
     JsonObject toJson() {
         JsonObject main = new JsonObject();
-        main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
-        main.add(RecipeParser.KEY, new JsonPrimitive(this.name));
-        main.add(RecipeParser.TARGET, new JsonPrimitive(this.targetByte));
+        main.add("type", new JsonPrimitive(TYPE));
+        main.add("target", new JsonPrimitive(this.targetByte));
         return main;
     }
 

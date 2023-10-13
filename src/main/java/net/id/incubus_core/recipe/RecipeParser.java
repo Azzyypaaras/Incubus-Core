@@ -19,8 +19,10 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class RecipeParser {
-    public static final String COUNT = "count";
+    
+    private static final JsonParser PARSER = new JsonParser();
     public static final String ITEM = "item";
+    public static final String COUNT = "count";
     public static final String KEY = "key";
     public static final String MATCHBOOK = "matchbook";
     public static final String MAX = "max";
@@ -39,7 +41,7 @@ public class RecipeParser {
     }
 
     public static ItemStack stackFromJson(JsonObject json) {
-        return stackFromJson(json, ITEM);
+        return stackFromJson(json, "item");
     }
 
     public static IngredientStack ingredientStackFromJson(JsonObject json) {

@@ -5,6 +5,7 @@ import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
 public class ByteMatch extends Match {
+    public static final String TYPE = "byte";
 
     private byte targetByte;
 
@@ -32,6 +33,14 @@ public class ByteMatch extends Match {
     }
 
     @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add("type", new JsonPrimitive(TYPE));
+        main.add("target", new JsonPrimitive(this.targetByte));
+        return main;
+    }
+
+    @Override
     void write(PacketByteBuf buf) {
         buf.writeByte(targetByte);
     }
@@ -39,7 +48,7 @@ public class ByteMatch extends Match {
     public static class Factory extends MatchFactory<ByteMatch> {
 
         public Factory() {
-            super("byte");
+            super(TYPE);
         }
 
         @Override

@@ -165,4 +165,23 @@ public class RecipeParser {
         return stack;
     }
 
+    public static JsonElement asJson(NbtElement nbt) {
+        if (nbt == null) {
+            return JsonNull.INSTANCE;
+        }
+        if (nbt instanceof NbtString s) return new JsonPrimitive(s.asString());
+        if (nbt instanceof NbtByte b) return new JsonPrimitive(b.byteValue() == 1);
+        if (nbt instanceof AbstractNbtNumber n) return new JsonPrimitive(n.numberValue());
+        if (nbt instanceof AbstractNbtList<?> l) {
+            JsonArray arr =  new JsonArray();
+            l.stream().map(RecipeParser::asJson).forEach(arr::add);
+            return arr;
+        }
+        if (nbt instanceof NbtCompound c) {
+            JsonObject o = new JsonObject();
+            c.getKeys().forEach(k -> o.add(k, asJson(c.get(k))));
+            return o;
+        }
+        return null;
+    }
 }

@@ -27,6 +27,8 @@ public abstract class Match {
 
     abstract void configure(PacketByteBuf buf);
 
+    abstract JsonObject toJson();
+
     public void writeInternal(PacketByteBuf buf) {
         buf.writeString(name);
         buf.writeString(key);

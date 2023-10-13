@@ -5,6 +5,7 @@ import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
 public class LongMatch extends Match {
+    public static final String TYPE = "long";
 
     private long targetLong;
 
@@ -32,6 +33,14 @@ public class LongMatch extends Match {
     }
 
     @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add("type", new JsonPrimitive(TYPE));
+        main.add("target", new JsonPrimitive(targetLong));
+        return main;
+    }
+
+    @Override
     void write(PacketByteBuf buf) {
         buf.writeLong(targetLong);
     }
@@ -39,7 +48,7 @@ public class LongMatch extends Match {
     public static class Factory extends MatchFactory<LongMatch> {
 
         public Factory() {
-            super("long");
+            super(TYPE);
         }
 
         @Override

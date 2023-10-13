@@ -1,6 +1,7 @@
 package net.id.incubus_core.recipe.matchbook;
 
 import com.google.gson.*;
+import net.id.incubus_core.recipe.RecipeParser;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
@@ -35,7 +36,7 @@ public class BooleanMatch extends Match {
     @Override
     JsonObject toJson() {
         JsonObject main = new JsonObject();
-        main.add("type", new JsonPrimitive(TYPE));
+        main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
         main.add("value", new JsonPrimitive(this.booleanValue));
         return main;
     }

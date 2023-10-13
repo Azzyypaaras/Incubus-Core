@@ -19,7 +19,7 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class RecipeParser {
-    
+
     private static final JsonParser PARSER = new JsonParser();
     public static final String ITEM = "item";
     public static final String COUNT = "count";

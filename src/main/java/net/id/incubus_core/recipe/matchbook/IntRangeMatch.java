@@ -30,7 +30,7 @@ public class IntRangeMatch extends Match {
 
     @Override
     void configure(JsonObject json) {
-        min = json.get("min").getAsInt();
+        min = json.get(RecipeParser.MIN).getAsInt();
         min = json.get("max").getAsInt();
     }
 
@@ -45,7 +45,7 @@ public class IntRangeMatch extends Match {
         JsonObject main = new JsonObject();
         main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
         main.add(RecipeParser.KEY, new JsonPrimitive(this.name));
-        main.add("min", new JsonPrimitive(min));
+        main.add(RecipeParser.MIN, new JsonPrimitive(min));
         main.add("max", new JsonPrimitive(max));
         return main;
     }

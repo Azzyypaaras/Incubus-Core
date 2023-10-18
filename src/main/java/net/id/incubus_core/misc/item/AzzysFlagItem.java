@@ -112,7 +112,7 @@ public class AzzysFlagItem extends HoeItem {
 				if (!world.isClient()) {
 					Box bounds = user.getBoundingBox();
 					for (int j = 0; j < Math.pow(bounds.getAverageSideLength() * 3, 2); j++) {
-						((ServerWorld) world).spawnParticles(ParticleTypes.END_ROD, user.getX() + (random.nextDouble() * bounds.getXLength() - bounds.getXLength() / 2), user.getY() + (random.nextDouble() * bounds.getYLength()), user.getZ() + (random.nextDouble() * bounds.getZLength() - bounds.getZLength() / 2), random.nextInt(4), 0, 0, 0, 0.9);
+						((ServerWorld) world).spawnParticles(ParticleTypes.END_ROD, user.getX() + (random.nextDouble() * bounds.getLengthX() - bounds.getLengthX() / 2), user.getY() + (random.nextDouble() * bounds.getLengthY()), user.getZ() + (random.nextDouble() * bounds.getLengthZ() - bounds.getLengthZ() / 2), random.nextInt(4), 0, 0, 0, 0.9);
 					}
 				}
 				
@@ -242,7 +242,7 @@ public class AzzysFlagItem extends HoeItem {
 				if (!world.isClient()) {
 					Box bounds = entity.getBoundingBox();
 					for (int j = 0; j < Math.pow(bounds.getAverageSideLength() * 3, 2); j++) {
-						((ServerWorld) world).spawnParticles(DustParticleEffect.DEFAULT, entity.getX() + (random.nextDouble() * bounds.getXLength() - bounds.getXLength() / 2), entity.getY() + (random.nextDouble() * bounds.getYLength()), entity.getZ() + (random.nextDouble() * bounds.getZLength() - bounds.getZLength() / 2), random.nextInt(4), 0, 0, 0, 0.9);
+						((ServerWorld) world).spawnParticles(DustParticleEffect.DEFAULT, entity.getX() + (random.nextDouble() * bounds.getLengthX() - bounds.getLengthX() / 2), entity.getY() + (random.nextDouble() * bounds.getLengthY()), entity.getZ() + (random.nextDouble() * bounds.getLengthZ() - bounds.getLengthZ() / 2), random.nextInt(4), 0, 0, 0, 0.9);
 					}
 				}
 			}
@@ -402,7 +402,7 @@ public class AzzysFlagItem extends HoeItem {
 			}
 			
 			if (block instanceof Fertilizable fertilizable && world.getRandom().nextFloat() < 0.1F) {
-				if (fertilizable.isFertilizable(world, pos, state, world.isClient()) && !world.isClient())
+				if (fertilizable.isFertilizable(world, pos, state) && !world.isClient())
 					fertilizable.grow((ServerWorld) world, world.getRandom(), pos, state);
 			}
 		}

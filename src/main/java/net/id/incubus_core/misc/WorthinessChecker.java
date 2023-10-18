@@ -1,25 +1,22 @@
 package net.id.incubus_core.misc;
 
-import net.fabricmc.loader.api.FabricLoader;
-import net.id.incubus_core.IncubusCore;
-import net.id.incubus_core.misc.playerdata.PlayerData;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Box;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.UUID;
+import net.fabricmc.loader.api.*;
+import net.id.incubus_core.*;
+import net.id.incubus_core.misc.playerdata.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.effect.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.particle.*;
+import net.minecraft.server.world.*;
+import net.minecraft.sound.*;
+import net.minecraft.text.*;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
 
-import static net.id.incubus_core.IncubusCore.locate;
+import java.util.*;
+
+import static net.id.incubus_core.IncubusCore.*;
 
 public class WorthinessChecker {
     private static boolean bypassWorthiness;
@@ -71,7 +68,7 @@ public class WorthinessChecker {
         if (!world.isClient()) {
             Box bounds = entity.getBoundingBox(entity.getPose());
             for (int i = 0; i < Math.pow(bounds.getAverageSideLength() * 4, 2); i++) {
-                ((ServerWorld) world).spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, entity.getX() + (random.nextDouble() * bounds.getXLength() - bounds.getXLength() / 2), entity.getY() + (random.nextDouble() * bounds.getYLength()), entity.getZ() + (random.nextDouble() * bounds.getZLength() - bounds.getZLength() / 2), random.nextInt(4), 0, 0, 0, 0.9);
+                ((ServerWorld) world).spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, entity.getX() + (random.nextDouble() * bounds.getLengthX() - bounds.getLengthZ() / 2), entity.getY() + (random.nextDouble() * bounds.getLengthY()), entity.getZ() + (random.nextDouble() * bounds.getLengthZ() - bounds.getLengthZ() / 2), random.nextInt(4), 0, 0, 0, 0.9);
             }
         }
     }

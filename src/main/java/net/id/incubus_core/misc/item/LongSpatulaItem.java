@@ -1,30 +1,20 @@
 package net.id.incubus_core.misc.item;
 
-import net.id.incubus_core.misc.IncubusDamageSources;
-import net.id.incubus_core.misc.IncubusPlayerData;
-import net.id.incubus_core.misc.IncubusSounds;
-import net.id.incubus_core.misc.WorthinessChecker;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-import java.util.List;
-import java.util.Optional;
+import net.id.incubus_core.misc.*;
+import net.minecraft.client.item.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.effect.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.particle.*;
+import net.minecraft.server.world.*;
+import net.minecraft.text.*;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
+import net.minecraft.world.*;
+import org.jetbrains.annotations.*;
+
+import java.util.*;
 
 public class LongSpatulaItem extends ShovelItem {
 
@@ -83,9 +73,9 @@ public class LongSpatulaItem extends ShovelItem {
         if (!world.isClient()) {
             Box bounds = entity.getBoundingBox();
             for (int j = 0; j < Math.pow(bounds.getAverageSideLength() * 10, 2); j++) {
-                ((ServerWorld) world).spawnParticles(random.nextBoolean() ? ParticleTypes.SMALL_FLAME : ParticleTypes.FLAME, entity.getX() + (random.nextDouble() * bounds.getXLength() - bounds.getXLength() / 2), entity.getY() + (random.nextDouble() * bounds.getYLength()), entity.getZ() + (random.nextDouble() * bounds.getZLength() - bounds.getZLength() / 2), random.nextInt(4), 0, 0, 0, random.nextFloat() * 0.25F);
+                ((ServerWorld) world).spawnParticles(random.nextBoolean() ? ParticleTypes.SMALL_FLAME : ParticleTypes.FLAME, entity.getX() + (random.nextDouble() * bounds.getLengthY() - bounds.getLengthX() / 2), entity.getY() + (random.nextDouble() * bounds.getLengthY()), entity.getZ() + (random.nextDouble() * bounds.getLengthZ() - bounds.getLengthZ() / 2), random.nextInt(4), 0, 0, 0, random.nextFloat() * 0.25F);
                 if (random.nextBoolean() && random.nextBoolean())
-                    ((ServerWorld) world).spawnParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, entity.getX() + (random.nextDouble() * bounds.getXLength() - bounds.getXLength() / 2), entity.getY() + (random.nextDouble() * bounds.getYLength()), entity.getZ() + (random.nextDouble() * bounds.getZLength() - bounds.getZLength() / 2), random.nextInt(4), 0, 0, 0, random.nextFloat() * 0.125F);
+                    ((ServerWorld) world).spawnParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, entity.getX() + (random.nextDouble() * bounds.getLengthX() - bounds.getLengthX() / 2), entity.getY() + (random.nextDouble() * bounds.getLengthY()), entity.getZ() + (random.nextDouble() * bounds.getLengthZ() - bounds.getLengthZ() / 2), random.nextInt(4), 0, 0, 0, random.nextFloat() * 0.125F);
             }
         }
 

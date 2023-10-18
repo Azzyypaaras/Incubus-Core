@@ -22,7 +22,7 @@ public class ItemDamagingRecipe<C extends RecipeInputInventory> extends Shapeles
                 stack.setDamage(stack.getDamage() + 1); // Damage item by one
                 defaultedList.set(i, stack);
             } else if (stack.getItem().hasRecipeRemainder()) {
-                defaultedList.set(i, new ItemStack(stack.getItem().getRecipeRemainder()));
+                defaultedList.set(i, stack.getRecipeRemainder());
             }
         }
         return defaultedList;
@@ -43,4 +43,3 @@ public class ItemDamagingRecipe<C extends RecipeInputInventory> extends Shapeles
         }
     }
 }
-

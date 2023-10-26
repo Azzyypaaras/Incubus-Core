@@ -1,17 +1,15 @@
 package net.id.incubus_core.recipe;
 
-import com.google.gson.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.network.*;
 import net.minecraft.recipe.*;
-import net.minecraft.util.*;
 import net.minecraft.util.collection.*;
 
 public class ItemDamagingRecipe<C extends RecipeInputInventory> extends ShapelessRecipe {
 
     public ItemDamagingRecipe(ShapelessRecipe parent) {
-        super(parent.getId(), parent.getGroup(), parent.getCategory(), parent.getOutput(null), parent.getIngredients());
+        super(parent.getGroup(), parent.getCategory(), parent.getResult(null), parent.getIngredients());
     }
 
     @Override
@@ -24,7 +22,7 @@ public class ItemDamagingRecipe<C extends RecipeInputInventory> extends Shapeles
                 stack.setDamage(stack.getDamage() + 1); // Damage item by one
                 defaultedList.set(i, stack);
             } else if (stack.getItem().hasRecipeRemainder()) {
-                defaultedList.set(i, new ItemStack(stack.getItem().getRecipeRemainder()));
+                defaultedList.set(i, stack.getRecipeRemainder());
             }
         }
         return defaultedList;
@@ -40,14 +38,8 @@ public class ItemDamagingRecipe<C extends RecipeInputInventory> extends Shapeles
         public static final ItemDamagingRecipe.Serializer INSTANCE = new ItemDamagingRecipe.Serializer();
 
         @Override
-        public ShapelessRecipe read(Identifier identifier, JsonObject jsonObject) {
-            return new ItemDamagingRecipe<>(super.read(identifier, jsonObject));
-        }
-
-        @Override
-        public ShapelessRecipe read(Identifier identifier, PacketByteBuf packetByteBuf) {
-            return new ItemDamagingRecipe<>(super.read(identifier, packetByteBuf));
+        public ShapelessRecipe read(PacketByteBuf packetByteBuf) {
+            return new ItemDamagingRecipe<>(super.read(packetByteBuf));
         }
     }
 }
-

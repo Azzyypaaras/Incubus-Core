@@ -64,7 +64,7 @@ public class LunarianSaberItem extends SwordItem {
 
             if(!world.isClient()) {
                 for (int i = 0; i < Math.pow(bounds.getAverageSideLength() * 2, 2); i++) {
-                    ((ServerWorld) world).spawnParticles(ParticleTypes.END_ROD, target.getX() + (random.nextDouble() * bounds.getXLength() - bounds.getXLength() / 2), target.getY() + (random.nextDouble() * bounds.getYLength()), target.getZ() + (random.nextDouble() * bounds.getZLength() - bounds.getZLength() / 2), random.nextInt(4), 0, 0, 0, 0.085);
+                    ((ServerWorld) world).spawnParticles(ParticleTypes.END_ROD, target.getX() + (random.nextDouble() * bounds.getLengthX() - bounds.getLengthX() / 2), target.getY() + (random.nextDouble() * bounds.getLengthY()), target.getZ() + (random.nextDouble() * bounds.getLengthZ() - bounds.getLengthZ() / 2), random.nextInt(4), 0, 0, 0, 0.085);
                 }
             }
         }
@@ -86,7 +86,7 @@ public class LunarianSaberItem extends SwordItem {
 
         if(!world.isClient()) {
             for (int i = 0; i < Math.pow(bounds.getAverageSideLength() * 2, 1.5); i++) {
-                ((ServerWorld) world).spawnParticles(ParticleTypes.END_ROD, target.getX(), target.getY() + bounds.getYLength() / 2, target.getZ(), random.nextInt(4) + 2, 0, 0, 0, 0.145);
+                ((ServerWorld) world).spawnParticles(ParticleTypes.END_ROD, target.getX(), target.getY() + bounds.getLengthY() / 2, target.getZ(), random.nextInt(4) + 2, 0, 0, 0, 0.145);
             }
         }
 

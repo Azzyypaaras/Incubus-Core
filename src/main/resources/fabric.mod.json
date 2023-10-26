@@ -2,16 +2,15 @@
   "schemaVersion": 1,
   "id": "incubus_core",
   "version": "${version}",
-
   "name": "Incubus Core",
-  "description": "Inaba of the cum.",
+  "description": "Collection of helpful utilities",
   "authors": [
     "Immortal Devs - Parent Organization",
     "Azazelthedemonlord - Author and lead incubus",
     "Jack Papel",
     "gudenau",
     "Noaaan",
-    "DaFuqs"
+    "DaFuqs - Keeping the sinking boat afloat using a sippy cup"
   ],
   "contact": {
     "homepage": "https://github.com/devs-immortal/Incubus-Core",
@@ -40,7 +39,7 @@
     "incubus_core.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.20.0",
+    "minecraft": ">=1.20.2",
     "fabricloader": "*",
     "fabric": "*"
   },

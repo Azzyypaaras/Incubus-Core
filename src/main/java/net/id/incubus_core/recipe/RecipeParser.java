@@ -144,7 +144,12 @@ public class RecipeParser {
      * @return An ItemStack with nbt data, like specified in the json
      */
     public static ItemStack getItemStackWithNbtFromJson(JsonObject json) {
-        Item item = ShapedRecipe.getItem(json);
+        String string = JsonHelper.getString(json, "item");
+        Item item = Registries.ITEM.getOrEmpty(new Identifier(string)).orElseThrow(() -> new JsonSyntaxException("Unknown item '" + string + "'"));
+        if (item == Items.AIR) {
+            throw new JsonSyntaxException("Invalid item: " + string);
+        }
+        
         if (json.has("data")) {
             throw new JsonParseException("Disallowed data tag found");
         }

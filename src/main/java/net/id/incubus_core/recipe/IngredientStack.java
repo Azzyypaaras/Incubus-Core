@@ -1,5 +1,8 @@
 package net.id.incubus_core.recipe;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.id.incubus_core.recipe.matchbook.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
@@ -79,6 +82,15 @@ public final class IngredientStack {
         buf.writeBoolean(recipeViewNbt.isPresent());
         recipeViewNbt.ifPresent(buf::writeNbt);
         buf.writeInt(count);
+    }
+
+    public JsonElement toJson() {
+        JsonObject main = new JsonObject();
+        main.add("ingredient", this.ingredient.toJson());
+        if (this.count > 1) main.add(RecipeParser.COUNT, new JsonPrimitive(this.count));
+        if (!this.matchbook.isEmpty()) main.add(RecipeParser.MATCHBOOK, this.matchbook.toJson());
+        if (this.recipeViewNbt.isPresent()) main.add("recipeViewNbt", RecipeParser.asJson(recipeViewNbt.get()));
+        return main;
     }
 
     public static IngredientStack fromByteBuf(PacketByteBuf buf) {

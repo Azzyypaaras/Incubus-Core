@@ -1,10 +1,12 @@
 package net.id.incubus_core.recipe.matchbook;
 
 import com.google.gson.*;
+import net.id.incubus_core.recipe.RecipeParser;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
 public class IntMatch extends Match {
+    public static final String TYPE = "int";
 
     private int targetInt;
 
@@ -23,12 +25,21 @@ public class IntMatch extends Match {
 
     @Override
     void configure(JsonObject json) {
-        targetInt = json.get("target").getAsInt();
+        targetInt = json.get(RecipeParser.TARGET).getAsInt();
     }
 
     @Override
     void configure(PacketByteBuf buf) {
         targetInt = buf.readInt();
+    }
+
+    @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
+        main.add(RecipeParser.KEY, new JsonPrimitive(this.name));
+        main.add(RecipeParser.TARGET, new JsonPrimitive(targetInt));
+        return main;
     }
 
     @Override
@@ -39,7 +50,7 @@ public class IntMatch extends Match {
     public static class Factory extends MatchFactory<IntMatch> {
 
         public Factory() {
-            super("int");
+            super(TYPE);
         }
 
         @Override

@@ -1,6 +1,7 @@
 package net.id.incubus_core.recipe.matchbook;
 
 import com.google.gson.*;
+import net.id.incubus_core.recipe.RecipeParser;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
@@ -8,6 +9,7 @@ import net.minecraft.network.*;
  * Inclusive.
  */
 public class IntRangeMatch extends Match {
+    public static final String TYPE = "intRange";
 
     private int min;
     private int max;
@@ -28,14 +30,24 @@ public class IntRangeMatch extends Match {
 
     @Override
     void configure(JsonObject json) {
-        min = json.get("min").getAsInt();
-        min = json.get("max").getAsInt();
+        min = json.get(RecipeParser.MIN).getAsInt();
+        min = json.get(RecipeParser.MAX).getAsInt();
     }
 
     @Override
     void configure(PacketByteBuf buf) {
         min = buf.readInt();
         max = buf.readInt();
+    }
+
+    @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
+        main.add(RecipeParser.KEY, new JsonPrimitive(this.name));
+        main.add(RecipeParser.MIN, new JsonPrimitive(min));
+        main.add(RecipeParser.MAX, new JsonPrimitive(max));
+        return main;
     }
 
     @Override
@@ -47,7 +59,7 @@ public class IntRangeMatch extends Match {
     public static class Factory extends MatchFactory<IntRangeMatch> {
 
         public Factory() {
-            super("intRange");
+            super(TYPE);
         }
 
         @Override

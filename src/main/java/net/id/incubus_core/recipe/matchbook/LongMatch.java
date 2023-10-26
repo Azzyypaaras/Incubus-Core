@@ -1,10 +1,12 @@
 package net.id.incubus_core.recipe.matchbook;
 
 import com.google.gson.*;
+import net.id.incubus_core.recipe.RecipeParser;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
 public class LongMatch extends Match {
+    public static final String TYPE = "long";
 
     private long targetLong;
 
@@ -23,12 +25,21 @@ public class LongMatch extends Match {
 
     @Override
     void configure(JsonObject json) {
-        targetLong = json.get("target").getAsLong();
+        targetLong = json.get(RecipeParser.TARGET).getAsLong();
     }
 
     @Override
     void configure(PacketByteBuf buf) {
         targetLong = buf.readLong();
+    }
+
+    @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
+        main.add(RecipeParser.KEY, new JsonPrimitive(this.name));
+        main.add(RecipeParser.TARGET, new JsonPrimitive(targetLong));
+        return main;
     }
 
     @Override
@@ -39,7 +50,7 @@ public class LongMatch extends Match {
     public static class Factory extends MatchFactory<LongMatch> {
 
         public Factory() {
-            super("long");
+            super(TYPE);
         }
 
         @Override

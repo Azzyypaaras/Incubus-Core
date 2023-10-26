@@ -1,10 +1,12 @@
 package net.id.incubus_core.recipe.matchbook;
 
 import com.google.gson.*;
+import net.id.incubus_core.recipe.RecipeParser;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
 public class ByteMatch extends Match {
+    public static final String TYPE = "byte";
 
     private byte targetByte;
 
@@ -23,12 +25,21 @@ public class ByteMatch extends Match {
 
     @Override
     void configure(JsonObject json) {
-        targetByte = json.get("target").getAsByte();
+        targetByte = json.get(RecipeParser.TARGET).getAsByte();
     }
 
     @Override
     void configure(PacketByteBuf buf) {
         targetByte = buf.readByte();
+    }
+
+    @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
+        main.add(RecipeParser.KEY, new JsonPrimitive(this.name));
+        main.add(RecipeParser.TARGET, new JsonPrimitive(this.targetByte));
+        return main;
     }
 
     @Override
@@ -39,7 +50,7 @@ public class ByteMatch extends Match {
     public static class Factory extends MatchFactory<ByteMatch> {
 
         public Factory() {
-            super("byte");
+            super(TYPE);
         }
 
         @Override

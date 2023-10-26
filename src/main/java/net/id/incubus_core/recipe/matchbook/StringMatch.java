@@ -1,10 +1,12 @@
 package net.id.incubus_core.recipe.matchbook;
 
 import com.google.gson.*;
+import net.id.incubus_core.recipe.RecipeParser;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 
 public class StringMatch extends Match {
+    public static final String TYPE = "string";
 
     private String targetString;
 
@@ -23,12 +25,21 @@ public class StringMatch extends Match {
 
     @Override
     void configure(JsonObject json) {
-        targetString = json.get("target").getAsString();
+        targetString = json.get(RecipeParser.TARGET).getAsString();
     }
 
     @Override
     void configure(PacketByteBuf buf) {
         targetString = buf.readString();
+    }
+
+    @Override
+    JsonObject toJson() {
+        JsonObject main = new JsonObject();
+        main.add(RecipeParser.TYPE, new JsonPrimitive(TYPE));
+        main.add(RecipeParser.KEY, new JsonPrimitive(this.name));
+        main.add(RecipeParser.TARGET, new JsonPrimitive(targetString));
+        return main;
     }
 
     @Override
@@ -39,7 +50,7 @@ public class StringMatch extends Match {
     public static class Factory extends MatchFactory<StringMatch> {
 
         public Factory() {
-            super("string");
+            super(TYPE);
         }
 
         @Override

@@ -19,32 +19,38 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class RecipeParser {
-
-    private static final JsonParser PARSER = new JsonParser();
+    public static final String COUNT = "count";
+    public static final String ITEM = "item";
+    public static final String KEY = "key";
+    public static final String MATCHBOOK = "matchbook";
+    public static final String MAX = "max";
+    public static final String MIN = "min";
+    public static final String TARGET = "target";
+    public static final String TYPE = "type";
 
     public static JsonObject fromInputStream(InputStream in) {
-        return PARSER.parse(new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8))).getAsJsonObject();
+        return JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
     }
 
     public static ItemStack stackFromJson(JsonObject json, String elementName) {
         Item item = Registries.ITEM.get(Identifier.tryParse(json.get(elementName).getAsString()));
-        int count = json.has("count") ? json.get("count").getAsInt() : 1;
+        int count = json.has(COUNT) ? json.get("count").getAsInt() : 1;
         return item != Items.AIR ? new ItemStack(item, count) : ItemStack.EMPTY;
     }
 
     public static ItemStack stackFromJson(JsonObject json) {
-        return stackFromJson(json, "item");
+        return stackFromJson(json, ITEM);
     }
 
     public static IngredientStack ingredientStackFromJson(JsonObject json) {
         Ingredient ingredient = json.has("ingredient") ? Ingredient.fromJson(json.getAsJsonObject("ingredient")) : Ingredient.fromJson(json);
         var matchbook = Matchbook.empty();
         NbtCompound recipeViewNbt = null;
-        int count = json.has("count") ? json.get("count").getAsInt() : 1;
+        int count = json.has(COUNT) ? json.get(COUNT).getAsInt() : 1;
 
-        if (json.has("matchbook")) {
+        if (json.has(MATCHBOOK)) {
             try {
-                matchbook = matchbookFromJson(json.getAsJsonObject("matchbook"));
+                matchbook = matchbookFromJson(json.getAsJsonObject(MATCHBOOK));
             } catch (MalformedJsonException e) {
                 IncubusCore.LOG.error("RELAYED EXCEPTION. " + e);
             }
@@ -77,8 +83,8 @@ public class RecipeParser {
     }
 
     public static OptionalStack optionalStackFromJson(JsonObject json) throws MalformedJsonException {
-        int count = json.has("count") ? json.get("count").getAsInt() : 1;
-        if(json.has("item")) {
+        int count = json.has(COUNT) ? json.get(COUNT).getAsInt() : 1;
+        if(json.has(ITEM)) {
             Item item = Registries.ITEM.get(Identifier.tryParse(json.get("item").getAsString()));
             return item != Items.AIR ? new OptionalStack(new ItemStack(item, count), count) : OptionalStack.EMPTY;
         }
@@ -115,8 +121,8 @@ public class RecipeParser {
 
         for (int i = 0; i < matchArray.size(); i++) {
             var entry = matchArray.get(i).getAsJsonObject();
-            var id = entry.get("type").getAsString();
-            var key = entry.get("key").getAsString();
+            var id = entry.get(TYPE).getAsString();
+            var key = entry.get(KEY).getAsString();
 
             var optional = MatchRegistry.getOptional(id);
             if(optional.isEmpty()) {
@@ -143,7 +149,7 @@ public class RecipeParser {
             throw new JsonParseException("Disallowed data tag found");
         }
 
-        int count = JsonHelper.getInt(json, "count", 1);
+        int count = JsonHelper.getInt(json, COUNT, 1);
         if (count < 1) {
             throw new JsonSyntaxException("Invalid output count: " + count);
         }
@@ -165,4 +171,23 @@ public class RecipeParser {
         return stack;
     }
 
+    public static JsonElement asJson(NbtElement nbt) {
+        if (nbt == null) {
+            return JsonNull.INSTANCE;
+        }
+        if (nbt instanceof NbtString s) return new JsonPrimitive(s.asString());
+        if (nbt instanceof NbtByte b) return new JsonPrimitive(b.byteValue() == 1);
+        if (nbt instanceof AbstractNbtNumber n) return new JsonPrimitive(n.numberValue());
+        if (nbt instanceof AbstractNbtList<?> l) {
+            JsonArray arr =  new JsonArray();
+            l.stream().map(RecipeParser::asJson).forEach(arr::add);
+            return arr;
+        }
+        if (nbt instanceof NbtCompound c) {
+            JsonObject o = new JsonObject();
+            c.getKeys().forEach(k -> o.add(k, asJson(c.get(k))));
+            return o;
+        }
+        return null;
+    }
 }
